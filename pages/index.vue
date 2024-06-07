@@ -2,7 +2,7 @@
   <div class="login">
     <!-- BEGIN login-content -->
     <div class="login-content">
-      <form @submit="handleSubmit">
+      <form @submit.prevent="handleSubmit">
         <div class="d-flex justify-content-center mb-3">
           <img
             src="~/assets/images/logo.png"
