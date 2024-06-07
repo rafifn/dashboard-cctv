@@ -37,21 +37,20 @@
 
       <!-- BEGIN brand -->
       <div class="brand">
-        <a
-          href="index.html"
+        <NuxtLink
+          to="/home"
           class="brand-logo"
         >
           <span class="brand-img">
             <span class="brand-img-text text-theme">H</span>
           </span>
           <span class="brand-text">HUD ADMIN</span>
-        </a>
+        </NuxtLink>
       </div>
       <!-- END brand -->
       <div class="menu">
         <div class="menu-item dropdown dropdown-mobile-full">
-          <a
-            href="#"
+          <div
             data-bs-toggle="dropdown"
             data-bs-display="static"
             class="menu-link"
@@ -63,13 +62,14 @@
                 height="60"
               >
             </div>
-            <div class="menu-text d-sm-block d-none w-170px">username@account.com</div>
-          </a>
+            <div class="menu-text d-sm-block d-none w-170px">
+              username@account.com
+            </div>
+          </div>
           <div class="dropdown-menu dropdown-menu-end me-lg-3 fs-11px mt-1">
-            <a
-              class="dropdown-item d-flex align-items-center"
-              href="page_login.html"
-            >LOGOUT <i class="bi bi-toggle-off ms-auto text-theme fs-16px my-n1" /></a>
+            <div class="dropdown-item d-flex align-items-center">
+              LOGOUT <i class="bi bi-toggle-off ms-auto text-theme fs-16px my-n1" />
+            </div>
           </div>
         </div>
       </div>

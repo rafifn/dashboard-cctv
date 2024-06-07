@@ -47,5 +47,9 @@
 </script>
 
 <style lang="scss" scoped>
-
+.menu {
+  &-link {
+    cursor: pointer;
+  }
+}
 </style>
