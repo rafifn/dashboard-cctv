@@ -1,7 +1,8 @@
+<!-- eslint-disable max-len -->
 <template>
   <main
     id="app"
-    :class="['app', isExpandSidebar ? 'app-sidebar-toggled' : 'app-sidebar-collapsed']"
+    :class="['app', isExpandSidebar ? width < 768 ? 'app-sidebar-mobile-toggled' : 'app-sidebar-toggled' : 'app-sidebar-collapsed']"
   >
     <div
       id="header"
@@ -91,6 +92,7 @@
       class="app-sidebar-mobile-backdrop"
       data-toggle-target=".app"
       data-toggle-class="app-sidebar-mobile-toggled"
+      @click="isExpandSidebar = false"
     />
     <!-- END mobile-sidebar-backdrop -->
     <div
@@ -103,6 +105,10 @@
 </template>
 
 <script setup>
+import { useWindowSize } from '@vueuse/core'
+
+const { width } = useWindowSize()
+
 const isExpandSidebar = ref(true)
 </script>
 
