@@ -11,28 +11,25 @@
     >
       <!-- BEGIN menu -->
       <div class="menu">
-        <div class="menu-item active">
+        <NuxtLink
+          v-for="(menu, menuIdx) in MENUS"
+          :key="menuIdx"
+          :class="['menu-item', { active: $route.name === menu.name }]"
+          :to="menu.path"
+        >
           <span
             class="menu-link"
           >
-            <span class="menu-icon"><i class="bi bi-grid" /></span>
-            <span class="menu-text">Dashboard</span>
+            <span class="menu-icon"><i :class="['bi', menu.icon]" /></span>
+            <span class="menu-text">{{ menu.label }}</span>
           </span>
-        </div>
-        <div class="menu-item">
+        </NuxtLink>
+        <div class="menu-item logout">
           <span
             class="menu-link"
           >
-            <span class="menu-icon"><i class="bi bi-camera-video" /></span>
-            <span class="menu-text">Streaming CCTV</span>
-          </span>
-        </div>
-        <div class="menu-item">
-          <span
-            class="menu-link"
-          >
-            <span class="menu-icon"><i class="bi bi-floppy" /></span>
-            <span class="menu-text">Gate Monitoring</span>
+            <span class="menu-icon"><i class="bi bi-box-arrow-right" /></span>
+            <span class="menu-text">Keluar</span>
           </span>
         </div>
       </div>
@@ -43,13 +40,101 @@
 </template>
 
 <script setup>
-
+const MENUS = [
+  {
+    label: 'Dashboard',
+    name: 'home',
+    path: '/home',
+    icon: 'bi-grid',
+  },
+  {
+    label: 'Streaming CCTV',
+    name: 'streaming',
+    path: '/streaming',
+    icon: 'bi-camera-video',
+  },
+  {
+    label: 'Gate Monitoring',
+    name: 'gate-monitoring',
+    path: '/gate-monitoring',
+    icon: 'bi-floppy',
+  },
+  {
+    label: 'Kendaraan',
+    name: 'vehicles',
+    path: '/vehicles',
+    icon: 'bi-floppy',
+  },
+  {
+    label: 'Visitor & Residence',
+    name: 'visitors',
+    path: '/visitors',
+    icon: 'bi-flag',
+  },
+  {
+    label: 'Activity',
+    name: 'activity',
+    path: '/activity',
+    icon: 'bi-person-bounding-box',
+  },
+  {
+    label: 'Report',
+    name: 'reports',
+    path: '/reports',
+    icon: 'bi-file-earmark-text',
+  },
+  {
+    label: 'Statistic',
+    name: 'statistics',
+    path: '/statistics',
+    icon: 'bi-graph-up',
+  },
+  {
+    label: 'Recording Video',
+    name: 'recording',
+    path: '/recording',
+    icon: 'bi-database',
+  },
+  {
+    label: 'User & Access',
+    name: 'users',
+    path: '/users',
+    icon: 'bi-person-badge',
+  },
+  {
+    label: 'Pengaturan',
+    name: 'settings',
+    path: '/settings',
+    icon: 'bi-gear',
+  },
+]
 </script>
 
 <style lang="scss" scoped>
 .menu {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
   &-link {
     cursor: pointer;
+  }
+  &-item {
+    margin: 10px 0;
+    text-decoration: none;
+    font-weight: 100;
+    display: block;
+    &.active .menu-text {
+      font-weight: 700;
+    }
+    &.logout {
+      margin-top: auto;
+    }
+  }
+  &-icon {
+    color: var(--bs-theme);
+  }
+  &-text {
+    color: white;
   }
 }
 </style>

@@ -1,5 +1,8 @@
 <template>
-  <main class="app">
+  <main
+    id="app"
+    :class="['app', isExpandSidebar ? 'app-sidebar-toggled' : 'app-sidebar-collapsed']"
+  >
     <div
       id="header"
       class="app-header"
@@ -12,6 +15,7 @@
           data-toggle-class="app-sidebar-collapsed"
           data-dismiss-class="app-sidebar-toggled"
           data-toggle-target=".app"
+          @click="isExpandSidebar = !isExpandSidebar"
         >
           <span class="bar" />
           <span class="bar" />
@@ -27,6 +31,7 @@
           class="menu-toggler"
           data-toggle-class="app-sidebar-mobile-toggled"
           data-toggle-target=".app"
+          @click="isExpandSidebar = !isExpandSidebar"
         >
           <span class="bar" />
           <span class="bar" />
@@ -42,9 +47,14 @@
           class="brand-logo"
         >
           <span class="brand-img">
-            <span class="brand-img-text text-theme">H</span>
+            <span class="brand-img-text text-theme">
+              <img
+                src="~/assets/images/logo.png"
+                alt="logo"
+              >
+            </span>
           </span>
-          <span class="brand-text">HUD ADMIN</span>
+          <span class="brand-text">Surveillance Center</span>
         </NuxtLink>
       </div>
       <!-- END brand -->
@@ -55,15 +65,15 @@
             data-bs-display="static"
             class="menu-link"
           >
+            <div class="menu-text d-sm-block d-none w-170px">
+              username@account.com
+            </div>
             <div class="menu-img online">
               <img
                 src="assets/img/user/profile.jpg"
                 alt="Profile"
                 height="60"
               >
-            </div>
-            <div class="menu-text d-sm-block d-none w-170px">
-              username@account.com
             </div>
           </div>
           <div class="dropdown-menu dropdown-menu-end me-lg-3 fs-11px mt-1">
@@ -93,7 +103,7 @@
 </template>
 
 <script setup>
-
+const isExpandSidebar = ref(true)
 </script>
 
 <style lang="scss" scoped>
