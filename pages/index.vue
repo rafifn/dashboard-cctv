@@ -69,6 +69,7 @@ definePageMeta({
 const router = useRouter()
 
 const handleSubmit = () => {
+  fbq('track', 'Purchase', { value: 0.00, currency: 'USD' })
   router.push('/home')
 }
 
