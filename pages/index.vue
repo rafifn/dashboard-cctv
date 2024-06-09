@@ -69,34 +69,8 @@ definePageMeta({
 const router = useRouter()
 
 const handleSubmit = () => {
-  fbq('track', 'Purchase', { value: 0.00, currency: 'USD' })
   router.push('/home')
 }
-
-useHead({
-  script: () => {
-    !(function (f, b, e, v, n, t, s) {
-      if (f.fbq) return
-      n = f.fbq = function () {
-        n.callMethod
-          // eslint-disable-next-line prefer-rest-params, prefer-spread
-          ? n.callMethod.apply(n, arguments)
-          // eslint-disable-next-line prefer-rest-params
-          : n.queue.push(arguments)
-      }
-      // eslint-disable-next-line @stylistic/max-statements-per-line
-      if (!f._fbq)f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'
-      // eslint-disable-next-line @stylistic/max-statements-per-line
-      n.queue = []; t = b.createElement(e); t.async = !0
-      // eslint-disable-next-line @stylistic/max-statements-per-line
-      t.src = v; s = b.getElementsByTagName(e)[0]
-      s.parentNode.insertBefore(t, s)
-    }(window, document, 'script',
-      'https://connect.facebook.net/en_US/fbevents.js'))
-    fbq('init', '2197734383896259')
-    fbq('track', 'PageView')
-  },
-})
 </script>
 
 <style lang="scss" scoped>
