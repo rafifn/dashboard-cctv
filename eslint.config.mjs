@@ -18,6 +18,7 @@ export default withNuxt(
         },
       ],
       '@typescript-eslint/no-non-null-assertion': 'off',
+      '@stylistic/brace-style': 'off',
     },
   },
 )

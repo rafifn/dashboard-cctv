@@ -2,7 +2,12 @@
   <div class="login">
     <!-- BEGIN login-content -->
     <div class="login-content">
-      <form @submit.prevent="handleSubmit">
+      <Form
+        ref="formInstance"
+        class="space-y-4"
+        :validation-schema="schema"
+        @submit="handleSubmit"
+      >
         <div class="d-flex justify-content-center mb-3">
           <img
             src="~/assets/images/logo.png"
@@ -14,36 +19,40 @@
         </h1>
         <div class="mb-3">
           <label class="form-label">Username<span class="text-danger">*</span></label>
-          <input
+          <AInput
+            id="username"
+            v-model="modelform.username"
+            name="username"
             type="text"
-            class="form-control form-control--underline"
-            value=""
             placeholder="username"
-          >
+          />
         </div>
         <div class="mb-3">
           <div class="d-flex">
             <label class="form-label">Password <span class="text-danger">*</span></label>
           </div>
-          <input
+          <AInput
+            id="password"
+            v-model="modelform.password"
+            name="password"
             type="password"
-            class="form-control form-control--underline"
-            value=""
             placeholder="password"
-          >
+          />
         </div>
         <div class="mb-3 d-flex justify-content-between">
           <div class="form-check">
             <input
-              id="customCheck1"
+              id="isRemember"
+              v-model="isRemember"
               class="form-check-input"
               type="checkbox"
-              value=""
             >
             <label
               class="form-check-label"
-              for="customCheck1"
-            >Remember me</label>
+              for="isRemember"
+            >
+              Remember me
+            </label>
           </div>
           <span
             class="ms-auto text-inverse text-decoration-none text-opacity-50 cursor-pointer"
@@ -55,21 +64,51 @@
         >
           Login
         </button>
-      </form>
+      </Form>
     </div>
     <!-- END login-content -->
   </div>
 </template>
 
 <script setup>
+import { object, string } from 'yup'
+
 definePageMeta({
   layout: false,
 })
 
 const router = useRouter()
+const { $api } = useNuxtApp()
+const authToken = useCookie('_auth_token')
+const refreshToken = useCookie('_refresh_token')
 
-const handleSubmit = () => {
-  router.push('/home')
+const modelform = ref({
+  username: '',
+  password: '',
+})
+const isRemember = ref(false)
+
+const schema = object().shape({
+  username: string().required('Username wajib diisi'),
+  password: string().required('Password wajib diisi'),
+})
+
+const handleSubmit = async () => {
+  try {
+    const { token, refresh_token } = await $api('/auth/sign-in/', {
+      method: 'POST',
+      body: {
+        email: modelform.value.username,
+        password: modelform.value.password,
+      },
+    })
+    authToken.value = token
+    refreshToken.value = refresh_token
+    router.push('/home')
+  } catch (error) {
+    const objKey = Object.keys(error?.response?._data)[0]
+    alert(objKey ? error.response._data[objKey] : 'Terjadi Kesalahan')
+  }
 }
 </script>
 

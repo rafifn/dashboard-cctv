@@ -60,34 +60,16 @@ const MENUS = [
     icon: 'bi-floppy',
   },
   {
-    label: 'Kendaraan',
+    label: 'Vehicle Management',
     name: 'vehicles',
     path: '/vehicles',
     icon: 'bi-floppy',
   },
   {
-    label: 'Visitor & Residence',
+    label: 'Visitor Management',
     name: 'visitors',
     path: '/visitors',
     icon: 'bi-flag',
-  },
-  {
-    label: 'Activity',
-    name: 'activity',
-    path: '/activity',
-    icon: 'bi-person-bounding-box',
-  },
-  {
-    label: 'Report',
-    name: 'reports',
-    path: '/reports',
-    icon: 'bi-file-earmark-text',
-  },
-  {
-    label: 'Statistic',
-    name: 'statistics',
-    path: '/statistics',
-    icon: 'bi-graph-up',
   },
   {
     label: 'Recording Video',
@@ -100,12 +82,6 @@ const MENUS = [
     name: 'users',
     path: '/users',
     icon: 'bi-person-badge',
-  },
-  {
-    label: 'Pengaturan',
-    name: 'settings',
-    path: '/settings',
-    icon: 'bi-gear',
   },
 ]
 </script>

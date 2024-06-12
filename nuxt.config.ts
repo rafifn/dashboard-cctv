@@ -18,6 +18,10 @@ export default defineNuxtConfig({
           rel: 'stylesheet',
           href: 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css',
         },
+        {
+          rel: 'stylesheet',
+          href: 'https://unpkg.com/video.js/dist/video-js.css',
+        },
       ],
       script: [
         {
@@ -38,7 +42,7 @@ export default defineNuxtConfig({
       ],
     },
   },
-  modules: ['@nuxt/eslint'],
+  modules: ['@nuxt/eslint', '@vee-validate/nuxt'],
   eslint: {
     checker: true,
     config: {
@@ -52,5 +56,10 @@ export default defineNuxtConfig({
   css: ['~/assets/scss/styles.scss'],
   vite: {
     plugins: [eslint({ fix: true })],
+  },
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: '',
+    },
   },
 })
