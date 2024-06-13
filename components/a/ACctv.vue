@@ -7,6 +7,8 @@
       controls
       autoplay
       preload="auto"
+      :width="width"
+      :height="height"
     />
   </div>
 </template>
@@ -18,9 +20,14 @@ import 'video.js/dist/video-js.css'
 interface Props {
   id: string
   src: string
+  width?: number
+  height?: number
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  width: 400,
+  height: 200,
+})
 onMounted(() => {
   const element = document.getElementById(props.id)
   videojs(element, {

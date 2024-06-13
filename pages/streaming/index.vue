@@ -8,9 +8,11 @@
     </div>
     <div class="wrapper-primary">
       <ACctv
-        :id="`primary-${data.results[0].id32}`"
+        :id="`primary-${VIDEOS[0].id32}`"
         class="primary"
-        :src="data.results[0].hls_url"
+        :src="VIDEOS[0].hls_url"
+        :width="800"
+        :height="500"
       />
       <div class="primary__info">
         <div class="d-flex justify-content-between">
@@ -58,7 +60,7 @@
     </div>
     <div class="d-flex flex-wrap">
       <ACctv
-        v-for="(cctv, cctvIdx) in data.results"
+        v-for="(cctv, cctvIdx) in VIDEOS"
         :id="cctv.id32"
         :key="`cctv-${cctvIdx}`"
         class="p-2"
@@ -71,11 +73,24 @@
 <script setup>
 import { formatDateFromUTC } from '~/utils/helpers'
 
-const { $api } = useNuxtApp()
-
-const { data } = await useAsyncData('camera', () => $api('/cctv/camera', {
-  baseUrl: 'https://stream.arnatech.id',
-}))
+const VIDEOS = [
+  {
+    hls_url: 'https://stream.arnatech.id/22248956-99aa-4ad9-b88b-b410e4d54c13.m3u8',
+    id32: '1',
+  },
+  {
+    hls_url: 'https://stream.arnatech.id/5bb8c9fa-17f3-477c-9350-a43494f4742e.m3u8',
+    id32: '2',
+  },
+  {
+    hls_url: 'https://stream.arnatech.id/bab5459e-5844-42e4-9e6f-4547465e1122.m3u8',
+    id32: '3',
+  },
+  {
+    hls_url: 'https://stream.arnatech.id/e726acdf-6194-4471-88f7-159790713a23.m3u8',
+    id32: '4',
+  },
+]
 
 const dateNow = ref()
 
@@ -139,12 +154,5 @@ p {
   &-4 {
     gap: 1rem;
   }
-}
-</style>
-
-<style lang="scss">
-.primary .video-js {
-  width: 100%;
-  height: 400px;
 }
 </style>
