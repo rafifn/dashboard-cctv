@@ -18,17 +18,18 @@ export default defineNuxtPlugin(() => {
         }
       }
     },
-    async onResponseError({ response }) {
+    onResponseError({ response }) {
       if (response.status === 401) {
-        const data = await $fetch('/auth/refresh/', {
+        $fetch('/auth/refresh/', {
           baseURL: cfg.public.apiBaseUrl,
+          method: 'POST',
           body: {
             refresh_token: refreshToken.value,
           },
+        }).then((data) => {
+          authToken.value = data.token
+          refreshToken.value = data.refresh_token
         })
-        console.log('data')
-        authToken.value = data.token
-        refreshToken.value = data.refresh_token
       }
     },
   })

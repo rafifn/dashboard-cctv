@@ -2,7 +2,7 @@
 <template>
   <main
     id="app"
-    :class="['app', isExpandSidebar ? width < 768 ? 'app-sidebar-mobile-toggled' : 'app-sidebar-toggled' : 'app-sidebar-collapsed']"
+    :class="['app', isExpandSidebar ? isMobile ? 'app-sidebar-mobile-toggled' : 'app-sidebar-toggled' : 'app-sidebar-collapsed']"
   >
     <div
       id="header"
@@ -26,11 +26,14 @@
       <!-- BEGIN desktop-toggler -->
 
       <!-- BEGIN mobile-toggler -->
-      <div class="mobile-toggler">
+      <div
+        class="mobile-toggler"
+      >
         <button
           type="button"
           class="menu-toggler"
-          data-toggle-class="app-sidebar-mobile-toggled"
+          data-toggle-class="app-sidebar-mobile-collapsed"
+          data-dismiss-class="app-sidebar-mobile-toggled"
           data-toggle-target=".app"
           @click="isExpandSidebar = !isExpandSidebar"
         >
@@ -78,7 +81,10 @@
             </div>
           </div>
           <div class="dropdown-menu dropdown-menu-end me-lg-3 fs-11px mt-1">
-            <div class="dropdown-item d-flex align-items-center">
+            <div
+              class="dropdown-item d-flex align-items-center"
+              @click="handleLogout"
+            >
               LOGOUT <i class="bi bi-toggle-off ms-auto text-theme fs-16px my-n1" />
             </div>
           </div>
@@ -105,11 +111,21 @@
 </template>
 
 <script setup>
-import { useWindowSize } from '@vueuse/core'
+import { useBreakpoints, breakpointsTailwind } from '@vueuse/core'
 
-const { width } = useWindowSize()
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const isMobile = breakpoints.smallerOrEqual('sm')
+const router = useRouter()
+const authToken = useCookie('_auth_token')
+const refreshToken = useCookie('_refresh_token')
 
 const isExpandSidebar = ref(true)
+
+const handleLogout = () => {
+  authToken.value = undefined
+  refreshToken.value = undefined
+  router.replace('/')
+}
 </script>
 
 <style lang="scss" scoped>

@@ -8,9 +8,9 @@
     </div>
     <div class="wrapper-primary">
       <ACctv
-        :id="`primary-${VIDEOS[0].id32}`"
-        class="primary"
-        :src="VIDEOS[0].hls_url"
+        :id="`primary-${primary.id32}`"
+        class="primary__video"
+        :src="primary.hls_url"
         :width="800"
         :height="500"
       />
@@ -93,6 +93,7 @@ const VIDEOS = [
 ]
 
 const dateNow = ref()
+const primary = ref(VIDEOS[0])
 
 onMounted(() => {
   dateNow.value = formatDateFromUTC('', 'dddd, DD MMMM YYYY')
@@ -117,15 +118,17 @@ p {
 .wrapper {
   &-primary {
     display: flex;
+    gap: 1rem;
   }
 }
 .primary {
-  width: 800px;
-  padding: 0.5rem;
+  &__video {
+    flex: 1;
+  }
   &__info {
     background-color: #252525;
     padding: 1rem;
-    flex: 1;
+    width: fit-content;
   }
   &__status {
     color: #3BA18A;
