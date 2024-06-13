@@ -1,9 +1,11 @@
 export default defineNuxtPlugin(() => {
   const authToken = useCookie('_auth_token')
+  const refreshToken = useCookie('_refresh_token')
   const cfg = useRuntimeConfig()
 
   const api = $fetch.create({
     baseURL: cfg.public.apiBaseUrl,
+    retry: 3,
     onRequest({ _request, options, _error }) {
       if (authToken.value) {
         const headers = (options.headers ||= {})
@@ -18,7 +20,15 @@ export default defineNuxtPlugin(() => {
     },
     async onResponseError({ response }) {
       if (response.status === 401) {
-        await navigateTo('/login')
+        const data = await $fetch('/auth/refresh/', {
+          baseURL: cfg.public.apiBaseUrl,
+          body: {
+            refresh_token: refreshToken.value,
+          },
+        })
+        console.log('data')
+        authToken.value = data.token
+        refreshToken.value = data.refresh_token
       }
     },
   })
