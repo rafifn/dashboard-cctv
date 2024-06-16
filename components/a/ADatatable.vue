@@ -28,10 +28,12 @@
             <label for="dt-search-0">Search:</label>
             <input
               id="dt-search-0"
+              v-model="keyword"
               type="search"
               class="form-control form-control-sm"
               placeholder=""
               aria-controls="datatableDefault"
+              @update:model-value="$emit('update:search', $event)"
             >
           </div>
         </div>
@@ -53,8 +55,8 @@
           }"
         />
         <APagination
-          :model-value="page"
-          :size="size"
+          :model-value="params.page"
+          :size="params.page_size"
           :total-data="totalData"
           @update:model-value="$emit('update:page', $event)"
         />
@@ -89,21 +91,23 @@ interface Column {
 interface Props {
   columns: Column[]
   rows: unknown[]
-  page: string
-  size?: string
   totalData: string
+  params: {
+    search?: string
+    page: string
+    page_size?: string
+  }
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: '10',
-})
+const props = defineProps<Props>()
 
-defineEmits(['update:page', 'update:size'])
+defineEmits(['update:page', 'update:size', 'update:search'])
 
 DataTable.use(DataTablesCore)
 
 const table = ref()
-const selectedSize = ref(props.size)
+const selectedSize = ref(props.params.size ?? '10')
+const keyword = ref(props.params.search)
 </script>
 
 <style>

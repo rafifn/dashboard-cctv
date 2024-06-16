@@ -4,11 +4,11 @@
       Gate Monitoring
     </h1>
     <ADatatable
-      :page="$route.query?.page ?? '1'"
-      :size="$route.query?.size ?? '10'"
+      :params="currentQuery"
       :columns="COLUMNS"
       :rows="data.results"
       :total-data="`${data.count}`"
+      @update:search="handleSearch"
       @update:page="handleUpdatePage"
       @update:size="handleUpdateSize"
     />
@@ -37,28 +37,16 @@ const COLUMNS = [
 
 const { $api } = useNuxtApp()
 const route = useRoute()
-const router = useRouter()
+const { currentQuery, handleSearch, handleUpdatePage, handleUpdateSize } = useTable()
 
-const { data } = await useAsyncData('lpr', () => $api('/cctv/lpr'))
-
-const handleUpdatePage = (page) => {
-  router.replace({
-    path: route.path,
-    query: {
-      ...route.query,
-      page,
-    },
-  })
-}
-const handleUpdateSize = (size) => {
-  router.replace({
-    path: route.path,
-    query: {
-      page: 1,
-      size,
-    },
-  })
-}
+const { data } = await useAsyncData('lpr', () => $api('/cctv/lpr', {
+  query: {
+    ...route.query,
+  },
+}), {
+  watch: [currentQuery],
+  immediate: true,
+})
 </script>
 
 <style lang="scss" scoped>
