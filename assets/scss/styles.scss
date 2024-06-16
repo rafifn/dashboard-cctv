@@ -20,7 +20,10 @@
 @import '_pages.scss';
 @import '_widgets.scss';
 @import '_rtl.scss';
-
+html {
+  background-color: unset;
+  background-image: unset;
+}
 .form-control--underline {
   border-left: unset;
   border-right: unset;

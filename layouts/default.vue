@@ -47,7 +47,7 @@
       <!-- BEGIN brand -->
       <div class="brand">
         <NuxtLink
-          to="/home"
+          to="/"
           class="brand-logo"
         >
           <span class="brand-img">

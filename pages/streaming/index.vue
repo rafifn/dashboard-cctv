@@ -2,16 +2,29 @@
   <div>
     <div class="header">
       <div class="header__item">
-        <span class="fw-bold">CCTV</span>
+        <h1 class="page-header">
+          Streaming CCTV
+        </h1>
         <span>{{ dateNow }}</span>
       </div>
     </div>
     <div class="wrapper-primary">
+      <div
+        v-if="isLoading"
+        class="card primary__video"
+        aria-hidden="true"
+      >
+        <div class="card-body">
+          <h5 class="card-title placeholder-glow">
+            <span class="placeholder bg-black" />
+          </h5>
+        </div>
+      </div>
       <ACctv
+        v-else
         :id="`primary-${primary.id32}`"
         class="primary__video"
         :src="primary.hls_url"
-        :width="800"
         :height="500"
       />
       <div class="primary__info">
@@ -24,17 +37,17 @@
             <p>Last Movement: recent</p>
           </div>
           <div>
-            <small>Unduh</small>
+            <small class="cursor-pointer">Unduh</small>
             <div class="d-flex gap-3">
-              <small>Log</small>
+              <small class="cursor-pointer">Log</small>
               <small>|</small>
-              <small>Backup</small>
+              <small class="cursor-pointer">Backup</small>
             </div>
           </div>
         </div>
         <div class="primary__statistic">
           <p class="font-bold statistic__title">
-            Room Statisti
+            Room Statistic
           </p>
           <table>
             <tbody>
@@ -56,6 +69,14 @@
             </tbody>
           </table>
         </div>
+        <div class="statistic__footer">
+          <p class="statistic__title">
+            Feed Detail
+          </p>
+          <span>mpeg4 1080p 30fps</span>
+          <br>
+          <span>Backed to: 11-10-2013 12:00:00</span>
+        </div>
       </div>
     </div>
     <div class="d-flex flex-wrap">
@@ -63,14 +84,16 @@
         v-for="(cctv, cctvIdx) in VIDEOS"
         :id="cctv.id32"
         :key="`cctv-${cctvIdx}`"
-        class="p-2"
+        :class="['p-1', { 'cctv--active': primary.id32 === cctv.id32 }]"
+        :width="347"
         :src="cctv.hls_url"
+        @click="handleClickThumbnail(cctv)"
       />
     </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { formatDateFromUTC } from '~/utils/helpers'
 
 const VIDEOS = [
@@ -94,6 +117,15 @@ const VIDEOS = [
 
 const dateNow = ref()
 const primary = ref(VIDEOS[0])
+const isLoading = ref(false)
+
+const handleClickThumbnail = (item: { hls_url: string, id32: string }) => {
+  isLoading.value = true
+  setTimeout(() => {
+    isLoading.value = false
+  }, 1000)
+  primary.value = item
+}
 
 onMounted(() => {
   dateNow.value = formatDateFromUTC('', 'dddd, DD MMMM YYYY')
@@ -118,17 +150,29 @@ p {
 .wrapper {
   &-primary {
     display: flex;
-    gap: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 }
 .primary {
   &__video {
     flex: 1;
+    width: 100%;
+    --bs-border-color-rgb: '';
+    .card-body {
+      padding: 0;
+    }
+    .placeholder {
+      height: 500px;
+      width: 100%;
+    }
   }
   &__info {
     background-color: #252525;
     padding: 1rem;
     width: fit-content;
+    display: flex;
+    flex-direction: column;
   }
   &__status {
     color: #3BA18A;
@@ -137,17 +181,29 @@ p {
     margin-top: 3rem;
     text-align: center;
     color: #ffffff;
+    font-weight: 500;
     table {
       margin: 0 auto;
     }
     td {
       text-align: left;
+      padding: 6px;
     }
+  }
+}
+.cctv {
+  &--active {
+    box-shadow: 0px 4px 20px 0px rgba(59, 161, 138, 1);
+    border: 3px solid rgba(59, 161, 138, 1);
   }
 }
 .statistic {
   &__title {
     margin-bottom: 10px;
+    font-weight: 700;
+  }
+  &__footer {
+    margin-top: auto;
   }
 }
 .gap {
@@ -157,5 +213,11 @@ p {
   &-4 {
     gap: 1rem;
   }
+}
+</style>
+
+<style>
+.primary__video .video-js {
+  width: 100%;
 }
 </style>

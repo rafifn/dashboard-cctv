@@ -43,8 +43,8 @@
 const MENUS = [
   {
     label: 'Dashboard',
-    name: 'home',
-    path: '/home',
+    name: 'index',
+    path: '/',
     icon: 'bi-grid',
   },
   {
@@ -55,8 +55,8 @@ const MENUS = [
   },
   {
     label: 'Gate Monitoring',
-    name: 'gate-monitoring',
-    path: '/gate-monitoring',
+    name: 'gate',
+    path: '/gate',
     icon: 'bi-floppy',
   },
   {

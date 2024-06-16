@@ -22,17 +22,26 @@ interface Props {
   src: string
   width?: number
   height?: number
+  controls?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   width: 400,
   height: 200,
+  controls: true,
 })
+
+const video = ref()
+
 onMounted(() => {
   const element = document.getElementById(props.id)
   videojs(element, {
-    controls: true,
+    controls: props.controls,
     autoplay: true,
+    responsive: true,
+    userActions: {
+      click: false,
+    },
     sources: [
       {
         src: props.src,

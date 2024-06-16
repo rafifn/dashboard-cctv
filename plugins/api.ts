@@ -26,10 +26,14 @@ export default defineNuxtPlugin(() => {
           body: {
             refresh_token: refreshToken.value,
           },
-        }).then((data) => {
-          authToken.value = data.token
-          refreshToken.value = data.refresh_token
         })
+          .then((data) => {
+            authToken.value = data.token
+            refreshToken.value = data.refresh_token
+          })
+          .catch(() => {
+            return navigateTo('/login')
+          })
       }
     },
   })
