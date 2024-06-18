@@ -81,7 +81,7 @@
     </div>
     <div class="d-flex flex-wrap">
       <ACctv
-        v-for="(cctv, cctvIdx) in VIDEOS"
+        v-for="(cctv, cctvIdx) in data.results"
         :id="cctv.id32"
         :key="`cctv-${cctvIdx}`"
         :class="['p-1', { 'cctv--active': primary.id32 === cctv.id32 }]"
@@ -96,27 +96,17 @@
 <script setup lang="ts">
 import { formatDateFromUTC } from '~/utils/helpers'
 
-const VIDEOS = [
-  {
-    hls_url: 'https://stream.arnatech.id/22248956-99aa-4ad9-b88b-b410e4d54c13.m3u8',
-    id32: '1',
+const { $api } = useNuxtApp()
+
+const { data } = await useAsyncData('camera', () => $api('/cctv/camera', {
+  baseUrl: 'https://stream.arnatech.id',
+  query: {
+    is_active: true,
   },
-  {
-    hls_url: 'https://stream.arnatech.id/5bb8c9fa-17f3-477c-9350-a43494f4742e.m3u8',
-    id32: '2',
-  },
-  {
-    hls_url: 'https://stream.arnatech.id/bab5459e-5844-42e4-9e6f-4547465e1122.m3u8',
-    id32: '3',
-  },
-  {
-    hls_url: 'https://stream.arnatech.id/e726acdf-6194-4471-88f7-159790713a23.m3u8',
-    id32: '4',
-  },
-]
+}))
 
 const dateNow = ref()
-const primary = ref(VIDEOS[0])
+const primary = ref(data.value.results[0])
 const isLoading = ref(false)
 
 const handleClickThumbnail = (item: { hls_url: string, id32: string }) => {
