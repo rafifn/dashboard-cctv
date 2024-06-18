@@ -25,13 +25,14 @@
                 </h3>
               </div>
               <div class="col-5">
-                <div
-                  class="mt-n2"
-                  data-render="apexchart"
-                  data-type="line"
-                  data-title="Visitors"
-                  data-height="30"
-                />
+                <ClientOnly>
+                  <VueApexCharts
+                    type="line"
+                    height="50"
+                    :options="lineData.chartOptions"
+                    :series="lineData.series"
+                  />
+                </ClientOnly>
               </div>
             </div>
             <!-- END stat-lg -->
@@ -82,13 +83,14 @@
                 </h3>
               </div>
               <div class="col-5">
-                <div
-                  class="mt-n2"
-                  data-render="apexchart"
-                  data-type="bar"
-                  data-title="Visitors"
-                  data-height="30"
-                />
+                <ClientOnly>
+                  <VueApexCharts
+                    type="bar"
+                    height="50"
+                    :options="barData.chartOptions"
+                    :series="barData.series"
+                  />
+                </ClientOnly>
               </div>
             </div>
             <!-- END stat-lg -->
@@ -139,13 +141,14 @@
                 </h3>
               </div>
               <div class="col-5">
-                <div
-                  class="mt-n3 mb-n2"
-                  data-render="apexchart"
-                  data-type="pie"
-                  data-title="Visitors"
-                  data-height="45"
-                />
+                <ClientOnly>
+                  <VueApexCharts
+                    type="line"
+                    height="50"
+                    :options="pieData.chartOptions"
+                    :series="pieData.series"
+                  />
+                </ClientOnly>
               </div>
             </div>
             <!-- END stat-lg -->
@@ -190,7 +193,14 @@
             <!-- END title -->
             <!-- BEGIN chart -->
             <div class="ratio ratio-21x9 mb-3">
-              <div id="chart-server" />
+              <ClientOnly>
+                <VueApexCharts
+                  type="bar"
+                  height="100%"
+                  :options="bigBar.chartOptions"
+                  :series="bigBar.series"
+                />
+              </ClientOnly>
             </div>
             <!-- END chart -->
             <!-- BEGIN row -->
@@ -295,6 +305,46 @@
               <!-- END col-6 -->
             </div>
             <!-- END row -->
+          </div>
+          <!-- END card-body -->
+
+          <!-- BEGIN card-arrow -->
+          <div class="card-arrow">
+            <div class="card-arrow-top-left" />
+            <div class="card-arrow-top-right" />
+            <div class="card-arrow-bottom-left" />
+            <div class="card-arrow-bottom-right" />
+          </div>
+          <!-- END card-arrow -->
+        </div>
+        <!-- END card -->
+      </div>
+      <!-- END col-6 -->
+
+      <!-- BEGIN col-6 -->
+      <div class="col-xl-6">
+        <!-- BEGIN card -->
+        <div class="card mb-3">
+          <!-- BEGIN card-body -->
+          <div class="card-body">
+            <!-- BEGIN title -->
+            <div class="d-flex fw-bold small mb-3">
+              <span class="flex-grow-1">LALU LINTAS KENDARAAN & PENGUNJUNG</span>
+              <a
+                href="#"
+                data-toggle="card-expand"
+                class="text-inverse text-opacity-50 text-decoration-none"
+              ><i class="bi bi-fullscreen" /></a>
+            </div>
+            <!-- END title -->
+            <!-- BEGIN map -->
+            <div class="ratio ratio-21x9 mb-3">
+              <img
+                src="/public/map1.png"
+                alt="map"
+              >
+            </div>
+            <!-- END map -->
           </div>
           <!-- END card-body -->
 
@@ -563,6 +613,174 @@
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import VueApexCharts from 'vue3-apexcharts'
+
+const lineData = {
+  series: [{
+    name: 'Desktops',
+    data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
+  }],
+  chartOptions: {
+    chart: {
+      height: 30,
+      type: 'line',
+      toolbar: {
+        show: false,
+      },
+      sparkline: {
+        enabled: true,
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    colors: ['#3cd2a5'],
+    stroke: {
+      curve: 'straight',
+      width: 2,
+    },
+    grid: { show: false },
+    xaxis: {
+      labels: {
+        show: false,
+      },
+    },
+    yaxis: {
+      labels: {
+        show: false,
+      },
+    },
+  },
+}
+const barData = {
+  series: [{
+    name: 'Desktops',
+    data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
+  }],
+  chartOptions: {
+    chart: {
+      height: 30,
+      type: 'bar',
+      toolbar: {
+        show: false,
+      },
+      sparkline: {
+        enabled: true,
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    plotOptions: { bar: {
+      horizontal: false,
+      columnWidth: '65%',
+      endingShape: 'rounded',
+    } },
+    colors: ['#3cd2a5'],
+    stroke: {
+      curve: 'straight',
+      width: 2,
+    },
+    grid: { show: false },
+    xaxis: {
+      labels: {
+        show: false,
+      },
+    },
+    yaxis: {
+      labels: {
+        show: false,
+      },
+    },
+  },
+}
+const pieData = {
+  series: [{
+    name: 'Desktops',
+    data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
+  }],
+  chartOptions: {
+    chart: {
+      height: 30,
+      type: 'pie',
+      toolbar: {
+        show: false,
+      },
+      sparkline: {
+        enabled: true,
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    plotOptions: { bar: {
+      horizontal: false,
+      columnWidth: '65%',
+      endingShape: 'rounded',
+    } },
+    colors: ['#3cd2a5'],
+    stroke: {
+      curve: 'straight',
+      width: 2,
+    },
+    grid: { show: false },
+    xaxis: {
+      labels: {
+        show: false,
+      },
+    },
+    yaxis: {
+      labels: {
+        show: false,
+      },
+    },
+  },
+}
+const bigBar = {
+  series: [{
+    name: 'Desktops',
+    data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
+  }],
+  chartOptions: {
+    chart: {
+      height: 30,
+      type: 'bar',
+      toolbar: {
+        show: false,
+      },
+      sparkline: {
+        enabled: true,
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    plotOptions: { bar: {
+      horizontal: false,
+      columnWidth: '65%',
+      endingShape: 'rounded',
+    } },
+    colors: ['#3cd2a5'],
+    stroke: {
+      curve: 'straight',
+      width: 2,
+    },
+    grid: { show: false },
+    xaxis: {
+      labels: {
+        show: false,
+      },
+    },
+    yaxis: {
+      labels: {
+        show: false,
+      },
+    },
+  },
+}
+</script>
 
 <style lang="scss" scoped>
 

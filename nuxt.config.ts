@@ -60,6 +60,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBaseUrl: '',
+      streamBaseUrl: '',
     },
   },
 })

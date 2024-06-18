@@ -97,11 +97,13 @@
 import { formatDateFromUTC } from '~/utils/helpers'
 
 const { $api } = useNuxtApp()
+const cfg = useRuntimeConfig()
 
 const { data } = await useAsyncData('camera', () => $api('/cctv/camera', {
-  baseUrl: 'https://stream.arnatech.id',
+  baseUrl: cfg.public.streamBaseUrl,
   query: {
     is_active: true,
+    page_size: 50,
   },
 }))
 

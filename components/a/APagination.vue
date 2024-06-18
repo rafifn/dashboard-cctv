@@ -11,7 +11,7 @@
     </div>
     <div class="dt-paging paging_full_numbers">
       <ul class="pagination mb-0">
-        <li :class="['dt-paging-button page-item', { disabled: modelValue === '1' }]">
+        <li :class="['dt-paging-button page-item', { disabled: modelValue.toString() === '1' }]">
           <span
             class="page-link previous"
             aria-controls="datatableDefault"
@@ -19,7 +19,7 @@
             aria-label="Previous"
             data-dt-idx="previous"
             tabindex="-1"
-            @click="modelValue !== '1' && $emit('update:modelValue', (Number(modelValue) - 1).toString())"
+            @click="modelValue.toString() !== '1' && $emit('update:modelValue', (Number(modelValue) - 1).toString())"
           >
             ‹
           </span>
@@ -27,7 +27,7 @@
         <li
           v-for="opt in pages"
           :key="opt"
-          :class="['dt-paging-button page-item', { active: modelValue === opt.toString() }]"
+          :class="['dt-paging-button page-item', { active: modelValue.toString() === opt.toString() }]"
         >
           <span
             class="page-link"
@@ -40,14 +40,14 @@
             {{ opt }}
           </span>
         </li>
-        <li :class="['dt-paging-button page-item', { disabled: modelValue === lastPage.toString() }]">
+        <li :class="['dt-paging-button page-item', { disabled: modelValue.toString() === lastPage.toString() }]">
           <span
             class="page-link next"
             aria-controls="datatableDefault"
             aria-label="Next"
             data-dt-idx="next"
             tabindex="0"
-            @click="modelValue !== lastPage.toString() && $emit('update:modelValue', (Number(modelValue) + 1).toString())"
+            @click="modelValue.toString() !== lastPage.toString() && $emit('update:modelValue', (Number(modelValue) + 1).toString())"
           >
             ›
           </span>
@@ -61,7 +61,7 @@
 const MAX_PAGE = 5
 
 interface Props {
-  modelValue: string
+  modelValue: string | number
   size: string
   totalData: string
 }

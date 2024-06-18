@@ -17,18 +17,22 @@
     "@vee-validate/nuxt": "^4.13.1",
     "@vee-validate/yup": "^4.13.1",
     "@vueuse/core": "^10.10.0",
+    "apexcharts": "^3.49.1",
     "bootstrap": "^5.3.3",
     "datatables.net-bs5": "^2.0.8",
     "datatables.net-buttons-dt": "^3.0.2",
     "datatables.net-responsive-dt": "^3.0.2",
     "datatables.net-vue3": "^3.0.1",
+    "install": "^0.13.0",
     "jszip": "^3.10.1",
     "moment": "^2.29.4",
+    "npm": "^10.8.1",
     "nuxt": "^3.11.2",
     "pdfmake": "^0.2.10",
     "video.js": "^8.12.0",
     "vue": "^3.4.27",
-    "vue-router": "^4.3.2"
+    "vue-router": "^4.3.2",
+    "vue3-apexcharts": "^1.5.3"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.12.0",
