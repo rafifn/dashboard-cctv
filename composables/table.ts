@@ -38,7 +38,7 @@ export const useTable = () => {
   watch(
     () => route.query,
     (q) => {
-      currentQuery.value = { ...q, page: Number(q.page) || 1 }
+      currentQuery.value = { ...q, page: q.page || '1', page_size: q.page_size || '10' }
       // eslint-disable-next-line @stylistic/comma-dangle
     }
   )

@@ -7,7 +7,7 @@
       aria-live="polite"
       role="status"
     >
-      Showing 1 to 10 of 56 entries
+      Showing {{ startNumber }} to {{ endNumber }} of {{ totalData }} entries
     </div>
     <div class="dt-paging paging_full_numbers">
       <ul class="pagination mb-0">
@@ -99,6 +99,13 @@ const pages = computed(() => {
     }
   }
   return pg
+})
+
+const startNumber = computed(() => {
+  return props.modelValue === '1' ? 1 : (Number(props.modelValue) - 1) * (Number(props.size) + 1)
+})
+const endNumber = computed(() => {
+  return Number(props.modelValue) === lastPage.value ? props.totalData : Number(props.modelValue) * Number(props.size)
 })
 </script>
 

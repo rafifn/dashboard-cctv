@@ -79,15 +79,22 @@
         </div>
       </div>
     </div>
-    <div class="d-flex flex-wrap">
-      <ACctv
-        v-for="(cctv, cctvIdx) in data.results"
-        :id="cctv.id32"
-        :key="`cctv-${cctvIdx}`"
-        :class="['p-1', { 'cctv--active': primary.id32 === cctv.id32 }]"
-        :width="347"
-        :src="cctv.channel_id"
-        @click="handleClickThumbnail(cctv)"
+    <div class="my-2">
+      <div class="d-flex flex-wrap">
+        <ACctv
+          v-for="(cctv, cctvIdx) in data.results"
+          :id="cctv.id32"
+          :key="`cctv-${cctvIdx}`"
+          :class="['p-1 my-1 w-2/6', { 'cctv--active': primary.id32 === cctv.id32 }]"
+          :src="cctv.channel_id"
+          @click="handleClickThumbnail(cctv)"
+        />
+      </div>
+      <APagination
+        :model-value="currentQuery.page"
+        :size="PAGE_SIZE_CAMERA.toString()"
+        :total-data="data?.count?.toString() ?? '0'"
+        @update:model-value="handleUpdatePage"
       />
     </div>
   </div>
@@ -96,13 +103,18 @@
 <script setup lang="ts">
 import { formatDateFromUTC } from '~/utils/helpers'
 
+const PAGE_SIZE_CAMERA = 6
+
 const { $api } = useNuxtApp()
+const route = useRoute()
+const { currentQuery, handleUpdatePage } = useTable()
 
 const { data } = await useAsyncData('camera', () => $api('/cctv/camera', {
   baseUrl: 'https://stream.arnatech.id',
   query: {
+    ...route.query,
     is_active: true,
-    page_size: 50,
+    page_size: PAGE_SIZE_CAMERA,
   },
 }))
 

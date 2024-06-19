@@ -1,29 +1,35 @@
+<!-- eslint-disable max-len -->
 <template>
   <div>
     <h1 class="page-header">
       Gate Monitoring
     </h1>
-    <div>
+    <div class="my-4">
       <div class="d-flex flex-wrap">
         <ACctv
           v-for="(cctv, cctvIdx) in data.results"
           :id="cctv.id32"
           :key="`cctv-${cctvIdx}`"
-          class="p-1"
-          :width="400"
+          :class="['p-1 my-1 w-2/6', { 'cctv--active': $route.query.channel_id === cctv.channel_id || (!$route.query.channel_id && cctvIdx === 0) }]"
           :src="cctv.channel_id"
           @click="handleClickThumbnail(cctv)"
         />
       </div>
+      <APagination
+        :model-value="currentQuery.page"
+        :size="PAGE_SIZE_CAMERA.toString()"
+        :total-data="data?.count?.toString() ?? '0'"
+        @update:model-value="handleUpdatePage"
+      />
     </div>
     <ADatatable
       :params="currentQuery"
       :columns="COLUMNS"
-      :rows="lpr?.results"
-      :total-data="`${lpr?.count}`"
-      @update:search="handleSearch"
-      @update:page="handleUpdatePage"
-      @update:size="handleUpdateSize"
+      :rows="lpr?.results ?? []"
+      :total-data="lpr?.count?.toString() ?? '0'"
+      @update:search="handleSearchLpr"
+      @update:page="handleUpdatePageLpr"
+      @update:size="handleUpdateSizeLpr"
     />
   </div>
 </template>
@@ -47,25 +53,42 @@ const COLUMNS = [
   } },
   { data: 'direction', title: 'Arah', sortable: false },
 ]
+const PAGE_SIZE_CAMERA = 6
 
 const { $api } = useNuxtApp()
 const route = useRoute()
 const router = useRouter()
 
-const { currentQuery, handleSearch, handleUpdatePage, handleUpdateSize } = useTable()
+const { currentQuery, handleUpdatePage } = useTable()
 
 const { data } = await useAsyncData('camera', () => $api('/cctv/camera', {
   baseUrl: 'https://stream.arnatech.id',
   query: {
+    ...route.query,
     is_active: true,
     is_gate: true,
-    page_size: 50,
+    page_size: PAGE_SIZE_CAMERA,
   },
-}))
+}),
+{
+  watch: [currentQuery],
+  immediate: true,
+},
+)
 
 const lpr = ref()
+const lprParams = ref({
+  page: '1',
+  search: '',
+  size: '10',
+})
 
 const handleClickThumbnail = (item: { hls_url: string, id32: string, channel_id: string }) => {
+  lprParams.value = {
+    page: '1',
+    search: '',
+    size: '10',
+  }
   router.replace({
     path: route.path,
     query: {
@@ -82,6 +105,9 @@ const handleGetLpr = async () => {
         channel_id: route.query.channel_id || data.value.results[0].channel_id,
         is_active: true,
         is_gate: true,
+        page: lprParams.value.page,
+        page_size: lprParams.value.size,
+        search: lprParams.value.search,
       },
     })
     lpr.value = res
@@ -90,16 +116,39 @@ const handleGetLpr = async () => {
   }
 }
 
+const handleSearchLpr = (keyword: string) => {
+  lprParams.value = {
+    search: keyword,
+    page: '1',
+    size: '10',
+  }
+  handleGetLpr()
+}
+const handleUpdatePageLpr = (page: string) => {
+  lprParams.value.page = page
+  handleGetLpr()
+}
+const handleUpdateSizeLpr = (size: string) => {
+  lprParams.value.size = size
+  lprParams.value.page = '1'
+  handleGetLpr()
+}
+
 onBeforeMount(() => {
   handleGetLpr()
 })
 
 watch(
-  () => route.query,
+  () => route.query.channel_id,
   () => handleGetLpr(),
 )
 </script>
 
 <style lang="scss" scoped>
-
+.cctv {
+  &--active {
+    box-shadow: 0px 4px 20px 0px rgba(59, 161, 138, 1);
+    border: 3px solid rgba(59, 161, 138, 1);
+  }
+}
 </style>
