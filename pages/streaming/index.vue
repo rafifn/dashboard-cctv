@@ -24,7 +24,7 @@
         v-else
         :id="`primary-${primary.id32}`"
         class="primary__video"
-        :src="primary.hls_url"
+        :src="primary.channel_id"
         :height="500"
       />
       <div class="primary__info">
@@ -86,7 +86,7 @@
         :key="`cctv-${cctvIdx}`"
         :class="['p-1', { 'cctv--active': primary.id32 === cctv.id32 }]"
         :width="347"
-        :src="cctv.hls_url"
+        :src="cctv.channel_id"
         @click="handleClickThumbnail(cctv)"
       />
     </div>
@@ -97,10 +97,9 @@
 import { formatDateFromUTC } from '~/utils/helpers'
 
 const { $api } = useNuxtApp()
-const cfg = useRuntimeConfig()
 
 const { data } = await useAsyncData('camera', () => $api('/cctv/camera', {
-  baseUrl: cfg.public.streamBaseUrl,
+  baseUrl: 'https://stream.arnatech.id',
   query: {
     is_active: true,
     page_size: 50,
@@ -111,7 +110,7 @@ const dateNow = ref()
 const primary = ref(data.value.results[0])
 const isLoading = ref(false)
 
-const handleClickThumbnail = (item: { hls_url: string, id32: string }) => {
+const handleClickThumbnail = (item: { hls_url: string, id32: string, channel_id: string }) => {
   isLoading.value = true
   setTimeout(() => {
     isLoading.value = false

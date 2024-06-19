@@ -31,10 +31,13 @@ const props = withDefaults(defineProps<Props>(), {
   controls: true,
 })
 
+const cfg = useRuntimeConfig()
+
 const video = ref()
 
 onMounted(() => {
   const element = document.getElementById(props.id)
+  const url = `${cfg.public.streamBaseUrl}/${props.src}.m3u8`
   videojs(element, {
     controls: props.controls,
     autoplay: true,
@@ -44,7 +47,7 @@ onMounted(() => {
     },
     sources: [
       {
-        src: props.src,
+        src: url,
         type: 'application/x-mpegURL',
       },
     ],

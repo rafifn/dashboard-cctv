@@ -11,7 +11,7 @@
           :key="`cctv-${cctvIdx}`"
           class="p-1"
           :width="400"
-          :src="cctv.hls_url"
+          :src="cctv.channel_id"
           @click="handleClickThumbnail(cctv)"
         />
       </div>
@@ -51,12 +51,11 @@ const COLUMNS = [
 const { $api } = useNuxtApp()
 const route = useRoute()
 const router = useRouter()
-const cfg = useRuntimeConfig()
 
 const { currentQuery, handleSearch, handleUpdatePage, handleUpdateSize } = useTable()
 
 const { data } = await useAsyncData('camera', () => $api('/cctv/camera', {
-  baseUrl: cfg.public.streamBaseUrl,
+  baseUrl: 'https://stream.arnatech.id',
   query: {
     is_active: true,
     is_gate: true,
