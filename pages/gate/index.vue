@@ -64,7 +64,6 @@ const { data } = await useAsyncData('camera', () => $api('/cctv/camera', {
 }))
 
 const lpr = ref()
-const channelId = ref()
 
 const handleClickThumbnail = (item: { hls_url: string, id32: string, channel_id: string }) => {
   router.replace({
@@ -80,7 +79,7 @@ const handleGetLpr = async () => {
   try {
     const res = await $api(`/cctv/lpr`, {
       query: {
-        channel_id: channelId.value || data.value.results[0].channel_id,
+        channel_id: route.query.channel_id || data.value.results[0].channel_id,
         is_active: true,
         is_gate: true,
       },
