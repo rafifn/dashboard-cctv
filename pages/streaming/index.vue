@@ -10,7 +10,7 @@
     </div>
     <div class="wrapper-primary">
       <div
-        v-if="isLoading"
+        v-if="isLoadingPrimary || !primary"
         class="card primary__video"
         aria-hidden="true"
       >
@@ -80,12 +80,31 @@
       </div>
     </div>
     <div class="my-2">
-      <div class="d-flex flex-wrap">
+      <div
+        v-if="isLoadingChild"
+        class="d-flex flex-wrap"
+      >
+        <div
+          v-for="i in 6"
+          :key="`loading-${i}`"
+          class="w-c-3 thumbnail cctv-placeholder"
+        >
+          <div class="card">
+            <div class="card-body">
+              <span class="placeholder bg-black" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        v-else
+        class="d-flex flex-wrap"
+      >
         <ACctv
           v-for="(cctv, cctvIdx) in data.results"
           :id="cctv.id32"
           :key="`cctv-${cctvIdx}`"
-          :class="['p-1 my-1 w-2/6', { 'cctv--active': primary.id32 === cctv.id32 }]"
+          :class="['p-1 my-1 w-c-3', { 'cctv--active': primary.id32 === cctv.id32 }]"
           :src="cctv.channel_id"
           @click="handleClickThumbnail(cctv)"
         />
@@ -107,27 +126,46 @@ const PAGE_SIZE_CAMERA = 6
 
 const { $api } = useNuxtApp()
 const route = useRoute()
-const { currentQuery, handleUpdatePage } = useTable()
+const router = useRouter()
+const { currentQuery } = useTable()
 
 const { data } = await useAsyncData('camera', () => $api('/cctv/camera', {
-  baseUrl: 'https://stream.arnatech.id',
   query: {
     ...route.query,
     is_active: true,
     page_size: PAGE_SIZE_CAMERA,
   },
-}))
+}),
+{
+  watch: [currentQuery],
+  immediate: true,
+})
 
 const dateNow = ref()
 const primary = ref(data.value.results[0])
-const isLoading = ref(false)
+const isLoadingPrimary = ref(false)
+const isLoadingChild = ref(false)
 
 const handleClickThumbnail = (item: { hls_url: string, id32: string, channel_id: string }) => {
-  isLoading.value = true
+  isLoadingPrimary.value = true
   setTimeout(() => {
-    isLoading.value = false
-  }, 1000)
+    isLoadingPrimary.value = false
+  }, 500)
   primary.value = item
+}
+
+const handleUpdatePage = (page: string) => {
+  isLoadingChild.value = true
+  router.push({
+    path: route.path,
+    query: {
+      ...route.query,
+      page,
+    },
+  })
+  setTimeout(() => {
+    isLoadingChild.value = false
+  }, 500)
 }
 
 onMounted(() => {
@@ -216,11 +254,5 @@ p {
   &-4 {
     gap: 1rem;
   }
-}
-</style>
-
-<style>
-.primary__video .video-js {
-  width: 100%;
 }
 </style>

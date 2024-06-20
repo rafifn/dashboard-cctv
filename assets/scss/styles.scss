@@ -49,3 +49,25 @@ html {
   margin-right: 0;
   margin-left: 0.75rem;
 }
+.w {
+  &-c {
+    &-3 {
+      width: calc(100% / 3);
+    }
+  }
+}
+.video-js {
+  width: 100%;
+}
+.cctv-placeholder {
+  .placeholder {
+    height: 200px;
+    width: 100%;
+  }
+  .card-body {
+    padding: 0;
+  }
+  &.thumbnail {
+    padding: 0.5rem;
+  }
+}

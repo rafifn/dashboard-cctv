@@ -61,6 +61,7 @@
         <button
           type="submit"
           class="btn btn-theme btn-lg d-block w-100 fw-500 mb-3 rounded-5"
+          :disabled="isLoading"
         >
           Login
         </button>
@@ -87,6 +88,7 @@ const modelform = ref({
   password: '',
 })
 const isRemember = ref(false)
+const isLoading = ref(false)
 
 const schema = object().shape({
   username: string().required('Username wajib diisi'),
@@ -95,6 +97,7 @@ const schema = object().shape({
 
 const handleSubmit = async () => {
   try {
+    isLoading.value = true
     const { token, refresh_token } = await $api('/auth/sign-in/', {
       method: 'POST',
       body: {
@@ -106,6 +109,7 @@ const handleSubmit = async () => {
     refreshToken.value = refresh_token
     router.push('/')
   } catch (error) {
+    isLoading.value = false
     const objKey = Object.keys(error?.response?._data)[0]
     alert(objKey ? error.response._data[objKey] : 'Terjadi Kesalahan')
   }

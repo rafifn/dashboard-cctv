@@ -5,12 +5,31 @@
       Gate Monitoring
     </h1>
     <div class="my-4">
-      <div class="d-flex flex-wrap">
+      <div
+        v-if="isLoadingChild"
+        class="d-flex flex-wrap"
+      >
+        <div
+          v-for="i in 6"
+          :key="`loading-${i}`"
+          class="w-c-3 thumbnail cctv-placeholder"
+        >
+          <div class="card">
+            <div class="card-body">
+              <span class="placeholder bg-black" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        v-else
+        class="d-flex flex-wrap"
+      >
         <ACctv
           v-for="(cctv, cctvIdx) in data.results"
           :id="cctv.id32"
           :key="`cctv-${cctvIdx}`"
-          :class="['p-1 my-1 w-2/6', { 'cctv--active': $route.query.channel_id === cctv.channel_id || (!$route.query.channel_id && cctvIdx === 0) }]"
+          :class="['p-1 my-1 w-c-3', { 'cctv--active': channelIdActive === cctv.channel_id || (!channelIdActive && cctvIdx === 0) }]"
           :src="cctv.channel_id"
           @click="handleClickThumbnail(cctv)"
         />
@@ -59,12 +78,11 @@ const { $api } = useNuxtApp()
 const route = useRoute()
 const router = useRouter()
 
-const { currentQuery, handleUpdatePage } = useTable()
+const { currentQuery } = useTable()
 
 const { data } = await useAsyncData('camera', () => $api('/cctv/camera', {
-  baseUrl: 'https://stream.arnatech.id',
   query: {
-    ...route.query,
+    page: route.query.page,
     is_active: true,
     is_gate: true,
     page_size: PAGE_SIZE_CAMERA,
@@ -73,10 +91,11 @@ const { data } = await useAsyncData('camera', () => $api('/cctv/camera', {
 {
   watch: [currentQuery],
   immediate: true,
-},
-)
+})
 
 const lpr = ref()
+const isLoadingChild = ref(false)
+const channelIdActive = ref(data.value.results[0].channel_id)
 const lprParams = ref({
   page: '1',
   search: '',
@@ -89,20 +108,13 @@ const handleClickThumbnail = (item: { hls_url: string, id32: string, channel_id:
     search: '',
     size: '10',
   }
-  router.replace({
-    path: route.path,
-    query: {
-      ...route.query,
-      channel_id: item.channel_id,
-    },
-  })
+  channelIdActive.value = item.channel_id
 }
-
 const handleGetLpr = async () => {
   try {
     const res = await $api(`/cctv/lpr`, {
       query: {
-        channel_id: route.query.channel_id || data.value.results[0].channel_id,
+        channel_id: channelIdActive.value || data.value.results[0].channel_id,
         is_active: true,
         is_gate: true,
         page: lprParams.value.page,
@@ -115,7 +127,6 @@ const handleGetLpr = async () => {
     alert(JSON.stringify(err))
   }
 }
-
 const handleSearchLpr = (keyword: string) => {
   lprParams.value = {
     search: keyword,
@@ -133,15 +144,29 @@ const handleUpdateSizeLpr = (size: string) => {
   lprParams.value.page = '1'
   handleGetLpr()
 }
+const handleUpdatePage = (page: string) => {
+  isLoadingChild.value = true
+  router.push({
+    path: route.path,
+    query: {
+      ...route.query,
+      page,
+    },
+  })
+  setTimeout(() => {
+    channelIdActive.value = data.value.results[0].channel_id
+    isLoadingChild.value = false
+  }, 500)
+}
 
 onBeforeMount(() => {
+  channelIdActive.value = data.value.results[0].channel_id
   handleGetLpr()
 })
 
-watch(
-  () => route.query.channel_id,
-  () => handleGetLpr(),
-)
+watch(channelIdActive, () => {
+  handleGetLpr()
+})
 </script>
 
 <style lang="scss" scoped>

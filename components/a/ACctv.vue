@@ -23,6 +23,7 @@ interface Props {
   width?: number
   height?: number
   controls?: boolean
+  fluid?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -37,11 +38,14 @@ const video = ref()
 
 onMounted(() => {
   const element = document.getElementById(props.id)
-  const url = `${cfg.public.streamBaseUrl}/${props.src}.m3u8`
+  const url = `${cfg.public.streamBaseUrl}/${props.src}/index.m3u8`
   videojs(element, {
+    fluid: props.fluid,
     controls: props.controls,
     autoplay: true,
     responsive: true,
+    liveui: true,
+    preload: 'auto',
     userActions: {
       click: false,
     },
