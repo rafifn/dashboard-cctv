@@ -29,7 +29,7 @@
           v-for="(cctv, cctvIdx) in data.results"
           :id="cctv.id32"
           :key="`cctv-${cctvIdx}`"
-          :class="['p-1 my-1 w-c-3', { 'cctv--active': channelIdActive === cctv.channel_id || (!channelIdActive && cctvIdx === 0) }]"
+          :class="['p-1 my-1 w-c-3', { 'cctv--active': channelIdActive === cctv.channel_id }]"
           :src="cctv.channel_id"
           @click="handleClickThumbnail(cctv)"
         />
@@ -95,7 +95,7 @@ const { data } = await useAsyncData('camera', () => $api('/cctv/camera', {
 
 const lpr = ref()
 const isLoadingChild = ref(false)
-const channelIdActive = ref(data.value.results[0].channel_id)
+const channelIdActive = ref()
 const lprParams = ref({
   page: '1',
   search: '',
@@ -114,7 +114,7 @@ const handleGetLpr = async () => {
   try {
     const res = await $api(`/cctv/lpr`, {
       query: {
-        channel_id: channelIdActive.value || data.value.results[0].channel_id,
+        channel_id: channelIdActive.value || '',
         is_active: true,
         is_gate: true,
         page: lprParams.value.page,
@@ -160,7 +160,6 @@ const handleUpdatePage = (page: string) => {
 }
 
 onBeforeMount(() => {
-  channelIdActive.value = data.value.results[0].channel_id
   handleGetLpr()
 })
 

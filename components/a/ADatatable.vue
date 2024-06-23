@@ -41,7 +41,7 @@
           id="datatableDefault"
           ref="table"
           class="table text-nowrap w-100"
-          :columns="columns"
+          :columns="columnsTable"
           :data="rows"
           :options="{
             dom: `<'d-flex justify-content-end'fB>`,
@@ -53,7 +53,16 @@
               { extend: 'csv', className: 'btn btn-outline-default btn-sm' },
             ],
           }"
-        />
+        >
+          <template #action="prop">
+            <button
+              class="btn btn-outline-danger"
+              @click="handleDelete(prop)"
+            >
+              <i class="fa-solid fa-trash" />
+            </button>
+          </template>
+        </DataTable>
         <APagination
           :model-value="params.page"
           :size="params.page_size"
@@ -91,6 +100,7 @@ interface Column {
 interface Props {
   columns: Column[]
   rows: unknown[]
+  isDeleteable?: boolean
   totalData: string
   params: {
     search?: string
@@ -100,14 +110,23 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-
-defineEmits(['update:page', 'update:size', 'update:search'])
+const emit = defineEmits(['update:page', 'update:size', 'update:search', 'delete'])
 
 DataTable.use(DataTablesCore)
 
 const table = ref()
 const selectedSize = ref(props.params.size ?? '10')
 const keyword = ref(props.params.search)
+const columnsTable = computed(() => [
+  ...props.columns,
+  ...(props.isDeleteable
+    ? [{ data: null, title: '', sortable: false, render: '#action' }]
+    : []),
+])
+
+const handleDelete = (row: unknown) => {
+  emit('delete', row.rowData)
+}
 </script>
 
 <style>
