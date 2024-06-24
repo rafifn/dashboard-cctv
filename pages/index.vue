@@ -18,13 +18,13 @@
             </div>
             <!-- END title -->
             <!-- BEGIN stat-lg -->
-            <div class="row align-items-center mb-2">
-              <div class="col-7">
+            <div class="flex items-center space-x-2 mb-2">
+              <div>
                 <h3 class="mb-0">
                   3,820
                 </h3>
               </div>
-              <div class="col-5">
+              <div>
                 <ClientOnly>
                   <VueApexCharts
                     type="line"
@@ -76,13 +76,13 @@
             </div>
             <!-- END title -->
             <!-- BEGIN stat-lg -->
-            <div class="row align-items-center mb-2">
-              <div class="col-7">
+            <div class="flex items-center space-x-2 mb-2">
+              <div>
                 <h3 class="mb-0">
                   4,207
                 </h3>
               </div>
-              <div class="col-5">
+              <div>
                 <ClientOnly>
                   <VueApexCharts
                     type="bar"
@@ -134,13 +134,13 @@
             </div>
             <!-- END title -->
             <!-- BEGIN stat-lg -->
-            <div class="row align-items-center mb-2">
-              <div class="col-7">
+            <div class="flex items-center space-x-2 mb-2">
+              <div>
                 <h3 class="mb-0">
                   4,490
                 </h3>
               </div>
-              <div class="col-5">
+              <div>
                 <ClientOnly>
                   <VueApexCharts
                     type="line"
@@ -192,7 +192,7 @@
             </div>
             <!-- END title -->
             <!-- BEGIN chart -->
-            <div class="ratio ratio-21x9 mb-3">
+            <div class="ratio ratio-16x9 mb-3">
               <ClientOnly>
                 <VueApexCharts
                   type="bar"
@@ -338,9 +338,9 @@
             </div>
             <!-- END title -->
             <!-- BEGIN map -->
-            <div class="ratio ratio-21x9 mb-3">
+            <div class="ratio ratio-16x9 mb-3">
               <img
-                src="/public/map1.png"
+                src="/public/map2.png"
                 alt="map"
               >
             </div>
