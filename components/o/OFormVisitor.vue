@@ -125,7 +125,7 @@ const getScan = async () => {
       gender,
     }
   } catch (err) {
-    toast.add({ description: JSON.stringify(err?.response?._data) })
+    toast.add({ description: JSON.stringify(err?.response?._data), color: 'red' })
   } finally {
     isLoadingScan.value = false
   }

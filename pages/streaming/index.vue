@@ -54,17 +54,22 @@
               <tr>
                 <td>Movement</td>
                 <td>&nbsp;</td>
-                <td>200 Movement</td>
-              </tr>
-              <tr>
-                <td>Personal</td>
-                <td>&nbsp;</td>
-                <td>12 Personal</td>
+                <td v-if="isLoadingStatistic">
+                  <USkeleton class="h-4 w-[80px]" />
+                </td>
+                <td v-else>
+                  {{ statistic?.total_movement }} Movement
+                </td>
               </tr>
               <tr>
                 <td>Visitor</td>
                 <td>&nbsp;</td>
-                <td>2 Visitor</td>
+                <td v-if="isLoadingStatistic">
+                  <USkeleton class="h-4 w-[80px]" />
+                </td>
+                <td v-else>
+                  {{ statistic?.total_visitor }} Visitor
+                </td>
               </tr>
             </tbody>
           </table>
@@ -122,6 +127,11 @@
 <script setup lang="ts">
 import { formatDateFromUTC } from '~/utils/helpers'
 
+interface Statistic {
+  total_movement: number
+  total_visitor: number
+}
+
 const PAGE_SIZE_CAMERA = 6
 
 const { $api } = useNuxtApp()
@@ -145,6 +155,8 @@ const dateNow = ref()
 const primary = ref(data.value.results[0])
 const isLoadingPrimary = ref(false)
 const isLoadingChild = ref(false)
+const isLoadingStatistic = ref(false)
+const statistic = ref<Statistic>()
 
 const handleClickThumbnail = (item: { hls_url: string, id32: string, channel_id: string }) => {
   isLoadingPrimary.value = true
@@ -167,9 +179,27 @@ const handleUpdatePage = (page: string) => {
     isLoadingChild.value = false
   }, 500)
 }
+const getStatistic = async () => {
+  try {
+    isLoadingStatistic.value = true
+    const data = await $api<Statistic>(`/cctv/camera/${primary.value.channel_id}/statistic`)
+    statistic.value = data
+  } catch (error) {
+    toast.add({ description: JSON.stringify(err?.response?._data), color: 'red' })
+  } finally {
+    setTimeout(() => {
+      isLoadingStatistic.value = false
+    }, 500)
+  }
+}
 
 onMounted(() => {
   dateNow.value = formatDateFromUTC('', 'dddd, DD MMMM YYYY')
+  getStatistic()
+})
+
+watch(primary, () => {
+  getStatistic()
 })
 </script>
 

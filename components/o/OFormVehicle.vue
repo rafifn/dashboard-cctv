@@ -88,7 +88,7 @@ const getVehicles = async (search?: string) => {
     })
     vehicleType.value = results
   } catch (err) {
-    toast.add({ description: JSON.stringify(err?.response?._data) })
+    toast.add({ description: JSON.stringify(err?.response?._data), color: 'red' })
   }
 }
 const getResident = async (search?: string) => {
@@ -100,7 +100,7 @@ const getResident = async (search?: string) => {
     })
     resident.value = results
   } catch (err) {
-    toast.add({ description: JSON.stringify(err?.response?._data) })
+    toast.add({ description: JSON.stringify(err?.response?._data), color: 'red' })
   }
 }
 const handleSubmit = (event: FormSubmitEvent<Schema>) => {
