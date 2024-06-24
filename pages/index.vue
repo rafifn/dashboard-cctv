@@ -24,7 +24,7 @@
                   3,820
                 </h3>
               </div>
-              <div>
+              <div class="max-w-[50%]">
                 <ClientOnly>
                   <VueApexCharts
                     type="line"
@@ -82,7 +82,7 @@
                   4,207
                 </h3>
               </div>
-              <div>
+              <div class="max-w-[50%]">
                 <ClientOnly>
                   <VueApexCharts
                     type="bar"
@@ -140,7 +140,7 @@
                   4,490
                 </h3>
               </div>
-              <div>
+              <div class="max-w-[50%]">
                 <ClientOnly>
                   <VueApexCharts
                     type="line"
@@ -192,7 +192,7 @@
             </div>
             <!-- END title -->
             <!-- BEGIN chart -->
-            <div class="ratio ratio-16x9 mb-3">
+            <div class="mb-3 max-w-[80%]">
               <ClientOnly>
                 <VueApexCharts
                   type="bar"
@@ -620,11 +620,12 @@ import VueApexCharts from 'vue3-apexcharts'
 const lineData = {
   series: [{
     name: 'Desktops',
-    data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
+    data: [10, 41, 35, 51, 49],
   }],
   chartOptions: {
     chart: {
       height: 30,
+      width: '50%',
       type: 'line',
       toolbar: {
         show: false,
@@ -662,6 +663,7 @@ const barData = {
   chartOptions: {
     chart: {
       height: 30,
+      width: '50%',
       type: 'bar',
       toolbar: {
         show: false,
@@ -675,13 +677,13 @@ const barData = {
     },
     plotOptions: { bar: {
       horizontal: false,
-      columnWidth: '65%',
+      columnWidth: '50%',
       endingShape: 'rounded',
     } },
     colors: ['#3cd2a5'],
     stroke: {
       curve: 'straight',
-      width: 2,
+      width: 1,
     },
     grid: { show: false },
     xaxis: {
@@ -704,6 +706,7 @@ const pieData = {
   chartOptions: {
     chart: {
       height: 30,
+      width: '50%',
       type: 'pie',
       toolbar: {
         show: false,
@@ -746,6 +749,7 @@ const bigBar = {
   chartOptions: {
     chart: {
       height: 30,
+      width: '50%',
       type: 'bar',
       toolbar: {
         show: false,
@@ -759,7 +763,7 @@ const bigBar = {
     },
     plotOptions: { bar: {
       horizontal: false,
-      columnWidth: '65%',
+      columnWidth: '50%',
       endingShape: 'rounded',
     } },
     colors: ['#3cd2a5'],
