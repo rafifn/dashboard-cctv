@@ -33,7 +33,10 @@
             />
           </div>
         </template>
-        <OFormVisitor @submit="handleSubmitForm" />
+        <OFormVisitor
+          :is-loading="isLoading"
+          @submit="handleSubmitForm"
+        />
       </UCard>
     </AModal>
   </div>
@@ -87,9 +90,11 @@ const { data: resident, refresh } = await useAsyncData('resident', () => $api('/
 })
 
 const isOpenForm = ref(false)
+const isLoading = ref(false)
 
 const handleSubmitForm = async (modelForm: unknown) => {
   try {
+    isLoading.value = true
     await $api('/resident/resident/', {
       method: 'POST',
       body: {
@@ -105,6 +110,7 @@ const handleSubmitForm = async (modelForm: unknown) => {
     refresh()
     toast.add({ title: 'Berhasil', description: 'Data Berhasil Ditambahkan', icon: 'i-heroicons-check-circle' })
   } catch (err) {
+    isLoading.value = false
     useToastError(FIELDS_REQUEST, err?.response?._data)
   }
 }

@@ -54,11 +54,15 @@
           color="orange"
           type="button"
           role="button"
+          :loading="isLoadingScan"
           @click="getScan"
         >
           Scan
         </UButton>
-        <UButton type="submit">
+        <UButton
+          type="submit"
+          :loading-="isLoading"
+        >
           Submit
         </UButton>
       </div>
@@ -83,6 +87,7 @@ const schema = object({
 type Schema = InferType<typeof schema>
 
 interface Props {
+  isLoading?: boolean
   detail?: Vehicle
 }
 const props = defineProps<Props>()
@@ -90,6 +95,7 @@ const emit = defineEmits(['submit'])
 const { $api } = useNuxtApp()
 const toast = useToast()
 
+const isLoadingScan = ref(false)
 const modelForm = ref({
   id32: props.detail?.id32,
   no_id: props.detail?.no_id ?? '',
@@ -106,12 +112,22 @@ const modelForm = ref({
 
 const getScan = async () => {
   try {
+    isLoadingScan.value = true
     const data = await $api<Resident>('/resident/resident/recent')
     const gender = GENDER_OPTIONS.find(gd => Number(gd.value) === data.gender.value)
     const vt = VISITOR_TYPE_OPTIONS.find(vo => vo.value === data.doc_type.value)
-    modelForm.value = { ...data, gender, doc_type: vt }
+    modelForm.value = {
+      id32: data.id32,
+      no_id: data.no_id,
+      full_name: data.full_name,
+      address: data.address,
+      doc_type: vt,
+      gender,
+    }
   } catch (err) {
     toast.add({ description: JSON.stringify(err?.response?._data) })
+  } finally {
+    isLoadingScan.value = false
   }
 }
 const handleSubmit = (event: FormSubmitEvent<Schema>) => {
