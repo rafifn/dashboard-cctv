@@ -7,6 +7,20 @@
         </h1>
         <span>{{ dateNow }}</span>
       </div>
+      <div class="flex space-x-4 mb-2">
+        <span>Lokasi:</span>
+        <URadioGroup
+          v-model="filter.location"
+          :options="locations"
+          :ui-radio="{
+            label: 'text-sm font-medium text-white',
+          }"
+          :ui="{
+            fieldset: 'flex space-x-3',
+          }"
+          @update:model-value="handleFilterLocation"
+        />
+      </div>
     </div>
     <div class="wrapper-primary">
       <div
@@ -71,6 +85,16 @@
                   {{ statistic?.total_visitor }} Visitor
                 </td>
               </tr>
+              <tr v-if="primary?.location?.name">
+                <td>Lokasi</td>
+                <td>&nbsp;</td>
+                <td v-if="isLoadingStatistic">
+                  <USkeleton class="h-4 w-[80px]" />
+                </td>
+                <td v-else>
+                  {{ primary?.location?.name }}
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -125,6 +149,7 @@
 </template>
 
 <script setup lang="ts">
+import type { Location } from '~/utils/types'
 import { formatDateFromUTC } from '~/utils/helpers'
 
 interface Statistic {
@@ -138,10 +163,12 @@ const { $api } = useNuxtApp()
 const route = useRoute()
 const router = useRouter()
 const { currentQuery } = useTable()
+const toast = useToast()
 
 const { data } = await useAsyncData('camera', () => $api('/cctv/camera', {
   query: {
     ...route.query,
+    ...(route.query.location && route.query.location !== '0' ? { location_id32: route.query.location } : {}),
     is_active: true,
     page_size: PAGE_SIZE_CAMERA,
   },
@@ -157,6 +184,10 @@ const isLoadingPrimary = ref(false)
 const isLoadingChild = ref(false)
 const isLoadingStatistic = ref(false)
 const statistic = ref<Statistic>()
+const locations = ref<Location[]>([])
+const filter = ref({
+  location: route.query?.location ?? '0',
+})
 
 const handleClickThumbnail = (item: { hls_url: string, id32: string, channel_id: string }) => {
   isLoadingPrimary.value = true
@@ -192,10 +223,35 @@ const getStatistic = async () => {
     }, 500)
   }
 }
+const getLocation = async () => {
+  try {
+    const { results } = await $api<{ results: Location[] }>('cctv/location')
+    const remap = results.map(rs => ({ label: rs.name, value: rs.id32 }))
+    locations.value = [
+      {
+        value: '0',
+        label: 'Semua',
+      },
+      ...remap,
+    ]
+  } catch (error) {
+    toast.add({ description: JSON.stringify(err?.response?._data), color: 'red' })
+  }
+}
+const handleFilterLocation = () => {
+  router.replace({
+    path: route.path,
+    query: {
+      ...route.query,
+      location: filter.value.location,
+    },
+  })
+}
 
 onMounted(() => {
   dateNow.value = formatDateFromUTC('', 'dddd, DD MMMM YYYY')
   getStatistic()
+  getLocation()
 })
 
 watch(primary, () => {

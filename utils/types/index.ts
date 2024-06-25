@@ -1,3 +1,4 @@
+export type { Location } from './location'
 export type { Resident } from './resident'
 export type { Vehicle, VehicleType } from './vehicle'
 
