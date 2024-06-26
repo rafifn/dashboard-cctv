@@ -124,7 +124,7 @@ const handleDelete = (row: unknown) => {
         refresh()
         toast.add({ title: 'Berhasil', description: 'Data Berhasil Dihapus', icon: 'i-heroicons-check-circle' })
         modalDelete.close()
-      }).catch(() => {
+      }).catch((err) => {
         useToastError(FIELDS_REQUEST, err?.response?._data)
       })
     },

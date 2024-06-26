@@ -3,6 +3,7 @@ import 'moment/dist/locale/id'
 
 export const formatDateFromUTC = (dateTime: string | undefined, format = 'DD-MM-YYYY HH:mm:ss') => {
   const now = new Date()
+  console.log(dateTime)
   return moment
     .utc(dateTime || now)
     .locale('id')

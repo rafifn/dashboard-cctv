@@ -1,5 +1,6 @@
 export type { Location } from './location'
 export type { Resident } from './resident'
+export type { User, Role } from './user'
 export type { Vehicle, VehicleType } from './vehicle'
 
 export interface Camera {

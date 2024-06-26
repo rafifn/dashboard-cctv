@@ -1,15 +1,15 @@
 <template>
   <div>
     <OPageHeader
-      page-title="Vehicle Management"
-      add-title="Daftar Kendaraan"
+      page-title="User & Access"
+      add-title="Daftar User"
       @add="isOpenForm = true"
     />
     <ADatatable
       :params="currentQuery"
       :columns="COLUMNS"
-      :rows="vehicles?.results ?? []"
-      :total-data="vehicles?.count?.toString() ?? '0'"
+      :rows="users?.results ?? []"
+      :total-data="users?.count?.toString() ?? '0'"
       is-deleteable
       @update:search="handleSearch"
       @update:page="handleUpdatePage"
@@ -23,7 +23,7 @@
         <template #header>
           <div class="flex items-center justify-between">
             <h3 class="text-base font-semibold leading-6 mb-0 text-white">
-              Daftar Kendaraan
+              Daftar User
             </h3>
             <UButton
               variant="ghost"
@@ -33,31 +33,43 @@
             />
           </div>
         </template>
-        <OFormVehicle @submit="handleSubmitForm" />
+        <OFormUser @submit="handleSubmitForm" />
       </UCard>
     </AModal>
   </div>
 </template>
 
 <script setup lang="ts">
+import { formatDateFromUTC } from '~/utils/helpers'
 import { AConfirmation } from '#components'
 
 const FIELDS_REQUEST = {
-  license_plate_number: 'Nopol',
-  vehicle_type: 'Jenis Kendaraan',
-  owner: 'Pemilik',
+  username: 'Nama',
+  role: 'Role',
 }
 const COLUMNS = [
-  { data: 'license_plate_number', title: 'Nopol', sortable: false },
-  { data: 'vehicle_type', title: 'Jenis Kendaraan', sortable: false, render: (data, type) => {
+  { data: 'username', title: 'Nama', sortable: false },
+  { data: 'date_joined', title: 'Tanggal Terdaftar', sortable: false, type: 'string', render: (data, type) => {
     if (type === 'display') {
-      return data.name
+      return formatDateFromUTC(data)
     }
     return data
   } },
-  { data: 'owner', title: 'Pemilik', sortable: false, type: 'string', render: (data, type) => {
+  { data: 'last_login', title: 'Terakhir Login', sortable: false, type: 'string', render: (data, type) => {
     if (type === 'display') {
-      return `${data?.full_name} - ${data?.no_id}`
+      return formatDateFromUTC(data)
+    }
+    return data
+  } },
+  { data: 'is_active', title: 'Aktif', sortable: false, render: (data, type) => {
+    if (type === 'display') {
+      return data ? 'Ya' : 'Tidak'
+    }
+    return data
+  } },
+  { data: 'role', title: 'Role', sortable: false, render: (data, type) => {
+    if (type === 'display') {
+      return data.name
     }
     return data
   } },
@@ -68,7 +80,7 @@ const modalDelete = useModal()
 const route = useRoute()
 const { currentQuery, handleUpdatePage, handleSearch, handleUpdateSize } = useTable()
 
-const { data: vehicles, refresh } = await useAsyncData('vehicles', () => $api('/vehicle/vehicle', {
+const { data: users, refresh } = await useAsyncData('users', () => $api('/user/user', {
   query: {
     ...route.query,
   },
@@ -82,12 +94,13 @@ const isOpenForm = ref(false)
 
 const handleSubmitForm = async (modelForm: unknown) => {
   try {
-    await $api('/vehicle/vehicle/', {
+    await $api('/user/user/', {
       method: 'POST',
       body: {
-        license_plate_number: modelForm.license,
-        vehicle_type: modelForm.vehicle.id32,
-        owner: modelForm.owner.id32,
+        username: modelForm.username,
+        role: modelForm.role.id,
+        is_active: modelForm.is_active,
+        password: modelForm.password,
       },
     })
     isOpenForm.value = false
@@ -99,9 +112,9 @@ const handleSubmitForm = async (modelForm: unknown) => {
 }
 const handleDelete = (row: unknown) => {
   modalDelete.open(AConfirmation, {
-    title: `Apakah Anda yakin ingin menghapus ${row.license_plate_number} ?`,
+    title: `Apakah Anda yakin ingin menghapus ${row.username} ?`,
     onOk() {
-      $api(`/vehicle/vehicle/${row.id32}`, {
+      $api(`/user/user/${row.id}`, {
         method: 'DELETE',
       }).then(() => {
         refresh()
