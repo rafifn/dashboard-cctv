@@ -49,17 +49,11 @@ const FIELDS_REQUEST = {
 }
 const COLUMNS = [
   { data: 'license_plate_number', title: 'Nopol', sortable: false },
-  { data: 'vehicle_type', title: 'Jenis Kendaraan', sortable: false, render: (data, type) => {
-    if (type === 'display') {
-      return data.name
-    }
-    return data
+  { data: 'vehicle_type', title: 'Jenis Kendaraan', sortable: false, render: (data) => {
+    return data.name
   } },
-  { data: 'owner', title: 'Pemilik', sortable: false, type: 'string', render: (data, type) => {
-    if (type === 'display') {
-      return `${data?.full_name} - ${data?.no_id}`
-    }
-    return data
+  { data: 'owner', title: 'Pemilik', sortable: false, type: 'string', render: (data) => {
+    return `${data?.full_name} - ${data?.no_id}`
   } },
 ]
 const { $api } = useNuxtApp()

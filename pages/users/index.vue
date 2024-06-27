@@ -3,7 +3,7 @@
     <OPageHeader
       page-title="User & Access"
       add-title="Daftar User"
-      @add="isOpenForm = true"
+      @add="handleOpenFormCreate"
     />
     <ADatatable
       :params="currentQuery"
@@ -11,10 +11,12 @@
       :rows="users?.results ?? []"
       :total-data="users?.count?.toString() ?? '0'"
       is-deleteable
+      is-editable
       @update:search="handleSearch"
       @update:page="handleUpdatePage"
       @update:size="handleUpdateSize"
       @delete="handleDelete"
+      @edit="handleOpenFormEdit"
     />
     <AModal
       :is-open="isOpenForm"
@@ -33,7 +35,10 @@
             />
           </div>
         </template>
-        <OFormUser @submit="handleSubmitForm" />
+        <OFormUser
+          :detail="selectedRow"
+          @submit="handleSubmitForm"
+        />
       </UCard>
     </AModal>
   </div>
@@ -49,29 +54,17 @@ const FIELDS_REQUEST = {
 }
 const COLUMNS = [
   { data: 'username', title: 'Nama', sortable: false },
-  { data: 'date_joined', title: 'Tanggal Terdaftar', sortable: false, type: 'string', render: (data, type) => {
-    if (type === 'display') {
-      return formatDateFromUTC(data)
-    }
-    return data
+  { data: 'date_joined', title: 'Tanggal Terdaftar', sortable: false, type: 'string', render: (data) => {
+    return formatDateFromUTC(data)
   } },
-  { data: 'last_login', title: 'Terakhir Login', sortable: false, type: 'string', render: (data, type) => {
-    if (type === 'display') {
-      return formatDateFromUTC(data)
-    }
-    return data
+  { data: 'last_login', title: 'Terakhir Login', sortable: false, type: 'string', render: (data) => {
+    return formatDateFromUTC(data)
   } },
-  { data: 'is_active', title: 'Aktif', sortable: false, render: (data, type) => {
-    if (type === 'display') {
-      return data ? 'Ya' : 'Tidak'
-    }
-    return data
+  { data: 'is_active', title: 'Aktif', sortable: false, render: (data) => {
+    return data ? 'Ya' : 'Tidak'
   } },
-  { data: 'role', title: 'Role', sortable: false, render: (data, type) => {
-    if (type === 'display') {
-      return data.name
-    }
-    return data
+  { data: 'role', title: 'Role', sortable: false, render: (data) => {
+    return data.name
   } },
 ]
 const { $api } = useNuxtApp()
@@ -91,11 +84,14 @@ const { data: users, refresh } = await useAsyncData('users', () => $api('/user/u
 })
 
 const isOpenForm = ref(false)
+const selectedRow = ref()
 
 const handleSubmitForm = async (modelForm: unknown) => {
+  const method = modelForm.id ? 'PATCH' : 'POST'
+  const endpoint = modelForm.id ? `/user/user/${modelForm.id}/` : '/user/user/'
   try {
-    await $api('/user/user/', {
-      method: 'POST',
+    await $api(endpoint, {
+      method: method,
       body: {
         username: modelForm.username,
         role: modelForm.role.id,
@@ -128,6 +124,14 @@ const handleDelete = (row: unknown) => {
       modalDelete.close()
     },
   })
+}
+const handleOpenFormEdit = (row: unknown) => {
+  selectedRow.value = row
+  isOpenForm.value = true
+}
+const handleOpenFormCreate = () => {
+  selectedRow.value = undefined
+  isOpenForm.value = true
 }
 </script>
 

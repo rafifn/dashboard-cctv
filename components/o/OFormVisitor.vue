@@ -51,6 +51,7 @@
       </UFormGroup>
       <div class="flex space-x-2">
         <UButton
+          v-if="!detail"
           color="orange"
           type="button"
           role="button"

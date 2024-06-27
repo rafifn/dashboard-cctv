@@ -58,17 +58,11 @@ import { formatDateFromUTC } from '~/utils/helpers'
 
 const COLUMNS = [
   { data: 'number_plate', title: 'Kode Visitor', sortable: false },
-  { data: 'camera', title: 'Kamera', sortable: false, render: (data, type) => {
-    if (type === 'display') {
-      return data.name
-    }
-    return data
+  { data: 'camera', title: 'Kamera', sortable: false, render: (data) => {
+    return data.name
   } },
-  { data: 'time_utc_timestamp', title: 'Waktu Kunjungan', sortable: false, type: 'string', render: (data, type) => {
-    if (type === 'display') {
-      return formatDateFromUTC(data)
-    }
-    return data
+  { data: 'time_utc_timestamp', title: 'Waktu Kunjungan', sortable: false, type: 'string', render: (data) => {
+    return formatDateFromUTC(data)
   } },
   { data: 'direction', title: 'Arah', sortable: false },
 ]

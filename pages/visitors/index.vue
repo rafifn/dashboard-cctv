@@ -3,7 +3,7 @@
     <OPageHeader
       page-title="Visitor Management"
       add-title="Daftar Pengunjung"
-      @add="isOpenForm = true"
+      @add="handleOpenFormCreate"
     />
     <ADatatable
       :params="currentQuery"
@@ -11,19 +11,21 @@
       :rows="resident?.results ?? []"
       :total-data="resident?.count?.toString() ?? '0'"
       is-deleteable
+      is-editable
       @update:search="handleSearch"
       @update:page="handleUpdatePage"
       @update:size="handleUpdateSize"
       @delete="handleDelete"
+      @edit="handleOpenFormEdit"
     />
     <AModal
-      :is-open="isOpenForm"
+      v-model:is-open="isOpenForm"
     >
       <UCard :ui="{ header: { padding: 'p-4' }, body: { padding: 'p-4' } }">
         <template #header>
           <div class="flex items-center justify-between">
             <h3 class="text-base font-semibold leading-6 mb-0 text-white">
-              Daftar Pengunjung
+              {{ selectedRow ? 'Ubah Pengunjung' : 'Daftar Pengunjung' }}
             </h3>
             <UButton
               variant="ghost"
@@ -35,6 +37,7 @@
         </template>
         <OFormVisitor
           :is-loading="isLoading"
+          :detail="selectedRow"
           @submit="handleSubmitForm"
         />
       </UCard>
@@ -58,19 +61,13 @@ const COLUMNS = [
   { data: 'no_id', title: 'ID', sortable: false },
   { data: 'full_name', title: 'Nama', sortable: false },
   { data: 'address', title: 'Alamat', sortable: false },
-  { data: 'gender', title: 'Jenis Kelamin', sortable: false, render: (data, type) => {
-    if (type === 'display') {
-      const gender = GENDER_OPTIONS.find(gd => Number(gd.value) === data.value)
-      return gender.text || data
-    }
-    return data
+  { data: 'gender', title: 'Jenis Kelamin', sortable: false, render: (data) => {
+    const gender = GENDER_OPTIONS.find(gd => Number(gd.value) === data.value)
+    return gender.text || data.text
   } },
-  { data: 'doc_type', title: 'Tipe Pengunjung', sortable: false, render: (data, type) => {
-    if (type === 'display') {
-      const vt = VISITOR_TYPE_OPTIONS.find(vo => vo.value === data.value)
-      return vt.text
-    }
-    return data
+  { data: 'doc_type', title: 'Tipe Pengunjung', sortable: false, render: (data) => {
+    const vt = VISITOR_TYPE_OPTIONS.find(vo => vo.value === data.value)
+    return vt.text
   } },
 ]
 const { $api } = useNuxtApp()
@@ -91,12 +88,15 @@ const { data: resident, refresh } = await useAsyncData('resident', () => $api('/
 
 const isOpenForm = ref(false)
 const isLoading = ref(false)
+const selectedRow = ref()
 
 const handleSubmitForm = async (modelForm: unknown) => {
+  const method = modelForm.id32 && selectedRow.value ? 'PATCH' : 'POST'
+  const endpoint = modelForm.id && selectedRow.value ? `/resident/resident/${modelForm.id32}/` : '/resident/resident'
   try {
     isLoading.value = true
-    await $api('/resident/resident/', {
-      method: 'POST',
+    await $api(endpoint, {
+      method: method,
       body: {
         id32: modelForm?.id32,
         no_id: modelForm.no_id,
@@ -132,6 +132,14 @@ const handleDelete = (row: unknown) => {
       modalDelete.close()
     },
   })
+}
+const handleOpenFormEdit = (row: unknown) => {
+  selectedRow.value = row
+  isOpenForm.value = true
+}
+const handleOpenFormCreate = () => {
+  selectedRow.value = undefined
+  isOpenForm.value = true
 }
 </script>
 

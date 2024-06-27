@@ -31,6 +31,7 @@
         <UToggle v-model="modelForm.is_active" />
       </UFormGroup>
       <UFormGroup
+        v-if="!detail"
         name="password"
         label="Password"
         required
@@ -50,12 +51,6 @@ import { object, string, type InferType } from 'yup'
 import type { FormSubmitEvent } from '#ui/types'
 import type { Role, User } from '~/utils/types'
 
-const schema = object({
-  username: string().required('Name Wajib Diisi'),
-  password: string().required('Password Wajib Diisi'),
-  role: object().shape({ name: string().required('Role Wajib Diisi') }),
-})
-
 type Schema = InferType<typeof schema>
 
 interface Props {
@@ -71,11 +66,17 @@ const modelForm = reactive({
   username: props.detail?.username ?? '',
   is_active: props.detail?.is_active ?? false,
   password: props.detail?.password ?? '',
-  role: props.detail?.vehicle_type ?? {
+  role: props.detail?.role ?? {
     id: '',
     name: '',
   },
 })
+
+const schema = computed(() => object({
+  username: string().required('Name Wajib Diisi'),
+  role: object().shape({ name: string().required('Role Wajib Diisi') }),
+  ...(props.detail ? {} : { password: string().required('Password Wajib Diisi') }),
+}))
 
 const getRole = async (search?: string) => {
   try {
@@ -90,7 +91,7 @@ const getRole = async (search?: string) => {
   }
 }
 const handleSubmit = (event: FormSubmitEvent<Schema>) => {
-  emit('submit', event.data)
+  emit('submit', { ...event.data, id: props.detail?.id })
 }
 
 onMounted(() => {

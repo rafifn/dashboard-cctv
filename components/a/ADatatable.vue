@@ -45,7 +45,12 @@
           :data="rows"
           :options="{
             dom: `<'d-flex justify-content-end'fB>`,
-            responsive: true,
+            responsive: {
+              orthogonal: 'responsive',
+              details: {
+                renderer: DataTablesCore.Responsive.renderer.listHiddenNodes(),
+              },
+            },
             paging: true,
             searching: false,
             buttons: [
@@ -56,6 +61,14 @@
         >
           <template #action="prop">
             <button
+              v-if="isEditable"
+              class="btn btn-outline-info mr-1"
+              @click="handleEdit(prop)"
+            >
+              <i class="fa-solid fa-pen-to-square" />
+            </button>
+            <button
+              v-if="isDeleteable"
               class="btn btn-outline-danger"
               @click="handleDelete(prop)"
             >
@@ -101,6 +114,7 @@ interface Props {
   columns: Column[]
   rows: unknown[]
   isDeleteable?: boolean
+  isEditable?: boolean
   totalData: string
   params: {
     search?: string
@@ -110,7 +124,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits(['update:page', 'update:size', 'update:search', 'delete'])
+const emit = defineEmits(['update:page', 'update:size', 'update:search', 'delete', 'edit'])
 
 DataTable.use(DataTablesCore)
 
@@ -119,13 +133,16 @@ const selectedSize = ref(props.params.size ?? '10')
 const keyword = ref(props.params.search)
 const columnsTable = computed(() => [
   ...props.columns,
-  ...(props.isDeleteable
-    ? [{ data: null, title: '', sortable: false, render: '#action' }]
+  ...(props.isDeleteable || props.isEditable
+    ? [{ data: null, title: '', sortable: false, render: '#action', orthogonal: null }]
     : []),
 ])
 
 const handleDelete = (row: unknown) => {
   emit('delete', row.rowData)
+}
+const handleEdit = (row: unknown) => {
+  emit('edit', row.rowData)
 }
 </script>
 
