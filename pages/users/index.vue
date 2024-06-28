@@ -96,7 +96,7 @@ const handleSubmitForm = async (modelForm: unknown) => {
         username: modelForm.username,
         role: modelForm.role.id,
         is_active: modelForm.is_active,
-        password: modelForm.password,
+        ...(modelForm.password ? { password: modelForm.password } : {}),
       },
     })
     isOpenForm.value = false
