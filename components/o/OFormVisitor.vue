@@ -83,23 +83,23 @@
             option-attribute="name"
           />
         </UFormGroup>
-        <UFormGroup
-          label="Activity"
-          name="activity"
-          required
-        >
-          <URadioGroup
-            v-model="modelForm.activity"
-            :options="ACTIVITIES"
-            :ui-radio="{
-              label: 'text-sm font-medium text-white',
-            }"
-            :ui="{
-              fieldset: 'flex space-x-3',
-            }"
-          />
-        </UFormGroup>
       </div>
+      <UFormGroup
+        label="Activity"
+        name="activity"
+        required
+      >
+        <URadioGroup
+          v-model="modelForm.activity"
+          :options="ACTIVITIES"
+          :ui-radio="{
+            label: 'text-sm font-medium text-white',
+          }"
+          :ui="{
+            fieldset: 'flex space-x-3',
+          }"
+        />
+      </UFormGroup>
       <div class="flex space-x-2">
         <UButton
           color="orange"
