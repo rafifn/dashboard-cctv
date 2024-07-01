@@ -8,15 +8,11 @@
     <ADatatable
       :params="currentQuery"
       :columns="COLUMNS"
-      :rows="resident?.results ?? []"
-      :total-data="resident?.count?.toString() ?? '0'"
-      is-deleteable
-      is-editable
+      :rows="visitor?.results ?? []"
+      :total-data="visitor?.count?.toString() ?? '0'"
       @update:search="handleSearch"
       @update:page="handleUpdatePage"
       @update:size="handleUpdateSize"
-      @delete="handleDelete"
-      @edit="handleOpenFormEdit"
     />
     <AModal
       v-model:is-open="isOpenForm"
@@ -37,7 +33,6 @@
         </template>
         <OFormVisitor
           :is-loading="isLoading"
-          :detail="selectedRow"
           @submit="handleSubmitForm"
         />
       </UCard>
@@ -46,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { AConfirmation } from '#components'
+import { formatDateFromUTC } from '~/utils/helpers'
 import { GENDER_OPTIONS, VISITOR_TYPE_OPTIONS } from '~/utils/constants'
 
 const FIELDS_REQUEST = {
@@ -67,16 +62,22 @@ const COLUMNS = [
   } },
   { data: 'doc_type', title: 'Tipe Pengunjung', sortable: false, render: (data) => {
     const vt = VISITOR_TYPE_OPTIONS.find(vo => vo.value === data.value)
-    return vt.text
+    return vt.text || data.text
+  } },
+  { data: 'vehicle', title: 'Kendaraan', sortable: false, render: (data) => {
+    return `${data.license_plate_number} - ${data.vehicle_type.name}`
+  } },
+  { data: 'activity', title: 'Activity', sortable: false },
+  { data: 'created_at', title: 'Tanggal', sortable: false, render: (data) => {
+    return formatDateFromUTC(data)
   } },
 ]
 const { $api } = useNuxtApp()
 const toast = useToast()
-const modalDelete = useModal()
 const route = useRoute()
 const { currentQuery, handleUpdatePage, handleSearch, handleUpdateSize } = useTable()
 
-const { data: resident, refresh } = await useAsyncData('resident', () => $api('/resident/resident', {
+const { data: visitor, refresh } = await useAsyncData('visitor', () => $api('/resident/visitor', {
   query: {
     ...route.query,
   },
@@ -91,19 +92,23 @@ const isLoading = ref(false)
 const selectedRow = ref()
 
 const handleSubmitForm = async (modelForm: unknown) => {
-  const method = modelForm.id32 && selectedRow.value ? 'PATCH' : 'POST'
-  const endpoint = modelForm.id && selectedRow.value ? `/resident/resident/${modelForm.id32}/` : '/resident/resident'
+  const method = 'POST'
+  const endpoint = '/resident/visitor/'
   try {
     isLoading.value = true
     await $api(endpoint, {
       method: method,
       body: {
-        id32: modelForm?.id32,
         no_id: modelForm.no_id,
         full_name: modelForm.full_name,
         address: modelForm.address,
         gender: modelForm.gender.value,
         doc_type: modelForm.doc_type.value,
+        vehicle: {
+          license_plate_number: modelForm.vehicle.license_plate_number,
+          vehicle_type: modelForm.vehicle.vehicle_type.id32,
+        },
+        activity: modelForm.activity,
       },
     })
     isOpenForm.value = false
@@ -113,29 +118,6 @@ const handleSubmitForm = async (modelForm: unknown) => {
     isLoading.value = false
     useToastError(FIELDS_REQUEST, err?.response?._data)
   }
-}
-const handleDelete = (row: unknown) => {
-  modalDelete.open(AConfirmation, {
-    title: `Apakah Anda yakin ingin menghapus ${row.full_name} ?`,
-    onOk() {
-      $api(`/resident/resident/${row.id32}`, {
-        method: 'DELETE',
-      }).then(() => {
-        refresh()
-        toast.add({ title: 'Berhasil', description: 'Data Berhasil Dihapus', icon: 'i-heroicons-check-circle' })
-        modalDelete.close()
-      }).catch((err) => {
-        useToastError(FIELDS_REQUEST, err?.response?._data)
-      })
-    },
-    onCancel() {
-      modalDelete.close()
-    },
-  })
-}
-const handleOpenFormEdit = (row: unknown) => {
-  selectedRow.value = row
-  isOpenForm.value = true
 }
 const handleOpenFormCreate = () => {
   selectedRow.value = undefined

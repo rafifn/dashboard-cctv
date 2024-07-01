@@ -1,5 +1,5 @@
 export type { Location } from './location'
-export type { Resident } from './resident'
+export type { Resident, Visitor } from './resident'
 export type { User, Role } from './user'
 export type { Vehicle, VehicleType } from './vehicle'
 

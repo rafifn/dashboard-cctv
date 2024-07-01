@@ -17,4 +17,8 @@ export const VISITOR_TYPE_OPTIONS = [
     text: 'Monthly Pass',
     value: 'ML',
   },
+  {
+    text: 'Weekly Pass',
+    value: 'WL',
+  },
 ]
