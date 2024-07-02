@@ -26,11 +26,11 @@
       </UFormGroup>
       <UFormGroup
         label="Pemilik"
-        name="owner.full_name"
+        name="person.full_name"
         required
       >
         <USelectMenu
-          v-model="modelForm.owner"
+          v-model="modelForm.person"
           :options="resident"
           option-attribute="full_name"
         />
@@ -51,7 +51,7 @@ import type { Vehicle, VehicleType, Resident } from '~/utils/types'
 const schema = object({
   license: string().required('Nopol Wajib Diisi'),
   vehicle: object().shape({ name: string().required('Jenis Kendaraan Wajib Diisi') }),
-  owner: object().shape({ full_name: string().required('Pemilik Wajib Diisi') }),
+  person: object().shape({ full_name: string().required('Pemilik Wajib Diisi') }),
 })
 
 type Schema = InferType<typeof schema>
@@ -72,7 +72,7 @@ const modelForm = reactive({
     id32: '',
     name: '',
   },
-  owner: props.detail?.owner ?? {
+  person: props.detail?.person ?? {
     full_name: '',
     no_id: '',
     id32: '',
@@ -93,7 +93,7 @@ const getVehicles = async (search?: string) => {
 }
 const getResident = async (search?: string) => {
   try {
-    const { results } = await $api<{ results: Resident[] }>('/resident/resident', {
+    const { results } = await $api<{ results: Resident[] }>('/person/person', {
       query: {
         search,
       },

@@ -84,22 +84,6 @@
           />
         </UFormGroup>
       </div>
-      <UFormGroup
-        label="Activity"
-        name="activity"
-        required
-      >
-        <URadioGroup
-          v-model="modelForm.activity"
-          :options="ACTIVITIES"
-          :ui-radio="{
-            label: 'text-sm font-medium text-white',
-          }"
-          :ui="{
-            fieldset: 'flex space-x-3',
-          }"
-        />
-      </UFormGroup>
       <div class="flex space-x-2">
         <UButton
           color="orange"
@@ -127,24 +111,12 @@ import { GENDER_OPTIONS, VISITOR_TYPE_OPTIONS } from '~/utils/constants'
 import type { FormSubmitEvent } from '#ui/types'
 import type { Visitor, VehicleType } from '~/utils/types'
 
-const ACTIVITIES = [
-  {
-    value: 'check_in',
-    label: 'Checkin',
-  },
-  {
-    value: 'check_out',
-    label: 'Checkout',
-  },
-]
-
 const schema = object({
   no_id: string().required('ID Wajib Diisi'),
   full_name: string().required('Nama Wajib Diisi'),
   address: string().required('Alamat Wajib Diisi'),
   gender: object().shape({ value: string().required('Jenis Kelamin Wajib Diisi') }),
   doc_type: object().shape({ value: string().required('Tipe Pengunjung Wajib Diisi') }),
-  activity: string().required('Activity Wajib Diisi'),
   vehicle: object().shape({
     license_plate_number: string().required('Kendaraan Wajib Diisi'),
     vehicle_type: object().shape({
@@ -173,7 +145,6 @@ const modelForm = ref({
   address: '',
   gender: GENDER_OPTIONS[0],
   doc_type: VISITOR_TYPE_OPTIONS[0],
-  activity: ACTIVITIES[0],
   vehicle: {
     license_plate_number: '',
     vehicle_type: {
@@ -186,7 +157,11 @@ const modelForm = ref({
 const getScan = async () => {
   try {
     isLoadingScan.value = true
-    const data = await $api<Visitor>('/resident/resident/recent')
+    const data = await $api<Visitor>('/person/person/recent', {
+      query: {
+        person_type: 'visitor',
+      },
+    })
     const gender = GENDER_OPTIONS.find(gd => Number(gd.value) === data.gender.value)
     const vt = VISITOR_TYPE_OPTIONS.find(vo => vo.value === data.doc_type.value)
     modelForm.value = {
@@ -195,7 +170,15 @@ const getScan = async () => {
       address: data.address,
       doc_type: vt,
       gender,
-      vehicle: data.vehicles[0],
+      vehicle: data.vehicles.length
+        ? data.vehicles[0]
+        : {
+            license_plate_number: '',
+            vehicle_type: {
+              id32: '',
+              name: '',
+            },
+          },
     }
     vehicles.value = data.vehicles
   } catch (err) {

@@ -42,7 +42,6 @@
 
 <script setup lang="ts">
 import { formatDateFromUTC } from '~/utils/helpers'
-import { GENDER_OPTIONS, VISITOR_TYPE_OPTIONS } from '~/utils/constants'
 
 const FIELDS_REQUEST = {
   no_id: 'ID',
@@ -53,23 +52,26 @@ const FIELDS_REQUEST = {
   doc_type: 'Tipe Pengunjung',
 }
 const COLUMNS = [
-  { data: 'no_id', title: 'ID', sortable: false },
-  { data: 'full_name', title: 'Nama', sortable: false },
-  { data: 'address', title: 'Alamat', sortable: false },
-  { data: 'gender', title: 'Jenis Kelamin', sortable: false, render: (data) => {
-    const gender = GENDER_OPTIONS.find(gd => Number(gd.value) === data.value)
-    return gender.text || data.text
+  { data: 'person', title: 'ID', sortable: false, render: (data) => {
+    return data.no_id
   } },
-  { data: 'doc_type', title: 'Tipe Pengunjung', sortable: false, render: (data) => {
-    const vt = VISITOR_TYPE_OPTIONS.find(vo => vo.value === data.value)
-    return vt.text || data.text
+  { data: 'person', title: 'Nama', sortable: false, render: (data) => {
+    return data.full_name
   } },
-  { data: 'vehicle', title: 'Kendaraan', sortable: false, render: (data) => {
-    return `${data.license_plate_number} - ${data.vehicle_type.name}`
+  { data: 'person', title: 'Alamat', sortable: false, render: (data) => {
+    return data.address
   } },
-  { data: 'activity', title: 'Activity', sortable: false },
-  { data: 'created_at', title: 'Tanggal', sortable: false, render: (data) => {
+  { data: 'person', title: 'Jenis Kelamin', sortable: false, render: (data) => {
+    return data.gender.text
+  } },
+  { data: 'person', title: 'Tipe', sortable: false, render: (data) => {
+    return data.doc_type.text
+  } },
+  { data: 'check_in_timestamp', title: 'Waktu Checkin', sortable: false, render: (data) => {
     return formatDateFromUTC(data)
+  } },
+  { data: 'check_out_timestamp', title: 'Waktu Checkout', sortable: false, render: (data) => {
+    return data ? formatDateFromUTC(data) : ''
   } },
 ]
 const { $api } = useNuxtApp()
@@ -77,7 +79,7 @@ const toast = useToast()
 const route = useRoute()
 const { currentQuery, handleUpdatePage, handleSearch, handleUpdateSize } = useTable()
 
-const { data: visitor, refresh } = await useAsyncData('visitor', () => $api('/resident/visitor', {
+const { data: visitor, refresh } = await useAsyncData('visitor', () => $api('/activity/check-in', {
   query: {
     ...route.query,
   },
@@ -93,12 +95,13 @@ const selectedRow = ref()
 
 const handleSubmitForm = async (modelForm: unknown) => {
   const method = 'POST'
-  const endpoint = '/resident/visitor/'
+  const endpoint = '/person/person/'
   try {
     isLoading.value = true
     await $api(endpoint, {
       method: method,
       body: {
+        person_type: 'visitor',
         no_id: modelForm.no_id,
         full_name: modelForm.full_name,
         address: modelForm.address,

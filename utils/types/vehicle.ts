@@ -5,7 +5,7 @@ export interface Vehicle {
     id32: string
     name: string
   }
-  owner: {
+  person: {
     full_name: string
     no_id: string
     id32: string

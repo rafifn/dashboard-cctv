@@ -45,14 +45,14 @@ import { AConfirmation } from '#components'
 const FIELDS_REQUEST = {
   license_plate_number: 'Nopol',
   vehicle_type: 'Jenis Kendaraan',
-  owner: 'Pemilik',
+  person: 'Pemilik',
 }
 const COLUMNS = [
   { data: 'license_plate_number', title: 'Nopol', sortable: false },
   { data: 'vehicle_type', title: 'Jenis Kendaraan', sortable: false, render: (data) => {
     return data.name
   } },
-  { data: 'owner', title: 'Pemilik', sortable: false, type: 'string', render: (data) => {
+  { data: 'person', title: 'Pemilik', sortable: false, type: 'string', render: (data) => {
     return `${data?.full_name} - ${data?.no_id}`
   } },
 ]
@@ -81,7 +81,7 @@ const handleSubmitForm = async (modelForm: unknown) => {
       body: {
         license_plate_number: modelForm.license,
         vehicle_type: modelForm.vehicle.id32,
-        owner: modelForm.owner.id32,
+        person: modelForm.person.id32,
       },
     })
     isOpenForm.value = false

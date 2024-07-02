@@ -35,6 +35,7 @@
         />
       </div>
       <APagination
+        v-if="data.results.length"
         :model-value="currentQuery.page"
         :size="PAGE_SIZE_CAMERA.toString()"
         :total-data="data?.count?.toString() ?? '0'"
@@ -106,7 +107,7 @@ const handleClickThumbnail = (item: { hls_url: string, id32: string, channel_id:
 }
 const handleGetLpr = async () => {
   try {
-    const res = await $api(`/cctv/lpr`, {
+    const res = await $api(`/activity/lpr`, {
       query: {
         channel_id: channelIdActive.value || '',
         is_active: true,

@@ -64,7 +64,7 @@ const COLUMNS = [
     return data ? 'Ya' : 'Tidak'
   } },
   { data: 'role', title: 'Role', sortable: false, render: (data) => {
-    return data.name
+    return data?.name ?? ''
   } },
 ]
 const { $api } = useNuxtApp()
