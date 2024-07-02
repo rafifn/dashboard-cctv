@@ -27,6 +27,7 @@
         <div class="menu-item logout">
           <span
             class="menu-link"
+            @click="isOpenConfirmationLogout = true"
           >
             <span class="menu-icon"><i class="bi bi-box-arrow-right" /></span>
             <span class="menu-text">Keluar</span>
@@ -36,6 +37,12 @@
       <!-- END menu -->
     </div>
     <!-- END scrollbar -->
+    <AConfirmation
+      v-model="isOpenConfirmationLogout"
+      title="Apakah Anda yakin ingin keluar?"
+      @ok="handleLogout"
+      @cancel="isOpenConfirmationLogout = false"
+    />
   </div>
 </template>
 
@@ -84,6 +91,17 @@ const MENUS = [
     icon: 'bi-person-badge',
   },
 ]
+const authToken = useCookie('_auth_token')
+const refreshToken = useCookie('_refresh_token')
+const router = useRouter()
+
+const isOpenConfirmationLogout = ref(false)
+
+const handleLogout = () => {
+  authToken.value = undefined
+  refreshToken.value = undefined
+  router.replace('/login')
+}
 </script>
 
 <style lang="scss" scoped>

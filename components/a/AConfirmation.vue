@@ -1,16 +1,18 @@
 <script lang="ts" setup>
-defineProps({
-  title: {
-    type: String,
-    default: '',
-  },
-})
+interface Props {
+  title: string
+  modelValue: boolean
+}
+defineProps<Props>()
 
-defineEmits(['ok', 'cancel'])
+defineEmits(['ok', 'cancel', 'update:modelValue'])
 </script>
 
 <template>
-  <UModal>
+  <UModal
+    :model-value="modelValue"
+    @update:model-value="$emit('update:modelValue')"
+  >
     <UCard :ui="{ header: { padding: 'p-4' }, body: { padding: 'p-4' } }">
       <template #header>
         <div class="flex items-center justify-between">
