@@ -10,10 +10,21 @@
       :columns="COLUMNS"
       :rows="visitor?.results ?? []"
       :total-data="visitor?.count?.toString() ?? '0'"
+      has-actions
       @update:search="handleSearch"
       @update:page="handleUpdatePage"
       @update:size="handleUpdateSize"
-    />
+    >
+      <template #actions="prop">
+        <button
+          v-if="!prop.rowData.check_out_timestamp"
+          class="btn btn-outline-info mr-1"
+          @click="handleCheckout(prop)"
+        >
+          <i class="fa-solid fa-arrow-right-from-bracket" />
+        </button>
+      </template>
+    </ADatatable>
     <AModal
       v-model:is-open="isOpenForm"
     >
@@ -41,6 +52,8 @@
 </template>
 
 <script setup lang="ts">
+import { AConfirmation } from '#components'
+import type { Visitor } from '~/utils/types'
 import { formatDateFromUTC } from '~/utils/helpers'
 
 const FIELDS_REQUEST = {
@@ -52,7 +65,7 @@ const FIELDS_REQUEST = {
   doc_type: 'Tipe Pengunjung',
 }
 const COLUMNS = [
-  { data: 'person', title: 'ID', sortable: false, render: (data) => {
+  { data: 'person', title: 'ID', sortable: false, type: 'string', render: (data) => {
     return data.no_id
   } },
   { data: 'person', title: 'Nama', sortable: false, render: (data) => {
@@ -95,6 +108,7 @@ const { data: visitor, refresh } = await useAsyncData('visitor', () => $api('/ac
 const isOpenForm = ref(false)
 const isLoading = ref(false)
 const selectedRow = ref()
+const modalDelete = useModal()
 
 const handleSubmitForm = async (modelForm: unknown) => {
   const method = 'POST'
@@ -128,6 +142,33 @@ const handleSubmitForm = async (modelForm: unknown) => {
 const handleOpenFormCreate = () => {
   selectedRow.value = undefined
   isOpenForm.value = true
+}
+const handleCheckout = async (row: Visitor) => {
+  try {
+    modalDelete.open(AConfirmation, {
+      title: `Apakah Anda yakin ingin merubah status ${row.rowData.person.no_id} ?`,
+      onOk() {
+        $api('/activity/check-out/', {
+          method: 'POST',
+          body: {
+            check_in: row.rowData.id32,
+          },
+        }).then(() => {
+          refresh()
+          toast.add({ title: 'Berhasil', description: 'Data Berhasil Diperbarui', icon: 'i-heroicons-check-circle' })
+          modalDelete.close()
+        }).catch((err) => {
+          useToastError(FIELDS_REQUEST, err?.response?._data)
+        })
+      },
+      onCancel() {
+        modalDelete.close()
+      },
+    })
+  } catch (err) {
+    isLoading.value = false
+    useToastError(FIELDS_REQUEST, err?.response?._data)
+  }
 }
 </script>
 

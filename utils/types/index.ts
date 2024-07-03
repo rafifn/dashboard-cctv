@@ -1,7 +1,7 @@
 export type { Location } from './location'
-export type { Resident, Visitor } from './resident'
 export type { User, Role } from './user'
 export type { Vehicle, VehicleType } from './vehicle'
+export type { Visitor, Resident } from './visitor'
 
 export interface Camera {
   id32: string

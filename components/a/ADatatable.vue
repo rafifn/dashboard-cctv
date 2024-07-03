@@ -60,6 +60,10 @@
           }"
         >
           <template #action="prop">
+            <slot
+              name="actions"
+              v-bind="prop"
+            />
             <button
               v-if="isEditable"
               class="btn btn-outline-info mr-1"
@@ -115,6 +119,7 @@ interface Props {
   rows: unknown[]
   isDeleteable?: boolean
   isEditable?: boolean
+  hasActions?: boolean
   totalData: string
   params: {
     search?: string
@@ -133,7 +138,7 @@ const selectedSize = ref(props.params.size ?? '10')
 const keyword = ref(props.params.search)
 const columnsTable = computed(() => [
   ...props.columns,
-  ...(props.isDeleteable || props.isEditable
+  ...(props.isDeleteable || props.isEditable || props.hasActions
     ? [{ data: null, title: '', sortable: false, render: '#action', orthogonal: null }]
     : []),
 ])
