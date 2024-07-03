@@ -67,6 +67,9 @@ const COLUMNS = [
   { data: 'person', title: 'Tipe', sortable: false, render: (data) => {
     return data.doc_type.text
   } },
+  { data: 'vehicle', title: 'Kendaraan', sortable: false, render: (data) => {
+    return `${data?.license_plate_number} - ${data?.vehicle_type?.name}`
+  } },
   { data: 'check_in_timestamp', title: 'Waktu Checkin', sortable: false, render: (data) => {
     return formatDateFromUTC(data)
   } },
