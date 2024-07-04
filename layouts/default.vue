@@ -58,7 +58,7 @@
               >
             </span>
           </span>
-          <span class="brand-text">Surveillance Center</span>
+          <span class="brand-text">MABES AD COMMAND CENTER</span>
         </NuxtLink>
       </div>
       <!-- END brand -->
@@ -70,7 +70,7 @@
             class="menu-link"
           >
             <div class="menu-text d-sm-block d-none w-170px">
-              username@account.com
+              user@magnus.com
             </div>
             <div class="menu-img online">
               <img

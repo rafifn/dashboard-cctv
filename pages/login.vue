@@ -8,7 +8,7 @@
         :validation-schema="schema"
         @submit="handleSubmit"
       >
-        <div class="d-flex justify-content-center mb-3">
+        <div class="d-flex justify-content-center mb-3 max-w-[15rem] mx-auto">
           <img
             src="~/assets/images/logo.png"
             alt="logo"

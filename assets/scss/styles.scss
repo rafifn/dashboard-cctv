@@ -20,8 +20,16 @@ html {
     cursor: pointer;
   }
 }
-.app-header .brand .brand-logo .brand-img {
-  background: unset;
+.app-header {
+  .brand {
+    width: fit-content !important;
+    .brand-logo {
+      .brand-img {
+        background: unset;
+        width: 1.5rem;
+      }
+    }
+  }
 }
 .app-header .menu .menu-item .menu-link .menu-img {
   margin-right: 0;
