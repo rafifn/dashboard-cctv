@@ -39,13 +39,13 @@
         <UTextarea v-model="modelForm.address" />
       </UFormGroup>
       <UFormGroup
-        label="Tipe Pengunjung"
-        name="doc_type.value"
+        label="Tujuan Visit"
+        name="purpose_of_visit.value"
         required
       >
         <USelectMenu
-          v-model="modelForm.doc_type"
-          :options="VISITOR_TYPE_OPTIONS"
+          v-model="modelForm.purpose_of_visit"
+          :options="purposeVisits"
           option-attribute="text"
         />
       </UFormGroup>
@@ -139,12 +139,14 @@ const toast = useToast()
 const isLoadingScan = ref(false)
 const vehicles = ref([])
 const vehicleType = ref<VehicleType[]>([])
+const purposeVisits = ref<{ text: string, value: string }[]>([])
 const modelForm = ref({
   no_id: '',
   full_name: '',
   address: '',
   gender: GENDER_OPTIONS[0],
   doc_type: VISITOR_TYPE_OPTIONS[0],
+  purpose_of_visit: purposeVisits.value[0],
   vehicle: {
     license_plate_number: '',
     vehicle_type: {
@@ -202,9 +204,22 @@ const getVehiclesType = async (search?: string) => {
     toast.add({ description: JSON.stringify(err?.response?._data), color: 'red' })
   }
 }
+const getVisitPurpose = async (search?: string) => {
+  try {
+    const { results } = await $api<{ results: { text: string, value: string }[] }>('/common/purpose-of-visit', {
+      query: {
+        search,
+      },
+    })
+    purposeVisits.value = results
+  } catch (err) {
+    toast.add({ description: JSON.stringify(err?.response?._data), color: 'red' })
+  }
+}
 
 onMounted(() => {
   getVehiclesType()
+  getVisitPurpose()
 })
 </script>
 

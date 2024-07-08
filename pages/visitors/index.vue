@@ -71,6 +71,9 @@ const COLUMNS = [
   { data: 'person', title: 'Nama', sortable: false, render: (data) => {
     return data.full_name
   } },
+  { data: 'purpose_of_visit', title: 'Tujuan', sortable: false, type: 'string', render: (data) => {
+    return data.text
+  } },
   { data: 'person', title: 'Alamat', sortable: false, render: (data) => {
     return data.address
   } },
@@ -82,6 +85,9 @@ const COLUMNS = [
   } },
   { data: 'vehicle', title: 'Kendaraan', sortable: false, render: (data) => {
     return `${data?.license_plate_number} - ${data?.vehicle_type?.name}`
+  } },
+  { data: 'person', title: 'KTP', sortable: false, render: (data) => {
+    return data?.photo?.url ? `<img src="${data.photo.url}" alt="ktp" />` : ''
   } },
   { data: 'check_in_timestamp', title: 'Waktu Checkin', sortable: false, render: (data) => {
     return formatDateFromUTC(data)
@@ -124,6 +130,7 @@ const handleSubmitForm = async (modelForm: unknown) => {
         address: modelForm.address,
         gender: modelForm.gender.value,
         doc_type: modelForm.doc_type.value,
+        purpose_of_visit: modelForm.purpose_of_visit.value,
         vehicle: {
           license_plate_number: modelForm.vehicle.license_plate_number,
           vehicle_type: modelForm.vehicle.vehicle_type.id32,
