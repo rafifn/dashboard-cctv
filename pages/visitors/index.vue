@@ -141,7 +141,6 @@ const handleSubmitForm = async (modelForm: unknown) => {
     refresh()
     toast.add({ title: 'Berhasil', description: 'Data Berhasil Ditambahkan', icon: 'i-heroicons-check-circle' })
   } catch (err) {
-    console.log(err)
     isLoading.value = false
     useToastError(FIELDS_REQUEST, err?.response?._data ?? 'Terjadi Kesalahan')
   }
