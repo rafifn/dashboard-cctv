@@ -116,7 +116,7 @@ const schema = object({
   full_name: string().required('Nama Wajib Diisi'),
   address: string().required('Alamat Wajib Diisi'),
   gender: object().shape({ value: string().required('Jenis Kelamin Wajib Diisi') }),
-  doc_type: object().shape({ value: string().required('Tipe Pengunjung Wajib Diisi') }),
+  purpose_of_visit: object().shape({ value: string().required('Tujuan Visit Wajib Diisi') }),
   vehicle: object().shape({
     license_plate_number: string().required('Kendaraan Wajib Diisi'),
     vehicle_type: object().shape({
@@ -190,6 +190,7 @@ const getScan = async () => {
   }
 }
 const handleSubmit = (event: FormSubmitEvent<Schema>) => {
+  console.log(event.data)
   emit('submit', event.data)
 }
 const getVehiclesType = async (search?: string) => {

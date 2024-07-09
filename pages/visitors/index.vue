@@ -129,7 +129,6 @@ const handleSubmitForm = async (modelForm: unknown) => {
         full_name: modelForm.full_name,
         address: modelForm.address,
         gender: modelForm.gender.value,
-        doc_type: modelForm.doc_type.value,
         purpose_of_visit: modelForm.purpose_of_visit.value,
         vehicle: {
           license_plate_number: modelForm.vehicle.license_plate_number,
@@ -142,6 +141,7 @@ const handleSubmitForm = async (modelForm: unknown) => {
     refresh()
     toast.add({ title: 'Berhasil', description: 'Data Berhasil Ditambahkan', icon: 'i-heroicons-check-circle' })
   } catch (err) {
+    console.log(err)
     isLoading.value = false
     useToastError(FIELDS_REQUEST, err?.response?._data)
   }
