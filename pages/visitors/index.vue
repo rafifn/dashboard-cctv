@@ -134,7 +134,6 @@ const handleSubmitForm = async (modelForm: unknown) => {
           license_plate_number: modelForm.vehicle.license_plate_number,
           vehicle_type: modelForm.vehicle.vehicle_type.id32,
         },
-        activity: modelForm.activity,
       },
     })
     isOpenForm.value = false
