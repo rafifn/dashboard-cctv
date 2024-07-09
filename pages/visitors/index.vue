@@ -143,7 +143,7 @@ const handleSubmitForm = async (modelForm: unknown) => {
   } catch (err) {
     console.log(err)
     isLoading.value = false
-    useToastError(FIELDS_REQUEST, err?.response?._data)
+    useToastError(FIELDS_REQUEST, err?.response?._data ?? 'Terjadi Kesalahan')
   }
 }
 const handleOpenFormCreate = () => {
