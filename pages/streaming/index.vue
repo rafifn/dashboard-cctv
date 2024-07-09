@@ -41,72 +41,6 @@
         :src="primary.channel_id"
         :height="500"
       />
-      <div class="primary__info">
-        <div class="d-flex justify-content-between">
-          <div>
-            <p>Front Office A</p>
-            <p class="primary__status">
-              Active
-            </p>
-            <p>Last Movement: recent</p>
-          </div>
-          <div>
-            <small class="cursor-pointer">Unduh</small>
-            <div class="d-flex gap-3">
-              <small class="cursor-pointer">Log</small>
-              <small>|</small>
-              <small class="cursor-pointer">Backup</small>
-            </div>
-          </div>
-        </div>
-        <div class="primary__statistic">
-          <p class="font-bold statistic__title">
-            Room Statistic
-          </p>
-          <table>
-            <tbody>
-              <tr>
-                <td>Movement</td>
-                <td>&nbsp;</td>
-                <td v-if="isLoadingStatistic">
-                  <USkeleton class="h-4 w-[80px]" />
-                </td>
-                <td v-else>
-                  {{ statistic?.total_movement }} Movement
-                </td>
-              </tr>
-              <tr>
-                <td>Visitor</td>
-                <td>&nbsp;</td>
-                <td v-if="isLoadingStatistic">
-                  <USkeleton class="h-4 w-[80px]" />
-                </td>
-                <td v-else>
-                  {{ statistic?.total_visitor }} Visitor
-                </td>
-              </tr>
-              <tr v-if="primary?.location?.name">
-                <td>Lokasi</td>
-                <td>&nbsp;</td>
-                <td v-if="isLoadingStatistic">
-                  <USkeleton class="h-4 w-[80px]" />
-                </td>
-                <td v-else>
-                  {{ primary?.location?.name }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="statistic__footer">
-          <p class="statistic__title">
-            Feed Detail
-          </p>
-          <span>mpeg4 1080p 30fps</span>
-          <br>
-          <span>Backed to: 11-10-2013 12:00:00</span>
-        </div>
-      </div>
     </div>
     <div class="my-2">
       <div
@@ -152,11 +86,6 @@
 import type { Location } from '~/utils/types'
 import { formatDateFromUTC } from '~/utils/helpers'
 
-interface Statistic {
-  total_movement: number
-  total_visitor: number
-}
-
 const PAGE_SIZE_CAMERA = 6
 
 const { $api } = useNuxtApp()
@@ -182,8 +111,6 @@ const dateNow = ref()
 const primary = ref(data.value.results[0])
 const isLoadingPrimary = ref(false)
 const isLoadingChild = ref(false)
-const isLoadingStatistic = ref(false)
-const statistic = ref<Statistic>()
 const locations = ref<Location[]>([])
 const filter = ref({
   location: route.query?.location ?? '0',
@@ -209,19 +136,6 @@ const handleUpdatePage = (page: string) => {
   setTimeout(() => {
     isLoadingChild.value = false
   }, 500)
-}
-const getStatistic = async () => {
-  try {
-    isLoadingStatistic.value = true
-    const data = await $api<Statistic>(`/cctv/camera/${primary.value.channel_id}/statistic`)
-    statistic.value = data
-  } catch (error) {
-    toast.add({ description: JSON.stringify(err?.response?._data), color: 'red' })
-  } finally {
-    setTimeout(() => {
-      isLoadingStatistic.value = false
-    }, 500)
-  }
 }
 const getLocation = async () => {
   try {
@@ -250,12 +164,7 @@ const handleFilterLocation = () => {
 
 onMounted(() => {
   dateNow.value = formatDateFromUTC('', 'dddd, DD MMMM YYYY')
-  getStatistic()
   getLocation()
-})
-
-watch(primary, () => {
-  getStatistic()
 })
 </script>
 

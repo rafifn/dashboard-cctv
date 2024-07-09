@@ -66,31 +66,25 @@ const FIELDS_REQUEST = {
 }
 const COLUMNS = [
   { data: 'person', title: 'ID', sortable: false, type: 'string', render: (data) => {
-    return data.no_id
+    return data?.no_id ?? ''
   } },
   { data: 'person', title: 'Nama', sortable: false, render: (data) => {
-    return data.full_name
+    return data?.full_name ?? ''
   } },
   { data: 'purpose_of_visit', title: 'Tujuan', sortable: false, type: 'string', render: (data) => {
-    return data.text
+    return data?.text ?? ''
   } },
   { data: 'person', title: 'Alamat', sortable: false, render: (data) => {
-    return data.address
-  } },
-  { data: 'person', title: 'Jenis Kelamin', sortable: false, render: (data) => {
-    return data.gender.text
-  } },
-  { data: 'person', title: 'Tipe', sortable: false, render: (data) => {
-    return data.doc_type.text
+    return data?.address ?? ''
   } },
   { data: 'vehicle', title: 'Kendaraan', sortable: false, render: (data) => {
-    return `${data?.license_plate_number} - ${data?.vehicle_type?.name}`
+    return data?.license_plate_number
   } },
   { data: 'person', title: 'KTP', sortable: false, render: (data) => {
     return data?.photo?.url ? `<img src="${data.photo.url}" alt="ktp" />` : ''
   } },
   { data: 'check_in_timestamp', title: 'Waktu Checkin', sortable: false, render: (data) => {
-    return formatDateFromUTC(data)
+    return data ? formatDateFromUTC(data) : ''
   } },
   { data: 'check_out_timestamp', title: 'Waktu Checkout', sortable: false, render: (data) => {
     return data ? formatDateFromUTC(data) : ''
