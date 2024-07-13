@@ -190,7 +190,6 @@ const getScan = async () => {
   }
 }
 const handleSubmit = (event: FormSubmitEvent<Schema>) => {
-  console.log(event.data)
   emit('submit', event.data)
 }
 const getVehiclesType = async (search?: string) => {
