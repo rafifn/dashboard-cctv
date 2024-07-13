@@ -59,6 +59,16 @@
             ],
           }"
         >
+          <template
+            v-for="(_, slot) of $slots"
+            #[slot]="prop"
+          >
+            <slot
+              v-if="slot !== 'actions'"
+              :name="slot"
+              v-bind="prop"
+            />
+          </template>
           <template #action="prop">
             <slot
               name="actions"
@@ -113,6 +123,7 @@ interface Column {
   data: string
   title: string
   render?: string
+  name?: string
 }
 interface Props {
   columns: Column[]

@@ -15,6 +15,16 @@
       @update:page="handleUpdatePage"
       @update:size="handleUpdateSize"
     >
+      <template #id_card="prop">
+        <img
+          v-if="prop.rowData?.person?.photo?.url"
+          :src="prop.rowData.person.photo.url"
+          alt="ktp"
+          class="object-contain w-10 h-10 cursor-pointer"
+          @click="openImage(prop.rowData.person.photo.url)"
+        >
+        <span v-else>-</span>
+      </template>
       <template #actions="prop">
         <button
           v-if="!prop.rowData.check_out_timestamp"
@@ -80,15 +90,13 @@ const COLUMNS = [
   { data: 'vehicle', title: 'Kendaraan', sortable: false, render: (data) => {
     return data?.license_plate_number
   } },
-  { data: 'person', title: 'KTP', sortable: false, render: (data) => {
-    return data?.photo?.url ? `<img src="${data.photo.url}" alt="ktp" />` : ''
-  } },
   { data: 'check_in_timestamp', title: 'Waktu Checkin', sortable: false, render: (data) => {
     return data ? formatDateFromUTC(data) : ''
   } },
   { data: 'check_out_timestamp', title: 'Waktu Checkout', sortable: false, render: (data) => {
     return data ? formatDateFromUTC(data) : ''
   } },
+  { data: null, title: 'KTP', render: '#id_card' },
 ]
 const { $api } = useNuxtApp()
 const toast = useToast()
@@ -168,6 +176,9 @@ const handleCheckout = async (row: Visitor) => {
     isLoading.value = false
     useToastError(FIELDS_REQUEST, err?.response?._data)
   }
+}
+const openImage = (src: string) => {
+  window.open(src, '_blank')
 }
 </script>
 

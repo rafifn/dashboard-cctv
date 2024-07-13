@@ -153,6 +153,7 @@ const getLocation = async () => {
   }
 }
 const handleFilterLocation = () => {
+  isLoadingChild.value = true
   router.replace({
     path: route.path,
     query: {
@@ -160,6 +161,9 @@ const handleFilterLocation = () => {
       location: filter.value.location,
     },
   })
+  setTimeout(() => {
+    isLoadingChild.value = false
+  }, 500)
 }
 
 onMounted(() => {

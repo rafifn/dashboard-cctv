@@ -33,7 +33,6 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const cfg = useRuntimeConfig()
-const route = useRoute()
 
 const video = ref()
 
@@ -58,11 +57,9 @@ onMounted(() => {
     ],
   })
 })
-onBeforeRouteLeave((to) => {
-  if (to.name !== route.name) {
-    const element = document.getElementById(props.id)
-    videojs(element).dispose()
-  }
+onBeforeUnmount(() => {
+  const element = document.getElementById(props.id)
+  videojs(element).dispose()
 })
 </script>
 
