@@ -5,6 +5,7 @@ export const formatDateFromUTC = (dateTime: string | undefined, format = 'DD-MM-
   const now = new Date()
   return moment
     .utc(dateTime || now)
+    .utcOffset(7)
     .locale('id')
     .format(format)
 }

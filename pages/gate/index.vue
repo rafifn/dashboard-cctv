@@ -50,7 +50,14 @@
       @update:search="handleSearchLpr"
       @update:page="handleUpdatePageLpr"
       @update:size="handleUpdateSizeLpr"
-    />
+    >
+      <template #checkin="prop">
+        <span>{{ prop?.rowData?.direction?.toLowerCase() === 'in' ? formatDateFromUTC(prop.rowData.time_utc_timestamp) : '' }}</span>
+      </template>
+      <template #checkout="prop">
+        <span>{{ prop?.rowData?.direction?.toLowerCase() === 'out' ? formatDateFromUTC(prop.rowData.time_utc_timestamp) : '' }}</span>
+      </template>
+    </ADatatable>
   </div>
 </template>
 
@@ -58,13 +65,12 @@
 import { formatDateFromUTC } from '~/utils/helpers'
 
 const COLUMNS = [
-  { data: 'number_plate', title: 'Kode Visitor', sortable: false },
+  { data: 'number_plate', title: 'Plat Nomor', sortable: false },
   { data: 'camera', title: 'Kamera', sortable: false, render: (data) => {
     return data.name
   } },
-  { data: 'time_utc_timestamp', title: 'Waktu Kunjungan', sortable: false, type: 'string', render: (data) => {
-    return formatDateFromUTC(data)
-  } },
+  { data: null, title: 'Timestamp Masuk', render: '#checkin' },
+  { data: null, title: 'Timestamp Keluar', render: '#checkout' },
   { data: 'direction', title: 'Arah', sortable: false },
 ]
 const PAGE_SIZE_CAMERA = 6

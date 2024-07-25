@@ -48,12 +48,12 @@ const FIELDS_REQUEST = {
   person: 'Pemilik',
 }
 const COLUMNS = [
-  { data: 'license_plate_number', title: 'Nopol', sortable: false },
+  { data: 'license_plate_number', title: 'Plat Nomor', sortable: false },
   { data: 'vehicle_type', title: 'Jenis Kendaraan', sortable: false, render: (data) => {
-    return data.name
+    return data?.name ?? ''
   } },
-  { data: 'person', title: 'Pemilik', sortable: false, type: 'string', render: (data) => {
-    return `${data?.full_name} - ${data?.no_id}`
+  { data: 'person', title: 'Nama Pemilik', sortable: false, type: 'string', render: (data) => {
+    return data?.full_name ?? ''
   } },
 ]
 const { $api } = useNuxtApp()

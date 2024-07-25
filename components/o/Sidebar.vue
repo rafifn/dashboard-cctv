@@ -27,7 +27,7 @@
         <div class="menu-item logout">
           <span
             class="menu-link"
-            @click="isOpenConfirmationLogout = true"
+            @click="handleClickLogout"
           >
             <span class="menu-icon"><i class="bi bi-box-arrow-right" /></span>
             <span class="menu-text">Keluar</span>
@@ -47,6 +47,8 @@
 </template>
 
 <script setup>
+import { useBreakpoints, breakpointsTailwind } from '@vueuse/core'
+
 const MENUS = [
   {
     label: 'Dashboard',
@@ -91,12 +93,23 @@ const MENUS = [
     icon: 'bi-person-badge',
   },
 ]
+
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const isMobile = breakpoints.smallerOrEqual('sm')
+
+const isExpandSidebar = useState('isExpandSidebar', () => true)
 const authToken = useCookie('_auth_token')
 const refreshToken = useCookie('_refresh_token')
 const router = useRouter()
 
 const isOpenConfirmationLogout = ref(false)
 
+const handleClickLogout = () => {
+  if (isMobile.value) {
+    isExpandSidebar.value = false
+  }
+  isOpenConfirmationLogout.value = true
+}
 const handleLogout = () => {
   authToken.value = undefined
   refreshToken.value = undefined
