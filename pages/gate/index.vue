@@ -57,6 +57,15 @@
       <template #checkout="prop">
         <span>{{ prop?.rowData?.direction?.toLowerCase() === 'out' ? formatDateFromUTC(prop.rowData.time_utc_timestamp) : '' }}</span>
       </template>
+      <template #snapshot="prop">
+        <img
+          v-if="prop?.rowData?.snapshot"
+          :src="prop?.rowData?.snapshot?.url"
+          class="h-20 w-20 object-contain cursor-pointer"
+          alt="kendaraan"
+          @click="openImage(prop.rowData.snapshot?.url)"
+        >
+      </template>
     </ADatatable>
   </div>
 </template>
@@ -72,6 +81,7 @@ const COLUMNS = [
   { data: null, title: 'Timestamp Masuk', render: '#checkin' },
   { data: null, title: 'Timestamp Keluar', render: '#checkout' },
   { data: 'direction', title: 'Arah', sortable: false },
+  { data: null, title: 'Foto Kendaraan', render: '#snapshot' },
 ]
 const PAGE_SIZE_CAMERA = 6
 
@@ -158,6 +168,9 @@ const handleUpdatePage = (page: string) => {
     channelIdActive.value = data.value.results[0].channel_id
     isLoadingChild.value = false
   }, 500)
+}
+const openImage = (src: string) => {
+  window.open(src, '_blank')
 }
 
 onBeforeMount(() => {

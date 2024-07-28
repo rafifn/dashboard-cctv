@@ -11,11 +11,26 @@
       :rows="vehicles?.results ?? []"
       :total-data="vehicles?.count?.toString() ?? '0'"
       is-deleteable
+      is-editable
       @update:search="handleSearch"
       @update:page="handleUpdatePage"
       @update:size="handleUpdateSize"
       @delete="handleDelete"
-    />
+      @edit="handleOpenEditForm"
+    >
+      <template #last_snapshot="prop">
+        <img
+          v-if="prop?.rowData?.last_snapshot"
+          :src="prop?.rowData?.last_snapshot?.url"
+          class="h-20 w-20 object-contain cursor-pointer"
+          alt="kendaraan"
+          @click="openImage(prop.rowData.last_snapshot?.url)"
+        >
+      </template>
+      <template #last_checkin_timestamp="prop">
+        <span>{{ formatDateFromUTC(prop.rowData?.last_checkin_timestamp) }}</span>
+      </template>
+    </ADatatable>
     <AModal
       :is-open="isOpenForm"
     >
@@ -33,13 +48,18 @@
             />
           </div>
         </template>
-        <OFormVehicle @submit="handleSubmitForm" />
+        <OFormVehicle
+          :detail="selectedRow"
+          @submit="handleSubmitForm"
+        />
       </UCard>
     </AModal>
   </div>
 </template>
 
 <script setup lang="ts">
+import type { Vehicle } from '~/utils/types'
+import { formatDateFromUTC } from '~/utils/helpers'
 import { AConfirmation } from '#components'
 
 const FIELDS_REQUEST = {
@@ -55,6 +75,8 @@ const COLUMNS = [
   { data: 'person', title: 'Nama Pemilik', sortable: false, type: 'string', render: (data) => {
     return data?.full_name ?? ''
   } },
+  { data: null, title: 'Checkin Terakhir', sortable: false, type: 'string', render: '#last_checkin_timestamp' },
+  { data: null, title: 'Foto Kendaraan', render: '#last_snapshot' },
 ]
 const { $api } = useNuxtApp()
 const toast = useToast()
@@ -73,11 +95,14 @@ const { data: vehicles, refresh } = await useAsyncData('vehicles', () => $api('/
 })
 
 const isOpenForm = ref(false)
+const selectedRow = ref()
 
 const handleSubmitForm = async (modelForm: unknown) => {
   try {
-    await $api('/vehicle/vehicle/', {
-      method: 'POST',
+    const isEdit = selectedRow.value
+    const endpoint = isEdit ? `/vehicle/vehicle/${selectedRow.value.id32}/` : '/vehicle/vehicle/'
+    await $api(endpoint, {
+      method: isEdit ? 'PATCH' : 'POST',
       body: {
         license_plate_number: modelForm.license,
         vehicle_type: modelForm.vehicle.id32,
@@ -85,8 +110,10 @@ const handleSubmitForm = async (modelForm: unknown) => {
       },
     })
     isOpenForm.value = false
+    selectedRow.value = undefined
     refresh()
-    toast.add({ title: 'Berhasil', description: 'Data Berhasil Ditambahkan', icon: 'i-heroicons-check-circle' })
+    const description = isEdit ? 'Data Berhasil Diperbarui' : 'Data Berhasil Ditambahkan'
+    toast.add({ title: 'Berhasil', description, icon: 'i-heroicons-check-circle' })
   } catch (err) {
     useToastError(FIELDS_REQUEST, err?.response?._data)
   }
@@ -109,6 +136,13 @@ const handleDelete = (row: unknown) => {
       modalDelete.close()
     },
   })
+}
+const openImage = (src: string) => {
+  window.open(src, '_blank')
+}
+const handleOpenEditForm = (row: Vehicle) => {
+  isOpenForm.value = true
+  selectedRow.value = row
 }
 </script>
 

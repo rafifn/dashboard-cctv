@@ -129,9 +129,10 @@ const schema = object({
 type Schema = InferType<typeof schema>
 
 interface Props {
+  detail?: Visitor
   isLoading?: boolean
 }
-defineProps<Props>()
+const props = defineProps<Props>()
 const emit = defineEmits(['submit'])
 const { $api } = useNuxtApp()
 const toast = useToast()
@@ -141,13 +142,13 @@ const vehicles = ref([])
 const vehicleType = ref<VehicleType[]>([])
 const purposeVisits = ref<{ text: string, value: string }[]>([])
 const modelForm = ref({
-  no_id: '',
-  full_name: '',
-  address: '',
-  gender: GENDER_OPTIONS[0],
+  no_id: props.detail?.person?.no_id ?? '',
+  full_name: props.detail?.person?.full_name ?? '',
+  address: props.detail?.person?.address ?? '',
+  gender: props.detail?.person?.gender ?? GENDER_OPTIONS[0],
   doc_type: VISITOR_TYPE_OPTIONS[0],
-  purpose_of_visit: purposeVisits.value[0],
-  vehicle: {
+  purpose_of_visit: props.detail?.purpose_of_visit ?? purposeVisits.value[0],
+  vehicle: props.detail?.vehicle ?? {
     license_plate_number: '',
     vehicle_type: {
       id32: '',
@@ -190,7 +191,7 @@ const getScan = async () => {
   }
 }
 const handleSubmit = (event: FormSubmitEvent<Schema>) => {
-  emit('submit', event.data)
+  emit('submit', { ...props.detail, ...event.data })
 }
 const getVehiclesType = async (search?: string) => {
   try {

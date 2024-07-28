@@ -13,7 +13,7 @@ export const useToastError = (fields: Fields, errors: Errors) => {
     if (errors.hasOwnProperty(key)) {
       const fieldName = fields[key] || 'something went wrong'
       const errorMessages = errors[key]
-      const alertMessage = `${fieldName}: ${errorMessages.join(', ')}`
+      const alertMessage = `${fieldName}: ${errorMessages?.join(', ') ?? errorMessages}`
       toast.add({ description: alertMessage, color: 'red' })
     }
   }

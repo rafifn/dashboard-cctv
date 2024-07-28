@@ -11,9 +11,11 @@
       :rows="visitor?.results ?? []"
       :total-data="visitor?.count?.toString() ?? '0'"
       has-actions
+      is-editable
       @update:search="handleSearch"
       @update:page="handleUpdatePage"
       @update:size="handleUpdateSize"
+      @edit="handleOpenEditForm"
     >
       <template #id_card="prop">
         <img
@@ -53,6 +55,7 @@
           </div>
         </template>
         <OFormVisitor
+          :detail="selectedRow"
           :is-loading="isLoading"
           @submit="handleSubmitForm"
         />
@@ -87,9 +90,6 @@ const COLUMNS = [
   { data: 'person', title: 'Alamat', sortable: false, render: (data) => {
     return data?.address ?? ''
   } },
-  { data: 'vehicle', title: 'Kendaraan', sortable: false, render: (data) => {
-    return data?.license_plate_number
-  } },
   { data: 'check_in_timestamp', title: 'Waktu Checkin', sortable: false, render: (data) => {
     return data ? formatDateFromUTC(data) : ''
   } },
@@ -119,8 +119,9 @@ const selectedRow = ref()
 const modalDelete = useModal()
 
 const handleSubmitForm = async (modelForm: unknown) => {
-  const method = 'POST'
-  const endpoint = '/person/person/'
+  const isEdit = selectedRow.value
+  const method = isEdit ? 'PUT' : 'POST'
+  const endpoint = isEdit ? `/person/person/${modelForm.person.id32}/` : '/person/person/'
   try {
     isLoading.value = true
     await $api(endpoint, {
@@ -139,6 +140,7 @@ const handleSubmitForm = async (modelForm: unknown) => {
       },
     })
     isOpenForm.value = false
+    selectedRow.value = undefined
     refresh()
     toast.add({ title: 'Berhasil', description: 'Data Berhasil Ditambahkan', icon: 'i-heroicons-check-circle' })
   } catch (err) {
@@ -179,6 +181,10 @@ const handleCheckout = async (row: Visitor) => {
 }
 const openImage = (src: string) => {
   window.open(src, '_blank')
+}
+const handleOpenEditForm = (row: Vehicle) => {
+  isOpenForm.value = true
+  selectedRow.value = row
 }
 </script>
 

@@ -70,7 +70,7 @@
             class="menu-link"
           >
             <div class="menu-text d-sm-block d-none w-170px">
-              user@magnus.com
+              {{ myProfileState?.username ?? '' }}
             </div>
           </div>
         </div>
@@ -95,13 +95,15 @@
   </main>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useBreakpoints, breakpointsTailwind } from '@vueuse/core'
+import type { Profile } from '~/utils/types'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isMobile = breakpoints.smallerOrEqual('sm')
 
 const isExpandSidebar = useState('isExpandSidebar', () => true)
+const myProfileState = useState<Profile>('myProfileState', () => {})
 </script>
 
 <style lang="scss" scoped>
