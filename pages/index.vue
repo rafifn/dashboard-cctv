@@ -338,9 +338,9 @@
             </div>
             <!-- END title -->
             <!-- BEGIN map -->
-            <div class="ratio ratio-16x9 mb-3">
+            <div class="ratio ratio-16x9 mb-3 object-fit">
               <img
-                src="/public/map2.png"
+                src="/public/map3.jpg"
                 alt="map"
               >
             </div>
