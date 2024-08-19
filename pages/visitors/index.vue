@@ -78,7 +78,10 @@ const FIELDS_REQUEST = {
   doc_type: 'Tipe Pengunjung',
 }
 const COLUMNS = [
-  { data: 'person', title: 'ID', sortable: false, type: 'string', render: (data) => {
+  { data: 'visitor_id', title: 'ID', sortable: false, type: 'string', render: (data) => {
+    return data || ''
+  } },
+  { data: 'person', title: 'NIK', sortable: false, type: 'string', render: (data) => {
     return data?.no_id ?? ''
   } },
   { data: 'person', title: 'Nama', sortable: false, render: (data) => {
