@@ -6,8 +6,6 @@
     <!-- BEGIN scrollbar -->
     <div
       class="app-sidebar-content"
-      data-scrollbar="true"
-      data-height="100%"
     >
       <!-- BEGIN menu -->
       <div class="menu">

@@ -24,7 +24,10 @@
             </select>
             <label for="dt-length-0"> entries per page</label>
           </div>
-          <div class="dt-search d-flex align-items-center gap-2">
+          <div
+            v-if="searchable"
+            class="dt-search d-flex align-items-center gap-2"
+          >
             <label for="dt-search-0">Search:</label>
             <input
               id="dt-search-0"
@@ -53,10 +56,10 @@
             },
             paging: true,
             searching: false,
-            buttons: [
+            buttons: downloadable ? [
               { extend: 'print', className: 'btn btn-outline-default btn-sm ms-2' },
               { extend: 'csv', className: 'btn btn-outline-default btn-sm' },
-            ],
+            ] : [],
           }"
         >
           <template
@@ -132,6 +135,8 @@ interface Props {
   isEditable?: boolean
   hasActions?: boolean
   totalData: string
+  downloadable?: boolean
+  searchable?: boolean
   params: {
     search?: string
     page: string
@@ -139,7 +144,10 @@ interface Props {
   }
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  downloadable: true,
+  searchable: true,
+})
 const emit = defineEmits(['update:page', 'update:size', 'update:search', 'delete', 'edit'])
 
 DataTable.use(DataTablesCore)

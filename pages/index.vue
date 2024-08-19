@@ -2,45 +2,29 @@
   <div>
     <div class="row">
       <!-- BEGIN col-3 -->
-      <div class="col-xl-3 col-lg-6">
+      <div class="col-xl-4 col-lg-6">
         <!-- BEGIN card -->
         <div class="card mb-3">
           <!-- BEGIN card-body -->
           <div class="card-body">
-            <!-- BEGIN title -->
-            <div class="d-flex fw-bold small mb-3">
-              <span class="flex-grow-1">KENDARAAN</span>
-              <a
-                href="#"
-                data-toggle="card-expand"
-                class="text-inverse text-opacity-50 text-decoration-none"
-              ><i class="bi bi-fullscreen" /></a>
-            </div>
-            <!-- END title -->
             <!-- BEGIN stat-lg -->
-            <div class="flex items-center space-x-2 mb-2">
+            <div class="flex items-center justify-between space-x-2 mb-2">
+              <!-- BEGIN title -->
+              <div class="d-flex fw-bold small">
+                <span class="flex-grow-1">KENDARAAN</span>
+              </div>
+              <!-- END title -->
               <div>
                 <h3 class="mb-0">
-                  3,820
+                  35
                 </h3>
-              </div>
-              <div class="max-w-[50%]">
-                <ClientOnly>
-                  <VueApexCharts
-                    type="line"
-                    height="50"
-                    :options="lineData.chartOptions"
-                    :series="lineData.series"
-                  />
-                </ClientOnly>
               </div>
             </div>
             <!-- END stat-lg -->
             <!-- BEGIN stat-sm -->
             <div class="small text-inverse text-opacity-50 text-truncate">
-              <i class="fa fa-chevron-up fa-fw me-1" /> 20.4% more than last week<br>
+              <i class="fa fa-chevron-up fa-fw me-1" /> 20.4% more than last month<br>
               <i class="fa fa-shopping-bag fa-fw me-1" /> 33.5% new vehicles<br>
-              <i class="fa fa-dollar-sign fa-fw me-1" /> 6.21% bounce rate
             </div>
             <!-- END stat-sm -->
           </div>
@@ -60,45 +44,29 @@
       <!-- END col-3 -->
 
       <!-- BEGIN col-3 -->
-      <div class="col-xl-3 col-lg-6">
+      <div class="col-xl-4 col-lg-6">
         <!-- BEGIN card -->
         <div class="card mb-3">
           <!-- BEGIN card-body -->
           <div class="card-body">
-            <!-- BEGIN title -->
-            <div class="d-flex fw-bold small mb-3">
-              <span class="flex-grow-1">PENGUNJUNG</span>
-              <a
-                href="#"
-                data-toggle="card-expand"
-                class="text-inverse text-opacity-50 text-decoration-none"
-              ><i class="bi bi-fullscreen" /></a>
-            </div>
-            <!-- END title -->
             <!-- BEGIN stat-lg -->
-            <div class="flex items-center space-x-2 mb-2">
+            <div class="flex items-center justify-between space-x-2 mb-2">
+              <!-- BEGIN title -->
+              <div class="d-flex fw-bold small">
+                <span class="flex-grow-1">PENGUNJUNG</span>
+              </div>
+              <!-- END title -->
               <div>
                 <h3 class="mb-0">
-                  4,207
+                  68
                 </h3>
-              </div>
-              <div class="max-w-[50%]">
-                <ClientOnly>
-                  <VueApexCharts
-                    type="bar"
-                    height="50"
-                    :options="barData.chartOptions"
-                    :series="barData.series"
-                  />
-                </ClientOnly>
               </div>
             </div>
             <!-- END stat-lg -->
             <!-- BEGIN stat-sm -->
             <div class="small text-inverse text-opacity-50 text-truncate">
-              <i class="fa fa-chevron-up fa-fw me-1" /> 33.3% more than last week<br>
+              <i class="fa fa-chevron-up fa-fw me-1" /> 33.3% more than last month<br>
               <i class="far fa-user fa-fw me-1" /> 45.5% new visitors<br>
-              <i class="far fa-times-circle fa-fw me-1" /> 3.25% bounce rate
             </div>
             <!-- END stat-sm -->
           </div>
@@ -118,47 +86,25 @@
       <!-- END col-3 -->
 
       <!-- BEGIN col-3 -->
-      <div class="col-xl-3 col-lg-6">
+      <div class="col-xl-4 col-lg-6">
         <!-- BEGIN card -->
-        <div class="card mb-3">
+        <div class="card mb-3 p-3">
           <!-- BEGIN card-body -->
           <div class="card-body">
-            <!-- BEGIN title -->
-            <div class="d-flex fw-bold small mb-3">
-              <span class="flex-grow-1">KAMERA CCTV</span>
-              <a
-                href="#"
-                data-toggle="card-expand"
-                class="text-inverse text-opacity-50 text-decoration-none"
-              ><i class="bi bi-fullscreen" /></a>
-            </div>
-            <!-- END title -->
             <!-- BEGIN stat-lg -->
-            <div class="flex items-center space-x-2 mb-2">
+            <div class="flex items-center justify-between space-x-2 mb-2">
+              <!-- BEGIN title -->
+              <div class="d-flex fw-bold small">
+                <span class="flex-grow-1">KAMERA CCTV</span>
+              </div>
+              <!-- END title -->
               <div>
                 <h3 class="mb-0">
-                  4,490
+                  36
                 </h3>
-              </div>
-              <div class="max-w-[50%]">
-                <ClientOnly>
-                  <VueApexCharts
-                    type="line"
-                    height="50"
-                    :options="pieData.chartOptions"
-                    :series="pieData.series"
-                  />
-                </ClientOnly>
               </div>
             </div>
             <!-- END stat-lg -->
-            <!-- BEGIN stat-sm -->
-            <div class="small text-inverse text-opacity-50 text-truncate">
-              <i class="fa fa-chevron-up fa-fw me-1" /> 59.5% dari gerbang belakang<br>
-              <i class="fab fa-facebook-f fa-fw me-1" /> 45.5% dari gerbang depan<br>
-              <i class="fab fa-youtube fa-fw me-1" /> 15.25% dari gerbang kanan
-            </div>
-            <!-- END stat-sm -->
           </div>
           <!-- END card-body -->
 
@@ -186,15 +132,10 @@
                 <!-- BEGIN title -->
                 <div class="d-flex fw-bold small mb-3">
                   <span class="flex-grow-1">JUMLAH KENDARAAN & PENGUNJUNG</span>
-                  <a
-                    href="#"
-                    data-toggle="card-expand"
-                    class="text-inverse text-opacity-50 text-decoration-none"
-                  ><i class="bi bi-fullscreen" /></a>
                 </div>
                 <!-- END title -->
                 <!-- BEGIN chart -->
-                <div class="mb-3 max-w-[80%]">
+                <div class="mb-3 max-w-[100%]">
                   <ClientOnly>
                     <VueApexCharts
                       type="bar"
@@ -210,23 +151,13 @@
                   <!-- BEGIN col-6 -->
                   <div class="col-lg-6 mb-3 mb-lg-0">
                     <div class="d-flex align-items-center">
-                      <!-- BEGIN chart -->
-                      <div class="w-50px h-50px">
-                        <div
-                          data-render="apexchart"
-                          data-type="donut"
-                          data-title="Visitors"
-                          data-height="50"
-                        />
-                      </div>
-                      <!-- END chart -->
                       <!-- BEGIN info -->
                       <div class="ps-3 flex-1">
                         <div class="fs-10px fw-bold text-inverse text-opacity-50 mb-1">
                           JUMLAH KENDARAAN
                         </div>
                         <div class="mb-2 fs-5 text-truncate">
-                          3820
+                          35
                         </div>
                         <div class="progress h-3px bg-secondary-transparent-2 mb-1">
                           <div
@@ -234,22 +165,19 @@
                             style="width: 20%"
                           />
                         </div>
-                        <div class="fs-11px text-inverse text-opacity-50 mb-2 text-truncate">
-                          Last updated 1 min ago
-                        </div>
                         <div class="d-flex align-items-center small">
                           <i class="bi bi-circle-fill fs-6px me-2 text-theme" />
                           <div class="flex-1">
-                            ANGGOTA
+                            RESIDENCE
                           </div>
-                          <div>19.56GB</div>
+                          <div>20</div>
                         </div>
                         <div class="d-flex align-items-center small">
                           <i class="bi bi-circle-fill fs-6px me-2 text-theme text-opacity-50" />
                           <div class="flex-1">
-                            NON-ANGGOTA
+                            VISITOR
                           </div>
-                          <div>0.50GB</div>
+                          <div>15</div>
                         </div>
                       </div>
                       <!-- END info -->
@@ -259,23 +187,13 @@
                   <!-- BEGIN col-6 -->
                   <div class="col-lg-6">
                     <div class="d-flex">
-                      <!-- BEGIN chart -->
-                      <div class="w-50px pt-3">
-                        <div
-                          data-render="apexchart"
-                          data-type="donut"
-                          data-title="Visitors"
-                          data-height="50"
-                        />
-                      </div>
-                      <!-- END chart -->
                       <!-- BEGIN info -->
                       <div class="ps-3 flex-1">
                         <div class="fs-10px fw-bold text-inverse text-opacity-50 mb-1">
-                          JUMLAH PENGUNJUNG
+                          TUJUAN VISIT
                         </div>
                         <div class="mb-2 fs-5 text-truncate">
-                          4207
+                          68
                         </div>
                         <div class="progress h-3px bg-secondary-transparent-2 mb-1">
                           <div
@@ -283,22 +201,19 @@
                             style="width: 10%"
                           />
                         </div>
-                        <div class="fs-11px text-inverse text-opacity-50 mb-2 text-truncate">
-                          Last updated 1 min ago
-                        </div>
                         <div class="d-flex align-items-center small">
                           <i class="bi bi-circle-fill fs-6px me-2 text-theme" />
                           <div class="flex-1">
-                            REGULER
+                            Melakukan Pekerjaan
                           </div>
-                          <div>35.47GB</div>
+                          <div>52</div>
                         </div>
                         <div class="d-flex align-items-center small">
                           <i class="bi bi-circle-fill fs-6px me-2 text-theme text-opacity-50" />
                           <div class="flex-1">
-                            VIP
+                            Berkunjung
                           </div>
-                          <div>1.25GB</div>
+                          <div>12</div>
                         </div>
                       </div>
                       <!-- END info -->
@@ -332,226 +247,23 @@
                 <!-- BEGIN title -->
                 <div class="d-flex fw-bold small mb-3">
                   <span class="flex-grow-1">LOG AKTIFITAS</span>
-                  <a
-                    href="#"
-                    data-toggle="card-expand"
-                    class="text-inverse text-opacity-50 text-decoration-none"
-                  ><i class="bi bi-fullscreen" /></a>
                 </div>
                 <!-- END title -->
                 <!-- BEGIN table -->
                 <div class="table-responsive">
                   <table class="table table-striped table-borderless mb-2px small text-nowrap">
                     <tbody>
-                      <tr>
+                      <tr
+                        v-for="(act, actIdx) in lpr?.results"
+                        :key="actIdx"
+                      >
                         <td>
                           <span class="d-flex align-items-center">
                             <i class="bi bi-circle-fill fs-6px text-theme me-2" />
-                            Pengunjung masuk melewati gerbang depan
+                            {{ act.number_plate }}
                           </span>
                         </td>
-                        <td><small>just now</small></td>
-                        <td>
-                          <span
-                            class="badge d-block bg-theme text-theme-900 rounded-0 pt-5px w-70px"
-                            style="min-height: 18px"
-                          >MONTHLY PASS</span>
-                        </td>
-                        <td>
-                          <a
-                            href="#"
-                            class="text-decoration-none text-inverse"
-                          ><i class="bi bi-search" /></a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <span class="d-flex align-items-center">
-                            <i class="bi bi-circle-fill fs-6px text-inverse-transparent-3 me-2" />
-                            Mobil Avanza B1234ABC keluar dari gerbang belakang
-                          </span>
-                        </td>
-                        <td><small>1 min ago</small></td>
-                        <td>
-                          <span
-                            class="badge d-block text-inverse bg-secondary bg-opacity-25 rounded-0 pt-5px w-70px"
-                            style="min-height: 18px"
-                          >WEEKLY PASS</span>
-                        </td>
-                        <td>
-                          <a
-                            href="#"
-                            class="text-decoration-none text-inverse"
-                          ><i class="bi bi-search" /></a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <span class="d-flex align-items-center">
-                            <i class="bi bi-circle-fill fs-6px text-inverse-transparent-3 me-2" />
-                            Pengunjung keluar dari gerbang belakang
-                          </span>
-                        </td>
-                        <td><small>1 mins ago</small></td>
-                        <td>
-                          <span
-                            class="badge d-block text-inverse bg-secondary bg-opacity-25 rounded-0 pt-5px w-70px"
-                            style="min-height: 18px"
-                          >DAILY PASS</span>
-                        </td>
-                        <td>
-                          <a
-                            href="#"
-                            class="text-decoration-none text-inverse"
-                          ><i class="bi bi-search" /></a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <span class="d-flex align-items-center">
-                            <i class="bi bi-circle-fill fs-6px text-theme me-2" />
-                            Pengunjung keluar dari gerbang depan
-                          </span>
-                        </td>
-                        <td><small>1 min ago</small></td>
-                        <td>
-                          <span
-                            class="badge d-block bg-theme text-theme-900 rounded-0 pt-5px w-70px"
-                            style="min-height: 18px"
-                          >WEEKLY PASS</span>
-                        </td>
-                        <td>
-                          <a
-                            href="#"
-                            class="text-decoration-none text-inverse"
-                          ><i class="bi bi-search" /></a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <span class="d-flex align-items-center">
-                            <i class="bi bi-circle-fill fs-6px text-inverse text-opacity-25 me-2" />
-                            Pengunjung keluar dari gerbang kanan
-                          </span>
-                        </td>
-                        <td><small>2 mins ago</small></td>
-                        <td>
-                          <span
-                            class="badge d-block text-inverse bg-secondary bg-opacity-25 rounded-0 pt-5px w-70px"
-                            style="min-height: 18px"
-                          >DAILY PASS</span>
-                        </td>
-                        <td>
-                          <a
-                            href="#"
-                            class="text-decoration-none text-inverse"
-                          ><i class="bi bi-search" /></a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <span class="d-flex align-items-center">
-                            <i class="bi bi-circle-fill fs-6px text-theme me-2" />
-                            Mobil Brio B2222FFF masuk melewati gerbang kanan
-                          </span>
-                        </td>
-                        <td><small>2 mins ago</small></td>
-                        <td>
-                          <span
-                            class="badge d-block bg-theme text-theme-900 rounded-0 pt-5px w-70px"
-                            style="min-height: 18px"
-                          >MONTHLY PASS</span>
-                        </td>
-                        <td>
-                          <a
-                            href="#"
-                            class="text-decoration-none text-inverse"
-                          ><i class="bi bi-search" /></a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <span class="d-flex align-items-center">
-                            <i class="bi bi-circle-fill fs-6px text-theme me-2" />
-                            Pengunjung keluar dari gerbang kiri
-                          </span>
-                        </td>
-                        <td><small>5 mins ago</small></td>
-                        <td>
-                          <span
-                            class="badge d-block bg-theme text-theme-900 rounded-0 pt-5px w-70px"
-                            style="min-height: 18px"
-                          >DAILY PASS</span>
-                        </td>
-                        <td>
-                          <a
-                            href="#"
-                            class="text-decoration-none text-inverse"
-                          ><i class="bi bi-search" /></a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <span class="d-flex align-items-center">
-                            <i class="bi bi-circle-fill fs-6px text-inverse text-opacity-25 me-2" />
-                            Pengunjung keluar dari gerbang depan
-                          </span>
-                        </td>
-                        <td><small>5 mins ago</small></td>
-                        <td>
-                          <span
-                            class="badge d-block text-inverse bg-secondary bg-opacity-25 rounded-0 pt-5px w-70px"
-                            style="min-height: 18px"
-                          >DAILY PASS</span>
-                        </td>
-                        <td>
-                          <a
-                            href="#"
-                            class="text-decoration-none text-inverse"
-                          ><i class="bi bi-search" /></a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <span class="d-flex align-items-center">
-                            <i class="bi bi-circle-fill fs-6px text-inverse-transparent-3 me-2" />
-                            Pengunjung keluar dari gerbang depan
-                          </span>
-                        </td>
-                        <td><small>5 mins ago</small></td>
-                        <td>
-                          <span
-                            class="badge d-block text-inverse bg-secondary bg-opacity-25 rounded-0 pt-5px w-70px"
-                            style="min-height: 18px"
-                          >MONTHLY PASS</span>
-                        </td>
-                        <td>
-                          <a
-                            href="#"
-                            class="text-decoration-none text-inverse"
-                          ><i class="bi bi-search" /></a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <span class="d-flex align-items-center">
-                            <i class="bi bi-circle-fill fs-6px text-inverse text-opacity-25 me-2" />
-                            Pengunjung keluar dari gerbang depan
-                          </span>
-                        </td>
-                        <td><small>7 mins ago</small></td>
-                        <td>
-                          <span
-                            class="badge d-block text-inverse bg-secondary bg-opacity-25 rounded-0 pt-5px w-70px"
-                            style="min-height: 18px"
-                          >DAILY PASS</span>
-                        </td>
-                        <td>
-                          <a
-                            href="#"
-                            class="text-decoration-none text-inverse"
-                          ><i class="bi bi-search" /></a>
-                        </td>
+                        <td><small>{{ formatDateFromUTC(act.time_utc_timestamp) }}</small></td>
                       </tr>
                     </tbody>
                   </table>
@@ -584,15 +296,13 @@
             <!-- BEGIN title -->
             <div class="d-flex fw-bold small mb-3">
               <span class="flex-grow-1">PETA KPAD</span>
-              <a
-                href="#"
-                data-toggle="card-expand"
-                class="text-inverse text-opacity-50 text-decoration-none"
-              ><i class="bi bi-fullscreen" /></a>
             </div>
             <!-- END title -->
             <!-- BEGIN map -->
-            <div class="ratio ratio-16x9 mb-3 object-fit">
+            <div
+              class="ratio ratio-1x1 mb-3 cursor-pointer"
+              @click="isOpenFullMaps = true"
+            >
               <img
                 src="/public/map3.jpg"
                 alt="map"
@@ -615,146 +325,55 @@
       </div>
       <!-- END col-6 -->
     </div>
+    <AModal
+      :is-open="isOpenFullMaps"
+      :is-prevent-close="false"
+      is-full-screen
+    >
+      <div class="flex-1 flex flex-col justify-center items-center px-4">
+        <UButton
+          variant="link"
+          color="red"
+          icon="i-heroicons-x-mark-20-solid"
+          class="ml-auto"
+          @click="isOpenFullMaps = false"
+        />
+        <div class="w-[800px]">
+          <img
+            class="object-fit"
+            src="/public/map3.jpg"
+            alt="map"
+          >
+        </div>
+      </div>
+    </AModal>
   </div>
 </template>
 
 <script lang="ts" setup>
 import VueApexCharts from 'vue3-apexcharts'
+import { formatDateFromUTC } from '~/utils/helpers'
 
-const lineData = {
-  series: [{
-    name: 'Desktops',
-    data: [10, 41, 35, 51, 49],
-  }],
-  chartOptions: {
-    chart: {
-      height: 30,
-      width: '50%',
-      type: 'line',
-      toolbar: {
-        show: false,
-      },
-      sparkline: {
-        enabled: true,
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    colors: ['#3cd2a5'],
-    stroke: {
-      curve: 'straight',
-      width: 2,
-    },
-    grid: { show: false },
-    xaxis: {
-      labels: {
-        show: false,
-      },
-    },
-    yaxis: {
-      labels: {
-        show: false,
-      },
-    },
-  },
-}
-const barData = {
-  series: [{
-    name: 'Desktops',
-    data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
-  }],
-  chartOptions: {
-    chart: {
-      height: 30,
-      width: '50%',
-      type: 'bar',
-      toolbar: {
-        show: false,
-      },
-      sparkline: {
-        enabled: true,
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    plotOptions: { bar: {
-      horizontal: false,
-      columnWidth: '50%',
-      endingShape: 'rounded',
-    } },
-    colors: ['#3cd2a5'],
-    stroke: {
-      curve: 'straight',
-      width: 1,
-    },
-    grid: { show: false },
-    xaxis: {
-      labels: {
-        show: false,
-      },
-    },
-    yaxis: {
-      labels: {
-        show: false,
-      },
-    },
-  },
-}
-const pieData = {
-  series: [{
-    name: 'Desktops',
-    data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
-  }],
-  chartOptions: {
-    chart: {
-      height: 30,
-      width: '50%',
-      type: 'pie',
-      toolbar: {
-        show: false,
-      },
-      sparkline: {
-        enabled: true,
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    plotOptions: { bar: {
-      horizontal: false,
-      columnWidth: '65%',
-      endingShape: 'rounded',
-    } },
-    colors: ['#3cd2a5'],
-    stroke: {
-      curve: 'straight',
-      width: 2,
-    },
-    grid: { show: false },
-    xaxis: {
-      labels: {
-        show: false,
-      },
-    },
-    yaxis: {
-      labels: {
-        show: false,
-      },
-    },
-  },
-}
 const bigBar = {
-  series: [{
-    name: 'Desktops',
-    data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
-  }],
+  series: [
+    {
+      name: 'Residence',
+      data: [44, 55, 57, 56, 61, 58, 63, 60, 23, 12, 55],
+    },
+    {
+      name: 'Kendaraan',
+      data: [76, 85, 101, 98, 87, 105, 91, 114, 94, 66, 66],
+    },
+    {
+      name: 'Visitor',
+      data: [35, 41, 36, 26, 45, 48, 52, 53, 41, 30, 11],
+    },
+  ],
   chartOptions: {
     chart: {
       height: 30,
-      width: '50%',
       type: 'bar',
+      width: '100%',
       toolbar: {
         show: false,
       },
@@ -765,29 +384,60 @@ const bigBar = {
     dataLabels: {
       enabled: false,
     },
-    plotOptions: { bar: {
-      horizontal: false,
-      columnWidth: '50%',
-      endingShape: 'rounded',
-    } },
-    colors: ['#3cd2a5'],
     stroke: {
-      curve: 'straight',
+      show: true,
       width: 2,
+      colors: ['transparent'],
     },
-    grid: { show: false },
     xaxis: {
-      labels: {
-        show: false,
-      },
+      categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     },
     yaxis: {
-      labels: {
-        show: false,
+      title: {
+        text: '$ (thousands)',
       },
+    },
+    fill: {
+      opacity: 1,
     },
   },
 }
+const { $api } = useNuxtApp()
+const lpr = ref()
+const lprParams = ref({
+  page: '1',
+  search: '',
+  size: '10',
+})
+const isOpenFullMaps = ref(false)
+
+defineShortcuts({
+  escape: {
+    usingInput: true,
+    whenever: [isOpenFullMaps],
+    handler: () => { isOpenFullMaps.value = false },
+  },
+})
+
+const handleGetLpr = async () => {
+  try {
+    const res = await $api(`/activity/lpr`, {
+      query: {
+        channel_id: '',
+        is_active: true,
+        is_gate: true,
+        page: lprParams.value.page,
+        page_size: lprParams.value.size,
+        search: lprParams.value.search,
+      },
+    })
+    lpr.value = res
+  } catch (err) {
+    alert(JSON.stringify(err))
+  }
+}
+
+onMounted(() => handleGetLpr())
 </script>
 
 <style lang="scss" scoped>

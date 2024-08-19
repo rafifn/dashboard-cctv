@@ -78,28 +78,26 @@ const FIELDS_REQUEST = {
   doc_type: 'Tipe Pengunjung',
 }
 const COLUMNS = [
-  { data: 'visitor_id', title: 'ID', sortable: false, type: 'string', render: (data) => {
-    return data || ''
-  } },
-  { data: 'person', title: 'NIK', sortable: false, type: 'string', render: (data) => {
+  { data: 'visitor_id', title: 'ID', responsivePriority: 0, sortable: false },
+  { data: 'person', title: 'NIK', sortable: false, type: 'string', responsivePriority: 1, render: (data) => {
     return data?.no_id ?? ''
   } },
-  { data: 'person', title: 'Nama', sortable: false, render: (data) => {
+  { data: 'person', title: 'Nama', sortable: false, responsivePriority: 2, render: (data) => {
     return data?.full_name ?? ''
   } },
-  { data: 'purpose_of_visit', title: 'Tujuan', sortable: false, type: 'string', render: (data) => {
+  { data: 'purpose_of_visit', title: 'Tujuan', sortable: false, type: 'string', responsivePriority: 3, render: (data) => {
     return data?.text ?? ''
   } },
-  { data: 'person', title: 'Alamat', sortable: false, render: (data) => {
+  { data: 'check_in_timestamp', title: 'Waktu Checkin', sortable: false, responsivePriority: 4, render: (data) => {
+    return data ? formatDateFromUTC(data) : ''
+  } },
+  { data: 'check_out_timestamp', title: 'Waktu Checkout', sortable: false, responsivePriority: 5, render: (data) => {
+    return data ? formatDateFromUTC(data) : ''
+  } },
+  { data: 'person', title: 'Alamat', sortable: false, responsivePriority: 9, target: 0, render: (data) => {
     return data?.address ?? ''
   } },
-  { data: 'check_in_timestamp', title: 'Waktu Checkin', sortable: false, render: (data) => {
-    return data ? formatDateFromUTC(data) : ''
-  } },
-  { data: 'check_out_timestamp', title: 'Waktu Checkout', sortable: false, render: (data) => {
-    return data ? formatDateFromUTC(data) : ''
-  } },
-  { data: null, title: 'KTP', render: '#id_card' },
+  { data: null, title: 'KTP', responsivePriority: 8, target: 0, render: '#id_card' },
 ]
 const { $api } = useNuxtApp()
 const toast = useToast()

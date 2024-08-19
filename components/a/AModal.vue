@@ -3,6 +3,7 @@
     :model-value="isOpen"
     :ui="{ background: 'bg-modal' }"
     :prevent-close="isPreventClose"
+    :fullscreen="isFullScreen"
     @update:modal-value="$emit('update:modelValue', $event)"
   >
     <slot />
@@ -13,10 +14,12 @@
 interface Props {
   isOpen: boolean
   isPreventClose?: boolean
+  isFullScreen?: boolean
 }
 withDefaults(defineProps<Props>(), {
   title: '',
   isPreventClose: true,
+  isFullScreen: false,
 })
 defineEmits(['update:modelValue'])
 </script>
