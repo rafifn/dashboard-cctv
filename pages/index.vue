@@ -16,15 +16,15 @@
               <!-- END title -->
               <div>
                 <h3 class="mb-0">
-                  35
+                  {{ topCount?.vehicle?.count }}
                 </h3>
               </div>
             </div>
             <!-- END stat-lg -->
             <!-- BEGIN stat-sm -->
             <div class="small text-inverse text-opacity-50 text-truncate">
-              <i class="fa fa-chevron-up fa-fw me-1" /> 20.4% more than last month<br>
-              <i class="fa fa-shopping-bag fa-fw me-1" /> 33.5% new vehicles<br>
+              <i class="fa fa-chevron-up fa-fw me-1" /> {{ topCount?.vehicle?.growth }} than last month<br>
+              <i class="fa fa-shopping-bag fa-fw me-1" /> {{ topCount?.vehicle?.growth_percent }}% new vehicles<br>
             </div>
             <!-- END stat-sm -->
           </div>
@@ -58,15 +58,15 @@
               <!-- END title -->
               <div>
                 <h3 class="mb-0">
-                  68
+                  {{ topCount?.visitor?.count }}
                 </h3>
               </div>
             </div>
             <!-- END stat-lg -->
             <!-- BEGIN stat-sm -->
             <div class="small text-inverse text-opacity-50 text-truncate">
-              <i class="fa fa-chevron-up fa-fw me-1" /> 33.3% more than last month<br>
-              <i class="far fa-user fa-fw me-1" /> 45.5% new visitors<br>
+              <i class="fa fa-chevron-up fa-fw me-1" /> {{ topCount?.visitor?.growth }} than last month<br>
+              <i class="far fa-user fa-fw me-1" /> {{ topCount?.visitor?.growth_percent }}% new visitors<br>
             </div>
             <!-- END stat-sm -->
           </div>
@@ -100,7 +100,7 @@
               <!-- END title -->
               <div>
                 <h3 class="mb-0">
-                  36
+                  {{ topCount?.camera?.count }}
                 </h3>
               </div>
             </div>
@@ -157,7 +157,7 @@
                           JUMLAH KENDARAAN
                         </div>
                         <div class="mb-2 fs-5 text-truncate">
-                          35
+                          {{ vehicleVisitorCount.vehicle?.count }}
                         </div>
                         <div class="progress h-3px bg-secondary-transparent-2 mb-1">
                           <div
@@ -170,14 +170,21 @@
                           <div class="flex-1">
                             RESIDENCE
                           </div>
-                          <div>20</div>
+                          <div>{{ vehicleVisitorCount.vehicle?.resident }}</div>
                         </div>
                         <div class="d-flex align-items-center small">
                           <i class="bi bi-circle-fill fs-6px me-2 text-theme text-opacity-50" />
                           <div class="flex-1">
                             VISITOR
                           </div>
-                          <div>15</div>
+                          <div>{{ vehicleVisitorCount.vehicle?.visitor }}</div>
+                        </div>
+                        <div class="d-flex align-items-center small">
+                          <i class="bi bi-circle-fill fs-6px me-2 text-theme text-opacity-50" />
+                          <div class="flex-1">
+                            Unknown
+                          </div>
+                          <div>{{ vehicleVisitorCount.vehicle?.unknown }}</div>
                         </div>
                       </div>
                       <!-- END info -->
@@ -190,10 +197,10 @@
                       <!-- BEGIN info -->
                       <div class="ps-3 flex-1">
                         <div class="fs-10px fw-bold text-inverse text-opacity-50 mb-1">
-                          TUJUAN VISIT
+                          Visitor
                         </div>
                         <div class="mb-2 fs-5 text-truncate">
-                          68
+                          {{ vehicleVisitorCount.visitor?.count }}
                         </div>
                         <div class="progress h-3px bg-secondary-transparent-2 mb-1">
                           <div
@@ -204,16 +211,30 @@
                         <div class="d-flex align-items-center small">
                           <i class="bi bi-circle-fill fs-6px me-2 text-theme" />
                           <div class="flex-1">
-                            Melakukan Pekerjaan
+                            Rapat
                           </div>
-                          <div>52</div>
+                          <div>{{ vehicleVisitorCount.visitor?.rapat }}</div>
                         </div>
                         <div class="d-flex align-items-center small">
-                          <i class="bi bi-circle-fill fs-6px me-2 text-theme text-opacity-50" />
+                          <i class="bi bi-circle-fill fs-6px me-2 text-theme" />
+                          <div class="flex-1">
+                            Melakukan Pekerjaan
+                          </div>
+                          <div>{{ vehicleVisitorCount.visitor['melakukan-pekerjaan'] }}</div>
+                        </div>
+                        <div class="d-flex align-items-center small">
+                          <i class="bi bi-circle-fill fs-6px me-2 text-theme" />
                           <div class="flex-1">
                             Berkunjung
                           </div>
-                          <div>12</div>
+                          <div>{{ vehicleVisitorCount.visitor['berkunjung'] }}</div>
+                        </div>
+                        <div class="d-flex align-items-center small">
+                          <i class="bi bi-circle-fill fs-6px me-2 text-theme" />
+                          <div class="flex-1">
+                            Patroli
+                          </div>
+                          <div>{{ vehicleVisitorCount.visitor['patroli'] }}</div>
                         </div>
                       </div>
                       <!-- END info -->
@@ -354,19 +375,21 @@
 import VueApexCharts from 'vue3-apexcharts'
 import { formatDateFromUTC } from '~/utils/helpers'
 
-const bigBar = {
+const { $api } = useNuxtApp()
+
+const { data: topCount } = await useAsyncData('top-count', () => $api('/statistic/count/'))
+const { data: vehicleVisitorChart } = await useAsyncData('vehicle-visitor-chart', () => $api('/statistic/visitor-and-vehicle-bar/'))
+const { data: vehicleVisitorCount } = await useAsyncData('vehicle-visitor-count', () => $api('/statistic/visitor-and-vehicle-count/'))
+
+const bigBar = ref({
   series: [
     {
-      name: 'Residence',
-      data: [44, 55, 57, 56, 61, 58, 63, 60, 23, 12, 55],
-    },
-    {
       name: 'Kendaraan',
-      data: [76, 85, 101, 98, 87, 105, 91, 114, 94, 66, 66],
+      data: vehicleVisitorChart.value?.vehicle?.map(vc => vc.count) ?? [],
     },
     {
       name: 'Visitor',
-      data: [35, 41, 36, 26, 45, 48, 52, 53, 41, 30, 11],
+      data: vehicleVisitorChart.value?.visitor?.map(vs => vs.count) ?? [],
     },
   ],
   chartOptions: {
@@ -390,19 +413,13 @@ const bigBar = {
       colors: ['transparent'],
     },
     xaxis: {
-      categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    },
-    yaxis: {
-      title: {
-        text: '$ (thousands)',
-      },
+      categories: vehicleVisitorChart.value.vehicle?.map(vcDt => formatDateFromUTC(vcDt.date, 'DD-MM-YYYY')),
     },
     fill: {
       opacity: 1,
     },
   },
-}
-const { $api } = useNuxtApp()
+})
 const lpr = ref()
 const lprParams = ref({
   page: '1',
