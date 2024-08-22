@@ -30,6 +30,15 @@
       <template #last_checkin_timestamp="prop">
         <span>{{ formatDateFromUTC(prop.rowData?.last_checkin_timestamp) }}</span>
       </template>
+      <template #actions="prop">
+        <button
+          v-if="prop.rowData?.license_plate_number"
+          class="btn btn-outline-info mr-1"
+          @click="handleVerify(prop)"
+        >
+          <i class="fa-regular fa-eye" />
+        </button>
+      </template>
     </ADatatable>
     <AModal
       :is-open="isOpenForm"
@@ -52,6 +61,53 @@
           :detail="selectedRow"
           @submit="handleSubmitForm"
         />
+      </UCard>
+    </AModal>
+    <AModal
+      :is-open="isOpenVerify"
+    >
+      <UCard :ui="{ header: { padding: 'p-4' }, body: { padding: 'p-4' } }">
+        <template #header>
+          <div class="flex items-center justify-end">
+            <UButton
+              variant="ghost"
+              icon="i-heroicons-x-mark-20-solid"
+              class="-my-1"
+              @click="isOpenForm = false"
+            />
+          </div>
+        </template>
+        <div class="flex space-x-4 divide-x">
+          <div class="space-y-4 w-[50%]">
+            <span class="block">Nama : {{ selectedRow.rowData.person?.full_name }}</span>
+            <hr>
+            <span class="block">Plat Nomor : {{ selectedRow.rowData.license_plate_number }}</span>
+          </div>
+          <div class="px-2 w-[50%]">
+            <span class="block">Nama : {{ vehicleVerificationData.nama }}</span>
+            <hr>
+            <span class="block">Plat Nomor : {{ vehicleVerificationData.nopol }}</span>
+            <hr>
+            <span class="block">Merk : {{ vehicleVerificationData.merks_text }}</span>
+            <hr>
+            <span class="block">
+              Warna : {{ vehicleVerificationData.warna }}
+            </span>
+            <hr>
+            <span class="block">
+              Tahun : {{ vehicleVerificationData.thn }}
+            </span>
+            <hr>
+            <span class="block">
+              No. Mesin : {{ vehicleVerificationData.no_mesin }}
+            </span>
+            <hr>
+            <span class="block">
+              Alamat :
+              {{ vehicleVerificationData.alamat }}
+            </span>
+          </div>
+        </div>
       </UCard>
     </AModal>
   </div>
@@ -78,7 +134,7 @@ const COLUMNS = [
   { data: null, title: 'Checkin Terakhir', sortable: false, type: 'string', render: '#last_checkin_timestamp' },
   { data: null, title: 'Foto Kendaraan', render: '#last_snapshot' },
 ]
-const { $api } = useNuxtApp()
+const { $api, $loader } = useNuxtApp()
 const toast = useToast()
 const modalDelete = useModal()
 const route = useRoute()
@@ -95,7 +151,9 @@ const { data: vehicles, refresh } = await useAsyncData('vehicles', () => $api('/
 })
 
 const isOpenForm = ref(false)
+const isOpenVerify = ref(false)
 const selectedRow = ref()
+const vehicleVerificationData = ref()
 
 const handleSubmitForm = async (modelForm: unknown) => {
   try {
@@ -143,6 +201,29 @@ const openImage = (src: string) => {
 const handleOpenEditForm = (row: Vehicle) => {
   isOpenForm.value = true
   selectedRow.value = row
+}
+const handleVerify = async (row: unknown) => {
+  try {
+    $loader.start()
+    const resp = await $fetch('/api/korlantas', {
+      method: 'POST',
+      body: {
+        search: 'r2183oa',
+        key: 'nopol',
+      },
+    })
+    if (resp?.data && resp?.data?.length) {
+      vehicleVerificationData.value = resp.data[0]
+      selectedRow.value = row
+      isOpenVerify.value = true
+    } else {
+      toast.add({ description: resp?.message ?? 'Terjadi Kesalahan, coba lagi beberapa saat', color: 'red' })
+    }
+  } catch (err) {
+    toast.add({ description: err?.response?._data ?? err?.response?.statusMessage ?? 'Terjadi Kesalahan', color: 'red' })
+  } finally {
+    $loader.finish()
+  }
 }
 </script>
 

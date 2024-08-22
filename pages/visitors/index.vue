@@ -35,6 +35,12 @@
         >
           <i class="fa-solid fa-arrow-right-from-bracket" />
         </button>
+        <button
+          class="btn btn-outline-info mr-1"
+          @click="handleVerify(prop)"
+        >
+          <i class="fa-regular fa-eye" />
+        </button>
       </template>
     </ADatatable>
     <AModal
@@ -59,6 +65,72 @@
           :is-loading="isLoading"
           @submit="handleSubmitForm"
         />
+      </UCard>
+    </AModal>
+    <AModal
+      :is-open="isOpenVerify"
+    >
+      <UCard :ui="{ header: { padding: 'p-4' }, body: { padding: 'p-4' } }">
+        <template #header>
+          <div class="flex items-center justify-end">
+            <UButton
+              variant="ghost"
+              icon="i-heroicons-x-mark-20-solid"
+              class="-my-1"
+              @click="isOpenVerify = false"
+            />
+          </div>
+        </template>
+        <div class="flex space-x-4 divide-x">
+          <div class="space-y-4 w-[50%]">
+            <img
+              v-if="selectedRow.rowData.person.photo.url"
+              :src="selectedRow.rowData.person.photo.url"
+              :alt="selectedRow.rowData.person.full_name"
+              class="w-20 mb-2"
+            >
+            <span class="block">Nama : {{ selectedRow.rowData.person?.full_name }}</span>
+            <hr>
+            <span class="block">NIK : {{ selectedRow.rowData.person.no_id }}</span>
+            <hr>
+            <span class="block">Alamat : {{ selectedRow.rowData.person.address }}</span>
+          </div>
+          <div class="px-2 w-[50%]">
+            <img
+              v-if="visitorVerificationData.image"
+              :src="visitorVerificationData.image"
+              :alt="visitor.nama_lgkp"
+              class="w-20 mb-2"
+            >
+            <span class="block">Nama : {{ visitorVerificationData.nama_lgkp }}</span>
+            <hr>
+            <span class="block">NIK : {{ visitorVerificationData.nik }}</span>
+            <hr>
+            <span class="block">Jenis Kelamin : {{ visitorVerificationData.jenis_klmin }}</span>
+            <hr>
+            <span class="block">TTL :
+              {{ visitorVerificationData.tmpt_lhr }},
+              {{ visitorVerificationData.tgl_lhr }}
+            </span>
+            <hr>
+            <span class="block">
+              Status : {{ visitorVerificationData.stat_kwn }}
+            </span>
+            <hr>
+            <span class="block">
+              Pekerjaan : {{ visitorVerificationData.jenis_pkrjn }}
+            </span>
+            <hr>
+            <span class="block">
+              Alamat :
+              {{ visitorVerificationData.alamat }},
+              {{ visitorVerificationData.nama_kel }},
+              {{ visitorVerificationData.nama_kec }},
+              {{ visitorVerificationData.nama_kab }},
+              {{ visitorVerificationData.nama_prop }}
+            </span>
+          </div>
+        </div>
       </UCard>
     </AModal>
   </div>
@@ -99,7 +171,7 @@ const COLUMNS = [
   } },
   { data: null, title: 'KTP', responsivePriority: 8, target: 0, render: '#id_card' },
 ]
-const { $api } = useNuxtApp()
+const { $api, $loader } = useNuxtApp()
 const toast = useToast()
 const route = useRoute()
 const { currentQuery, handleUpdatePage, handleSearch, handleUpdateSize } = useTable()
@@ -115,8 +187,10 @@ const { data: visitor, refresh } = await useAsyncData('visitor', () => $api('/ac
 })
 
 const isOpenForm = ref(false)
+const isOpenVerify = ref(false)
 const isLoading = ref(false)
 const selectedRow = ref()
+const visitorVerificationData = ref()
 const modalDelete = useModal()
 
 const handleSubmitForm = async (modelForm: unknown) => {
@@ -186,6 +260,31 @@ const openImage = (src: string) => {
 const handleOpenEditForm = (row: Vehicle) => {
   isOpenForm.value = true
   selectedRow.value = row
+}
+const handleVerify = async (row: Vehicle) => {
+  try {
+    $loader.start()
+    const resp = await $dukcapil('/kependudukan/public/api/get-info-nik', {
+      method: 'POST',
+      body: {
+        nik: row?.rowData?.person?.no_id,
+      },
+      headers: {
+        key: Math.random(),
+      },
+    })
+    if (resp?.data) {
+      visitorVerificationData.value = resp.data
+      selectedRow.value = row
+      isOpenVerify.value = true
+    } else {
+      toast.add({ description: JSON.stringify(resp?.message) ?? 'Terjadi Kesalahan, coba lagi beberapa saat', color: 'red' })
+    }
+  } catch (err) {
+    toast.add({ description: err?.response?._data ?? err?.response?.statusMessage ?? 'Terjadi Kesalahan', color: 'red' })
+  } finally {
+    $loader.finish()
+  }
 }
 </script>
 

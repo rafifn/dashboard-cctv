@@ -1,8 +1,14 @@
 export type { Location } from './location'
 export type { User, Role } from './user'
-export type { Vehicle, VehicleType } from './vehicle'
+export type { Vehicle, VehicleType, VehicleVerifiCationResponse } from './vehicle'
 export type { Visitor, Resident } from './visitor'
 
+export interface Loader {
+  isShow: boolean
+  message?: string
+  start(message?: string): void
+  finish(): void
+}
 export interface Camera {
   id32: string
   channel_id: string

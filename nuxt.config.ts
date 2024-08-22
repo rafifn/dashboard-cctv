@@ -31,7 +31,7 @@ export default defineNuxtConfig({
       ],
     },
   },
-  modules: ['@nuxt/eslint', '@vee-validate/nuxt', '@nuxt/ui'],
+  modules: ['@nuxt/eslint', '@vee-validate/nuxt', '@nuxt/ui', 'nuxt-api-party'],
   eslint: {
     checker: true,
     config: {
@@ -46,7 +46,22 @@ export default defineNuxtConfig({
   vite: {
     plugins: [eslint({ fix: true })],
   },
+  apiParty: {
+    endpoints: {
+      korlantas: {
+        url: process.env.NUXT_API_PARTY_ENDPOINTS_KORLANTAS_URL!,
+      },
+      dukcapil: {
+        url: process.env.NUXT_API_PARTY_ENDPOINTS_DUKCAPIL_URL!,
+        headers: {
+          authorization: `Bearer ${process.env.NUXT_API_PARTY_ENDPOINTS_DUKCAPIL_TOKEN!}`,
+        },
+      },
+    },
+  },
   runtimeConfig: {
+    apiPartyEndpointsKorlantasUrl: '',
+    apiPartyEndpointsKorlantasToken: '',
     public: {
       apiBaseUrl: '',
       streamBaseUrl: '',
