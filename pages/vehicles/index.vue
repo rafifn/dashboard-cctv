@@ -208,7 +208,7 @@ const handleVerify = async (row: unknown) => {
     const resp = await $fetch('/api/korlantas', {
       method: 'POST',
       body: {
-        search: 'r2183oa',
+        search: row?.rowData?.license_plate_number,
         key: 'nopol',
       },
     })

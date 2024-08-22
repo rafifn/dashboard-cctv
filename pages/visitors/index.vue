@@ -36,6 +36,7 @@
           <i class="fa-solid fa-arrow-right-from-bracket" />
         </button>
         <button
+          v-if="prop.rowData?.person?.no_id"
           class="btn btn-outline-info mr-1"
           @click="handleVerify(prop)"
         >
