@@ -19,9 +19,8 @@ export default defineEventHandler(async (e) => {
     const response = {
       statusCode: err.response?.status ?? 500,
       statusMessage: err?.data?.error?.message ?? 'Terjadi Kesalahan',
-      data: err.data,
+      data: err.data.toString(),
     }
-
     consola.error(JSON.stringify({ request: options, response }), '\n')
     throw createError(response)
   })
