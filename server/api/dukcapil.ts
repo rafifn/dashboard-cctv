@@ -5,17 +5,17 @@ export default defineEventHandler(async (e) => {
   const body = await readBody(e)
   const options = {
     method: 'POST',
-    baseURL: config.apiPartyEndpointsKorlantasUrl,
+    baseURL: config.apiPartyEndpointsDukcapilUrl,
     headers: {
       'content-type': 'application/json',
       // eslint-disable-next-line @stylistic/quote-props
-      authorization: `Bearer ${config.apiPartyEndpointsKorlantasToken}`,
+      authorization: `Bearer ${config.apiPartyEndpointsDukcapilToken}`,
     },
     body,
   }
   consola.log(options)
 
-  return $fetch('/kendaraan/get-info', options).catch((err) => {
+  return $fetch('/kependudukan/public/api/get-info-nik', options).catch((err) => {
     const response = {
       statusCode: err.response?.status ?? 500,
       statusMessage: err?.data?.error?.message ?? 'Terjadi Kesalahan',

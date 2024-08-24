@@ -222,7 +222,7 @@ const handleVerify = async (row: unknown) => {
       toast.add({ description: resp?.message ?? 'Terjadi Kesalahan, coba lagi beberapa saat', color: 'red' })
     }
   } catch (err) {
-    toast.add({ description: err?.response?._data ?? err?.response?.statusMessage ?? 'Terjadi Kesalahan', color: 'red' })
+    toast.add({ description: err?.response?._data?.data ?? err?.response?.statusMessage ?? 'Terjadi Kesalahan', color: 'red' })
   } finally {
     $loader.finish()
   }

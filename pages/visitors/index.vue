@@ -267,13 +267,10 @@ const handleOpenEditForm = (row: Vehicle) => {
 const handleVerify = async (row: Vehicle) => {
   try {
     $loader.start()
-    const resp = await $dukcapil('/kependudukan/public/api/get-info-nik', {
+    const resp = await $fetch('/api/dukcapil', {
       method: 'POST',
       body: {
         nik: row?.rowData?.person?.no_id,
-      },
-      headers: {
-        key: Math.random(),
       },
     })
     if (resp?.data) {
@@ -284,7 +281,7 @@ const handleVerify = async (row: Vehicle) => {
       toast.add({ description: JSON.stringify(resp?.message) ?? 'Terjadi Kesalahan, coba lagi beberapa saat', color: 'red' })
     }
   } catch (err) {
-    toast.add({ description: err?.response?._data ?? err?.response?.statusMessage ?? 'Terjadi Kesalahan', color: 'red' })
+    toast.add({ description: err?.response?._data?.data ?? err?.response?.statusMessage ?? 'Terjadi Kesalahan', color: 'red' })
   } finally {
     $loader.finish()
   }
