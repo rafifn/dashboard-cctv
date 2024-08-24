@@ -281,7 +281,7 @@ const handleVerify = async (row: Vehicle) => {
       toast.add({ description: JSON.stringify(resp?.message) ?? 'Terjadi Kesalahan, coba lagi beberapa saat', color: 'red' })
     }
   } catch (err) {
-    toast.add({ description: err?.response?._data?.data ?? err?.response?.statusMessage ?? 'Terjadi Kesalahan', color: 'red' })
+    toast.add({ description: err?.response?._data?.data ?? err?.response?.statusMessage ?? 'Data Tidak Ditemukan', color: 'red' })
   } finally {
     $loader.finish()
   }
