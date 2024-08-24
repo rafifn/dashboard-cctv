@@ -68,12 +68,13 @@
     >
       <UCard :ui="{ header: { padding: 'p-4' }, body: { padding: 'p-4' } }">
         <template #header>
-          <div class="flex items-center justify-end">
+          <div class="flex items-center justify-center">
+            <p>Data KORLANTAS</p>
             <UButton
               variant="ghost"
               icon="i-heroicons-x-mark-20-solid"
-              class="-my-1"
-              @click="isOpenForm = false"
+              class="-my-1 ml-auto"
+              @click="isOpenVerify = false"
             />
           </div>
         </template>
@@ -208,6 +209,7 @@ const handleVerify = async (row: unknown) => {
     const resp = await $fetch('/api/korlantas', {
       method: 'POST',
       body: {
+        id_telegram: '',
         search: row?.rowData?.license_plate_number,
         key: 'nopol',
       },
