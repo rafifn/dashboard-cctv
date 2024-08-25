@@ -53,6 +53,7 @@ export default defineNuxtConfig({
     apiPartyEndpointsDukcapilToken: '',
     public: {
       apiBaseUrl: '',
+      recordingBaseUrl: '',
       streamBaseUrl: '',
     },
   },

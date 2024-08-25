@@ -187,13 +187,13 @@
     <video
       v-if="selectedItem"
       :id="selectedItem.id"
-      :src="selectedCamera.src"
       controls
       autoplay
-      preload="auto"
-      :width="600"
-      :height="500"
-    />
+      :width="800"
+      :height="600"
+    >
+      <source :src="selectedItem.src">
+    </video>
     <ADatatable
       :params="currentQuery"
       :columns="COLUMNS"
@@ -228,6 +228,7 @@ import moment from 'moment'
 import { formatDateFromUTC } from '~/utils/helpers'
 
 const PAGE_SIZE_CAMERA = 1000
+const cfg = useRuntimeConfig()
 const { $api, $loader } = useNuxtApp()
 
 const { data: cameras } = await useAsyncData('cm', () => $api('/cctv/camera', {
@@ -258,7 +259,7 @@ const COLUMNS = [
 const handleFetchTable = async () => {
   try {
     $loader.start()
-    const resp = await $fetch('http://36.94.131.179:9996/list', {
+    const resp = await $fetch(`${cfg.public.recordingBaseUrl}/list`, {
       query: {
         path: selectedCamera.value?.value,
       },
@@ -273,7 +274,7 @@ const handleFetchTable = async () => {
 const handleFetchDataPlayer = (item) => {
   selectedItem.value = {
     id: selectedCamera.value.value,
-    src: `http://36.94.131.179:9996/get/path=${selectedCamera.value.value}&start=${item.start}&duration=${item.duration}`,
+    src: `${cfg.public.recordingBaseUrl}/get/path=${selectedCamera.value.value}&start=${item.start}&duration=${item.duration}`,
   }
 }
 const handleDownload = (item) => {
