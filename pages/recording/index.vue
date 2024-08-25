@@ -205,6 +205,7 @@
       has-actions
     >
       <template #start="prop">{{ prop.rowData.start ? formatDateFromUTC(prop.rowData.start) : '' }}</template>
+      <template #duration="prop">{{ prop.rowData.duration ? getDurationsHours(prop.rowData.duration) : '' }}</template>
       <template #actions="prop">
         <div class="space-x-2">
           <button
@@ -247,15 +248,13 @@ const cameraOptions = computed(() => cameras.value?.results.map(cm => ({ value: 
 
 const COLUMNS = [
   { data: null, title: 'Tanggal', sortable: false, render: '#start' },
-  { data: 'duration', title: 'Durasi', sortable: false, render: (data) => {
-    if (data) {
-      const duration = (moment.duration(data, 'seconds').asHours()).toFixed(2)
-      return `${duration} Jam`
-    }
-    return data
-  } },
+  { data: null, title: 'Durasi', sortable: false, render: '#duration' },
 ]
-
+const getDurationsHours = (sec) => {
+  if (!sec) return ''
+  const duration = (moment.duration(data, 'seconds').asHours()).toFixed(2)
+  return `${duration} Jam`
+}
 const handleFetchTable = async () => {
   try {
     $loader.start()
