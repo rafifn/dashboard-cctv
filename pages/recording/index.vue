@@ -274,11 +274,11 @@ const handleFetchTable = async () => {
 const handleFetchDataPlayer = (item) => {
   selectedItem.value = {
     id: selectedCamera.value.value,
-    src: `${cfg.public.recordingBaseUrl}/get/path=${selectedCamera.value.value}&start=${item.start}&duration=${item.duration}`,
+    src: `${cfg.public.recordingBaseUrl}/get/path=${selectedCamera.value.value}&start=${item.start}&duration=${item.duration}&format=fmp4`,
   }
 }
 const handleDownload = (item) => {
-  navigateTo(`/recording/${selectedCamera.value.value}?start=${item.start}&duration=${item.duration}`)
+  navigateTo(`/recording/${selectedCamera.value.value}?start=${item.start}&duration=${item.duration}`, { open: { target: '_blank' } })
 }
 
 const { currentQuery } = useTable()
