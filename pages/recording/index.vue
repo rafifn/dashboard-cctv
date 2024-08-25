@@ -281,7 +281,7 @@ const handleFetchTable = async () => {
 const handleFetchDataPlayer = (item) => {
   selectedItem.value = {
     id: selectedCamera.value.value,
-    src: `${cfg.public.recordingBaseUrl}/get/path=${selectedCamera.value.value}&start=${item.start}&duration=${item.duration}&format=fmp4`,
+    src: `${cfg.public.recordingBaseUrl}/get?path=${selectedCamera.value.value}&start=${item.start}&duration=${item.duration}&format=fmp4`,
   }
 }
 const handleDownload = (item) => {
