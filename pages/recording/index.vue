@@ -252,7 +252,7 @@ const COLUMNS = [
 ]
 const getDurationsHours = (sec) => {
   if (!sec) return ''
-  const duration = (moment.duration(data, 'seconds').asHours()).toFixed(2)
+  const duration = (moment.duration(sec, 'seconds').asHours()).toFixed(2)
   return `${duration} Jam`
 }
 const handleFetchTable = async () => {
