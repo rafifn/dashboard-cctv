@@ -254,7 +254,7 @@ const handleFetchTable = async () => {
     $loader.start()
     const resp = await $fetch('http://36.94.131.179:9996/list', {
       query: {
-        path: selectedCamera.value?.channel_id,
+        path: selectedCamera.value?.value,
       },
     })
     items.value = resp
