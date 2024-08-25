@@ -248,9 +248,8 @@ const COLUMNS = [
   } },
   { data: 'duration', title: 'Durasi', sortable: false, render: (data) => {
     if (data) {
-      const duration = moment.duration(data, 'seconds')
-      const formatted = duration.format('h [jam], m [menit], s [detik]', { trim: false })
-      return formatted
+      const duration = (moment.duration(data, 'seconds').asHours()).toFixed(2)
+      return `${duration} Jam`
     }
     return data
   } },
