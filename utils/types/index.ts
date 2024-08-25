@@ -9,6 +9,11 @@ export interface Loader {
   start(message?: string): void
   finish(): void
 }
+export interface MapCamera {
+  title: string
+  coords: string
+  shape: string
+}
 export interface Camera {
   id32: string
   channel_id: string

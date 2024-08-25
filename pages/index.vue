@@ -121,10 +121,10 @@
       </div>
       <!-- END col-3 -->
 
-      <div class="col-xl-6">
-        <div class="row flex-column">
+      <div class="col-xl-12">
+        <div class="row">
           <!-- BEGIN col-6 -->
-          <div class="col-xl-12">
+          <div class="col-xl-6">
             <!-- BEGIN card -->
             <div class="card mb-3">
               <!-- BEGIN card-body -->
@@ -260,7 +260,7 @@
           <!-- END col-6 -->
 
           <!-- BEGIN col-6 -->
-          <div class="col-xl-12">
+          <div class="col-xl-6">
             <!-- BEGIN card -->
             <div class="card mb-3">
               <!-- BEGIN card-body -->
@@ -309,7 +309,8 @@
       </div>
 
       <!-- BEGIN col-6 -->
-      <div class="col-xl-6">
+      <!-- END col-6 -->
+      <div class="col-12">
         <!-- BEGIN card -->
         <div class="card mb-3">
           <!-- BEGIN card-body -->
@@ -319,17 +320,163 @@
               <span class="flex-grow-1">PETA KPAD</span>
             </div>
             <!-- END title -->
-            <!-- BEGIN map -->
-            <div
-              class="ratio ratio-1x1 mb-3 cursor-pointer"
-              @click="isOpenFullMaps = true"
-            >
+            <div>
               <img
+                class="object-fit"
                 src="/public/map3.jpg"
                 alt="map"
+                usemap="#image-map"
               >
+              <map name="image-map">
+                <area
+                  alt="Camera 16"
+                  title="Camera 16"
+                  coords="289,146,17"
+                  shape="circle"
+                  @click="handleClickMapPoint('Camera 16')"
+                >
+                <area
+                  alt="Camera 25"
+                  title="Camera 25"
+                  coords="393,115,16"
+                  shape="circle"
+                  @click="handleClickMapPoint('Camera 25')"
+                >
+                <area
+                  alt="Camera 15"
+                  title="Camera 15"
+                  coords="275,194,297,199,277,168,269,180"
+                  shape="poly"
+                  @click="handleClickMapPoint('Camera 15')"
+                >
+                <area
+                  alt="Camera 14"
+                  title="Camera 14"
+                  coords="303,177,16"
+                  shape="circle"
+                  @click="handleClickMapPoint('Camera 14')"
+                >
+                <area
+                  alt="Camera 23 &amp; Camera 24"
+                  title="Camera 23 &amp; Camera 24"
+                  coords="397,179,18"
+                  shape="circle"
+                  @click="handleClickMapPoint('Camera 23 & Camera 24')"
+                >
+                <area
+                  alt="Camera 13 &amp; Camera 12 &amp; Camera 33"
+                  title="Camera 13 &amp; Camera 12 &amp; Camera 33"
+                  coords="342,228,19"
+                  shape="circle"
+                  @click="handleClickMapPoint('Camera 13 & Camera 12 & Camera 33')"
+                >
+                <area
+                  alt="Camera 28"
+                  title="Camera 28"
+                  coords="150,336,17"
+                  shape="circle"
+                  @click="handleClickMapPoint('Camera 28')"
+                >
+                <area
+                  alt="Camera 11 &amp; Camera 36"
+                  title="Camera 11 &amp; Camera 36"
+                  coords="169,325,180,325,186,330,190,336,192,342,193,349,191,355,183,362,169,362,162,357"
+                  shape="poly"
+                  @click="handleClickMapPoint('Camera 11 & Camera 36')"
+                >
+                <area
+                  alt="Camera 17"
+                  title="Camera 17"
+                  coords="320,297,17"
+                  shape="circle"
+                  @click="handleClickMapPoint('Camera 17')"
+                >
+                <area
+                  alt="Camera 27"
+                  title="Camera 27"
+                  coords="226,438,17"
+                  shape="circle"
+                  @click="handleClickMapPoint('Camera 27')"
+                >
+                <area
+                  alt="Camera 30"
+                  title="Camera 30"
+                  coords="209,426,207,420,207,412,210,407,217,403,224,402,231,403,236,408,238,413,239,418"
+                  shape="poly"
+                  @click="handleClickMapPoint('Camera 30')"
+                >
+                <area
+                  alt="Camera 32"
+                  title="Camera 32"
+                  coords="294,458,18"
+                  shape="circle"
+                  @click="handleClickMapPoint('Camera 32')"
+                >
+                <area
+                  alt="Camera 34"
+                  title="Camera 34"
+                  coords="386,438,17"
+                  shape="circle"
+                  @click="handleClickMapPoint('Camera 34')"
+                >
+                <area
+                  alt="Camera 21"
+                  title="Camera 21"
+                  coords="364,446,360,453,360,461,363,466,370,470,376,471,384,469,388,463,393,458"
+                  shape="poly"
+                  @click="handleClickMapPoint('Camera 21')"
+                >
+                <area
+                  alt="Camera 22 &amp; Camera 20"
+                  title="Camera 22 &amp; Camera 20"
+                  coords="422,497,21"
+                  shape="circle"
+                  @click="handleClickMapPoint('Camera 22 & Camera 20')"
+                >
+                <area
+                  alt="Camera 29 &amp; Camera 35"
+                  title="Camera 29 &amp; Camera 35"
+                  coords="622,502,21"
+                  shape="circle"
+                  @click="handleClickMapPoint('Camera 29 & Camera 35')"
+                >
+                <area
+                  alt="Camera 19"
+                  title="Camera 19"
+                  coords="543,593,17"
+                  shape="circle"
+                  @click="handleClickMapPoint('Camera 19')"
+                >
+                <area
+                  alt="Camera 18"
+                  title="Camera 18"
+                  coords="529,619,16"
+                  shape="circle"
+                  @click="handleClickMapPoint('Camera 18')"
+                >
+                <area
+                  alt="Camera 31"
+                  title="Camera 31"
+                  coords="490,685,17"
+                  shape="circle"
+                  @click="handleClickMapPoint('Camera 31')"
+                >
+                <area
+                  alt="Camera 26"
+                  title="Camera 26"
+                  coords="476,721,18"
+                  shape="circle"
+                  @click="handleClickMapPoint('Camera 26')"
+                >
+                <area
+                  alt="Camera 37"
+                  title="Camera 37"
+                  coords="468,701,460,696,449,697,440,708,444,719,448,725,453,729,459,730"
+                  shape="poly"
+                  @click="handleClickMapPoint('Camera 37')"
+                >
+              </map>
             </div>
-            <!-- END map -->
           </div>
           <!-- END card-body -->
 
@@ -344,35 +491,39 @@
         </div>
         <!-- END card -->
       </div>
-      <!-- END col-6 -->
     </div>
     <AModal
-      :is-open="isOpenFullMaps"
-      :is-prevent-close="false"
-      is-full-screen
+      :is-open="isOpenCameraMap"
+      :ui="{ background: 'bg-modal', width: 'w-full sm:max-w-[70%]' }"
     >
-      <div class="flex-1 flex flex-col justify-center items-center px-4">
-        <UButton
-          variant="link"
-          color="red"
-          icon="i-heroicons-x-mark-20-solid"
-          class="ml-auto"
-          @click="isOpenFullMaps = false"
+      <UCard>
+        <template #header>
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-semibold leading-6 mb-0 text-white">
+              {{ selectedCctvMap.id }}
+            </h3>
+            <UButton
+              variant="ghost"
+              icon="i-heroicons-x-mark-20-solid"
+              class="-my-1"
+              @click="isOpenCameraMap = false"
+            />
+          </div>
+        </template>
+        <ACctv
+          :id="selectedCctvMap.id"
+          :src="selectedCctvMap.src"
+          :height="700"
+          :width="1000"
         />
-        <div class="w-[800px]">
-          <img
-            class="object-fit"
-            src="/public/map3.jpg"
-            alt="map"
-          >
-        </div>
-      </div>
+      </UCard>
     </AModal>
   </div>
 </template>
 
 <script lang="ts" setup>
 import VueApexCharts from 'vue3-apexcharts'
+import { MAP_CHANNEL } from '~/utils/constants'
 import { formatDateFromUTC } from '~/utils/helpers'
 
 const { $api } = useNuxtApp()
@@ -426,13 +577,14 @@ const lprParams = ref({
   search: '',
   size: '10',
 })
-const isOpenFullMaps = ref(false)
+const isOpenCameraMap = ref(false)
+const selectedCctvMap = ref()
 
 defineShortcuts({
   escape: {
     usingInput: true,
-    whenever: [isOpenFullMaps],
-    handler: () => { isOpenFullMaps.value = false },
+    whenever: [isOpenCameraMap],
+    handler: () => { isOpenCameraMap.value = false },
   },
 })
 
@@ -453,10 +605,17 @@ const handleGetLpr = async () => {
     alert(JSON.stringify(err))
   }
 }
+const handleClickMapPoint = (point: string) => {
+  const camera = MAP_CHANNEL.find(ch => ch.camera_name.includes(point))
+  selectedCctvMap.value = { id: point, src: camera?.channel_id }
+  isOpenCameraMap.value = true
+}
 
 onMounted(() => handleGetLpr())
 </script>
 
 <style lang="scss" scoped>
-
+::v-deep(.video-js) {
+  height: 500px;
+}
 </style>
