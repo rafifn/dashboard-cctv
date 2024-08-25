@@ -266,8 +266,8 @@ const handleFetchTable = async () => {
 }
 const handleFetchDataPlayer = (item) => {
   selectedItem.value = {
-    id: selectedCamera.value.channel_id,
-    src: `http://36.94.131.179:9996/get/path=${selectedCamera.value.channel_id}&start=${item.start}&duration=${item.duration}`,
+    id: selectedCamera.value.value,
+    src: `http://36.94.131.179:9996/get/path=${selectedCamera.value.value}&start=${item.start}&duration=${item.duration}`,
   }
 }
 
