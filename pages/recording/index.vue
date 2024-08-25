@@ -1,24 +1,213 @@
 <!-- eslint-disable max-len -->
 <template>
   <div class="space-y-4">
-    <ACctv
-      :id="CAMERA.id"
-      :src="CAMERA.src"
+    <USelectMenu
+      v-model="selectedCamera"
+      :options="cameraOptions"
+      :ui="{
+        wrapper: 'relative',
+        base: 'relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0',
+        form: 'form-select',
+        rounded: 'rounded-md',
+        placeholder: 'text-gray-400 dark:text-gray-500',
+        file: {
+          base: 'file:mr-1.5 file:font-medium file:text-gray-500 dark:file:text-gray-400 file:bg-transparent file:border-0 file:p-0 file:outline-none',
+        },
+        size: {
+          '2xs': 'text-xs',
+          'xs': 'text-xs',
+          'sm': 'text-sm',
+          'md': 'text-sm',
+          'lg': 'text-sm',
+          'xl': 'text-base',
+        },
+        gap: {
+          '2xs': 'gap-x-1',
+          'xs': 'gap-x-1.5',
+          'sm': 'gap-x-1.5',
+          'md': 'gap-x-2',
+          'lg': 'gap-x-2.5',
+          'xl': 'gap-x-2.5',
+        },
+        padding: {
+          '2xs': 'px-2 py-1',
+          'xs': 'px-2.5 py-1.5',
+          'sm': 'px-2.5 py-1.5',
+          'md': 'px-3 py-2',
+          'lg': 'px-3.5 py-2.5',
+          'xl': 'px-3.5 py-2.5',
+        },
+        leading: {
+          padding: {
+            '2xs': 'ps-7',
+            'xs': 'ps-8',
+            'sm': 'ps-9',
+            'md': 'ps-10',
+            'lg': 'ps-11',
+            'xl': 'ps-12',
+          },
+        },
+        trailing: {
+          padding: {
+            '2xs': 'pe-7',
+            'xs': 'pe-8',
+            'sm': 'pe-9',
+            'md': 'pe-10',
+            'lg': 'pe-11',
+            'xl': 'pe-12',
+          },
+        },
+        color: {
+          white: {
+            outline: 'shadow-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
+          },
+          gray: {
+            outline: 'shadow-sm bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
+          },
+        },
+        variant: {
+          outline: 'shadow-sm bg-transparent text-gray-900 dark:text-white ring-1 ring-inset ring-{color}-500 dark:ring-{color}-400 focus:ring-2 focus:ring-{color}-500 dark:focus:ring-{color}-400',
+          none: 'bg-transparent focus:ring-0 focus:shadow-none',
+        },
+        icon: {
+          base: 'flex-shrink-0 text-gray-400 dark:text-gray-500',
+          color: 'text-{color}-500 dark:text-{color}-400',
+          loading: 'animate-spin',
+          size: {
+            '2xs': 'h-4 w-4',
+            'xs': 'h-4 w-4',
+            'sm': 'h-5 w-5',
+            'md': 'h-5 w-5',
+            'lg': 'h-5 w-5',
+            'xl': 'h-6 w-6',
+          },
+          leading: {
+            wrapper: 'absolute inset-y-0 start-0 flex items-center',
+            pointer: 'pointer-events-none',
+            padding: {
+              '2xs': 'px-2',
+              'xs': 'px-2.5',
+              'sm': 'px-2.5',
+              'md': 'px-3',
+              'lg': 'px-3.5',
+              'xl': 'px-3.5',
+            },
+          },
+          trailing: {
+            wrapper: 'absolute inset-y-0 end-0 flex items-center',
+            pointer: 'pointer-events-none',
+            padding: {
+              '2xs': 'px-2',
+              'xs': 'px-2.5',
+              'sm': 'px-2.5',
+              'md': 'px-3',
+              'lg': 'px-3.5',
+              'xl': 'px-3.5',
+            },
+          },
+        },
+        default: {
+          size: 'sm',
+          color: 'white',
+          variant: 'outline',
+          loadingIcon: 'i-heroicons-arrow-path-20-solid',
+          trailingIcon: 'i-heroicons-chevron-down-20-solid',
+        },
+      }"
+      :ui-menu="{
+        container: 'z-20 group',
+        trigger: 'flex items-center w-full',
+        width: 'w-full',
+        height: 'max-h-60',
+        base: 'relative focus:outline-none overflow-y-auto scroll-py-1',
+        background: 'bg-white dark:bg-gray-800',
+        shadow: 'shadow-lg',
+        rounded: 'rounded-md',
+        padding: 'p-1',
+        ring: 'ring-1 ring-gray-200 dark:ring-gray-700',
+        empty: 'text-sm text-gray-400 dark:text-gray-500 px-2 py-1.5',
+        option: {
+          base: 'cursor-default select-none relative flex items-center justify-between gap-1',
+          rounded: 'rounded-md',
+          padding: 'px-1.5 py-1.5',
+          size: 'text-sm',
+          color: 'text-gray-900 dark:text-white',
+          container: 'flex items-center gap-1.5 min-w-0',
+          active: 'bg-gray-100 dark:bg-gray-900',
+          inactive: '',
+          selected: 'pe-7',
+          disabled: 'cursor-not-allowed opacity-50',
+          empty: 'text-sm text-gray-400 dark:text-gray-500 px-2 py-1.5',
+          icon: {
+            base: 'flex-shrink-0 h-5 w-5',
+            active: 'text-gray-900 dark:text-white',
+            inactive: 'text-gray-400 dark:text-gray-500',
+          },
+          selectedIcon: {
+            wrapper: 'absolute inset-y-0 end-0 flex items-center',
+            padding: 'pe-2',
+            base: 'h-5 w-5 text-gray-900 dark:text-white flex-shrink-0',
+          },
+          avatar: {
+            base: 'flex-shrink-0',
+            size: '2xs',
+          },
+          chip: {
+            base: 'flex-shrink-0 w-2 h-2 mx-1 rounded-full',
+          },
+          create: 'block truncate',
+        },
+        transition: {
+          leaveActiveClass: 'transition ease-in duration-100',
+          leaveFromClass: 'opacity-100',
+          leaveToClass: 'opacity-0',
+        },
+        popper: {
+          placement: 'bottom-end',
+        },
+        default: {
+          selectedIcon: 'i-heroicons-check-20-solid',
+          clearSearchOnClose: false,
+          showCreateOptionWhen: 'empty',
+        },
+        arrow: {
+          base: 'invisible before:visible before:block before:rotate-45 before:z-[-1] before:w-2 before:h-2',
+          ring: 'before:ring-1 before:ring-gray-200 dark:before:ring-gray-700',
+          rounded: 'before:rounded-sm',
+          background: 'before:bg-white dark:before:bg-gray-700',
+          shadow: 'before:shadow',
+        },
+        select: 'inline-flex items-center text-left cursor-default',
+        input: 'block w-[calc(100%+0.5rem)] focus:ring-transparent text-sm px-3 py-1.5 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 border-0 border-b border-gray-200 dark:border-gray-700 sticky -top-1 -mt-1 mb-1 -mx-1 z-10 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none',
+        required: 'absolute inset-0 w-px opacity-0 cursor-default',
+        label: 'block truncate',
+      }"
+      @update:model-value="handleFetchTable"
+    />
+    <video
+      v-if="selectedItem"
+      :id="selectedItem.id"
+      :src="selectedCamera.src"
+      controls
+      autoplay
+      preload="auto"
+      :width="600"
       :height="500"
     />
     <ADatatable
       :params="currentQuery"
       :columns="COLUMNS"
-      :rows="DATA?.results ?? []"
-      :total-data="DATA?.count?.toString() ?? '0'"
+      :rows="items ?? []"
+      total-data="0"
       :downloadable="false"
       :searchable="false"
       has-actions
     >
-      <template #actions>
+      <template #actions="prop">
         <div class="space-x-2">
           <button
             class="btn btn-outline-info mr-1"
+            @click="handleFetchDataPlayer(prop.rowData)"
           >
             <i class="fa-solid fa-circle-play" />
           </button>
@@ -36,45 +225,21 @@
 <script setup lang="ts">
 import { formatDateFromUTC } from '~/utils/helpers'
 
-const CAMERA = {
-  src: 'bab5459e-5844-42e4-9e6f-4547465e1122',
-  id: '1',
-}
-const DATA = {
-  results: [
-    {
-      id_recording: '1',
-      camera: 'Camera 32 - POS 20',
-      date: 1723775212000,
-      total_time: '2 Jam',
-    },
-    {
-      id_recording: '2',
-      camera: 'Camera 26 - POS 30',
-      date: 1720750396000,
-      total_time: '2 Jam',
-    },
-    {
-      id_recording: '3',
-      camera: 'Camera 26 - POS 30',
-      date: 1720339056000,
-      total_time: '2 Jam',
-    },
-    {
-      id_recording: '4',
-      camera: 'Camera 32 - POS 20',
-      date: 1720146897000,
-      total_time: '2 Jam',
-    },
-    {
-      id_recording: '5',
-      camera: 'Camera 32 - POS 20',
-      date: 1719577419000,
-      total_time: '2 Jam',
-    },
-  ],
-  count: 5,
-}
+const PAGE_SIZE_CAMERA = 1000
+const { $api, $loader } = useNuxtApp()
+
+const { data: cameras } = await useAsyncData('cm', () => $api('/cctv/camera', {
+  query: {
+    is_active: true,
+    page_size: PAGE_SIZE_CAMERA,
+  },
+}))
+
+const selectedCamera = ref()
+const items = ref([])
+const selectedItem = ref()
+const cameraOptions = computed(() => cameras.value?.results.map(cm => ({ value: cm.channel_id, label: cm.name })))
+
 const COLUMNS = [
   { data: 'id_recording', title: 'ID Recording', type: 'string', sortable: false },
   { data: 'camera', title: 'Kamera', sortable: false },
@@ -83,6 +248,28 @@ const COLUMNS = [
   } },
   { data: 'total_time', title: 'Total Time', sortable: false },
 ]
+
+const handleFetchTable = async (option) => {
+  try {
+    $loader.start()
+    const resp = await $fetch('http://36.94.131.179:9996/list', {
+      query: {
+        path: option?.channel_id,
+      },
+    })
+    items.value = resp
+  } catch (err) {
+    alert(err)
+  } finally {
+    $loader.finish()
+  }
+}
+const handleFetchDataPlayer = (item) => {
+  selectedItem.value = {
+    id: selectedCamera.value.channel_id,
+    src: `http://36.94.131.179:9996/get/path=${selectedCamera.value.channel_id}&start=${item.start}&duration=${item.duration}`,
+  }
+}
 
 const { currentQuery } = useTable()
 </script>

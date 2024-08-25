@@ -24,12 +24,14 @@ interface Props {
   height?: number
   controls?: boolean
   fluid?: boolean
+  isHls?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   width: 400,
   height: 200,
   controls: true,
+  isHls: true,
 })
 
 const cfg = useRuntimeConfig()
@@ -38,7 +40,7 @@ const video = ref()
 
 onMounted(() => {
   const element = document.getElementById(props.id)
-  const url = `${cfg.public.streamBaseUrl}/${props.src}/index.m3u8`
+  const url = props.isHls ? `${cfg.public.streamBaseUrl}/${props.src}/index.m3u8` : props.src
   videojs(element, {
     fluid: props.fluid,
     controls: props.controls,
