@@ -5,8 +5,12 @@
       autoplay
       :width="600"
       :height="500"
+      name="media"
     >
-      <source :src="url">
+      <source
+        :src="url"
+        type="video/mp4"
+      >
     </video>
   </div>
 </template>

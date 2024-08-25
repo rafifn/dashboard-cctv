@@ -192,8 +192,12 @@
       autoplay
       :width="800"
       :height="600"
+      name="media"
     >
-      <source :src="selectedItem.src">
+      <source
+        :src="selectedItem.src"
+        type="video/mp4"
+      >
     </video>
     <ADatatable
       :params="currentQuery"
@@ -204,8 +208,12 @@
       :searchable="false"
       has-actions
     >
-      <template #start="prop">{{ prop.rowData.start ? formatDateFromUTC(prop.rowData.start) : '' }}</template>
-      <template #duration="prop">{{ prop.rowData.duration ? getDurationsHours(prop.rowData.duration) : '' }}</template>
+      <template #start="prop">
+        {{ prop.rowData.start ? formatDateFromUTC(prop.rowData.start) : '' }}
+      </template>
+      <template #duration="prop">
+        {{ prop.rowData.duration ? getDurationsHours(prop.rowData.duration) : '' }}
+      </template>
       <template #actions="prop">
         <div class="space-x-2">
           <button
