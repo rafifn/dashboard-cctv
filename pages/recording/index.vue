@@ -213,6 +213,7 @@
           </button>
           <button
             class="btn btn-outline-success mr-1"
+            @click="handleDownload(prop.rowData)"
           >
             <i class="fa-solid fa-circle-down" />
           </button>
@@ -223,6 +224,7 @@
 </template>
 
 <script setup lang="ts">
+import moment from 'moment'
 import { formatDateFromUTC } from '~/utils/helpers'
 
 const PAGE_SIZE_CAMERA = 1000
@@ -241,12 +243,17 @@ const selectedItem = ref()
 const cameraOptions = computed(() => cameras.value?.results.map(cm => ({ value: cm.channel_id, label: cm.name })))
 
 const COLUMNS = [
-  { data: 'id_recording', title: 'ID Recording', type: 'string', sortable: false },
-  { data: 'camera', title: 'Kamera', sortable: false },
-  { data: 'date', title: 'Tanggal', sortable: false, render: (data) => {
+  { data: 'start', title: 'Tanggal', sortable: false, render: (data) => {
     return data ? formatDateFromUTC(data) : ''
   } },
-  { data: 'total_time', title: 'Total Time', sortable: false },
+  { data: 'duration', title: 'Durasi', sortable: false, render: (data) => {
+    if (data) {
+      const duration = moment.duration(data, 'seconds')
+      const formatted = duration.format('h [jam], m [menit], s [detik]', { trim: false })
+      return formatted
+    }
+    return data
+  } },
 ]
 
 const handleFetchTable = async () => {
@@ -269,6 +276,9 @@ const handleFetchDataPlayer = (item) => {
     id: selectedCamera.value.value,
     src: `http://36.94.131.179:9996/get/path=${selectedCamera.value.value}&start=${item.start}&duration=${item.duration}`,
   }
+}
+const handleDownload = (item) => {
+  navigateTo(`/recording/${selectedCamera.value.value}?start=${item.start}&duration=${item.duration}`)
 }
 
 const { currentQuery } = useTable()
