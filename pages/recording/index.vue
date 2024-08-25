@@ -249,12 +249,12 @@ const COLUMNS = [
   { data: 'total_time', title: 'Total Time', sortable: false },
 ]
 
-const handleFetchTable = async (option) => {
+const handleFetchTable = async () => {
   try {
     $loader.start()
     const resp = await $fetch('http://36.94.131.179:9996/list', {
       query: {
-        path: option?.channel_id,
+        path: selectedCamera.value?.channel_id,
       },
     })
     items.value = resp
