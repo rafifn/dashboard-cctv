@@ -1,6 +1,7 @@
 <!-- eslint-disable max-len -->
 <template>
   <div class="space-y-4">
+    <span class="text-xs">Pilih Kamera:</span>
     <USelectMenu
       v-model="selectedCamera"
       :options="cameraOptions"
@@ -203,6 +204,7 @@
       :searchable="false"
       has-actions
     >
+      <template #start="prop">{{ prop.rowData.start ? formatDateFromUTC(prop.rowData.start) : '' }}</template>
       <template #actions="prop">
         <div class="space-x-2">
           <button
@@ -244,9 +246,7 @@ const selectedItem = ref()
 const cameraOptions = computed(() => cameras.value?.results.map(cm => ({ value: cm.channel_id, label: cm.name })))
 
 const COLUMNS = [
-  { data: 'start', title: 'Tanggal', sortable: false, render: (data) => {
-    return data ? formatDateFromUTC(data) : ''
-  } },
+  { data: null, title: 'Tanggal', sortable: false, render: '#start' },
   { data: 'duration', title: 'Durasi', sortable: false, render: (data) => {
     if (data) {
       const duration = (moment.duration(data, 'seconds').asHours()).toFixed(2)
