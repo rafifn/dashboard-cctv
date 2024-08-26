@@ -1,6 +1,11 @@
 name: Release app
+
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - release
+
 jobs:
   build:
     strategy:
