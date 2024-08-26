@@ -76,6 +76,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   const element = document.getElementById(props.id)
+  if (!element) return
   videojs(element).dispose()
 })
 </script>

@@ -54,6 +54,7 @@
                 renderer: DataTablesCore.Responsive.renderer.listHiddenNodes(),
               },
             },
+            pageLength: params.page_size ? Number(params.page_size) : 10,
             paging: true,
             searching: false,
             buttons: downloadable ? [
@@ -153,7 +154,7 @@ const emit = defineEmits(['update:page', 'update:size', 'update:search', 'delete
 DataTable.use(DataTablesCore)
 
 const table = ref()
-const selectedSize = ref(props.params.size ?? '10')
+const selectedSize = ref(props.params.page_size ?? '10')
 const keyword = ref(props.params.search)
 const columnsTable = computed(() => [
   ...props.columns,

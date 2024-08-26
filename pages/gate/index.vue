@@ -43,7 +43,8 @@
       />
     </div>
     <ADatatable
-      :params="currentQuery"
+      v-if="isRenderingTable"
+      :params="lprParams"
       :columns="COLUMNS"
       :rows="lpr?.results ?? []"
       :total-data="lpr?.count?.toString() ?? '0'"
@@ -61,7 +62,7 @@
         <img
           v-if="prop?.rowData?.snapshot"
           :src="prop?.rowData?.snapshot?.url"
-          class="h-20 w-20 object-contain cursor-pointer"
+          class="w-20 object-contain cursor-pointer"
           alt="kendaraan"
           @click="openImage(prop.rowData.snapshot?.url)"
         >
@@ -78,10 +79,9 @@ const COLUMNS = [
   { data: 'camera', title: 'Kamera', sortable: false, render: (data) => {
     return data.name
   } },
-  { data: null, title: 'Timestamp Masuk', render: '#checkin' },
-  { data: null, title: 'Timestamp Keluar', render: '#checkout' },
-  { data: 'direction', title: 'Arah', sortable: false },
-  { data: null, title: 'Foto Kendaraan', render: '#snapshot' },
+  { data: null, title: 'Timestamp Masuk', type: 'string', render: '#checkin' },
+  { data: null, title: 'Timestamp Keluar', type: 'string', render: '#checkout' },
+  { data: null, title: 'Foto Kendaraan', type: 'string', render: '#snapshot' },
 ]
 const PAGE_SIZE_CAMERA = 6
 
@@ -105,19 +105,20 @@ const { data } = await useAsyncData('camera', () => $api('/cctv/camera', {
 })
 
 const lpr = ref()
+const isRenderingTable = ref(true)
 const isLoadingChild = ref(false)
 const channelIdActive = ref()
 const lprParams = ref({
   page: '1',
   search: '',
-  size: '10',
+  page_size: '10',
 })
 
 const handleClickThumbnail = (item: { hls_url: string, id32: string, channel_id: string }) => {
   lprParams.value = {
     page: '1',
     search: '',
-    size: '10',
+    page_size: '10',
   }
   channelIdActive.value = item.channel_id
 }
@@ -129,7 +130,7 @@ const handleGetLpr = async () => {
         is_active: true,
         is_gate: true,
         page: lprParams.value.page,
-        page_size: lprParams.value.size,
+        page_size: lprParams.value.page_size,
         search: lprParams.value.search,
       },
     })
@@ -142,7 +143,7 @@ const handleSearchLpr = (keyword: string) => {
   lprParams.value = {
     search: keyword,
     page: '1',
-    size: '10',
+    page_size: '10',
   }
   handleGetLpr()
 }
@@ -151,9 +152,13 @@ const handleUpdatePageLpr = (page: string) => {
   handleGetLpr()
 }
 const handleUpdateSizeLpr = (size: string) => {
-  lprParams.value.size = size
+  lprParams.value.page_size = size
   lprParams.value.page = '1'
   handleGetLpr()
+  isRenderingTable.value = false
+  setTimeout(() => {
+    isRenderingTable.value = true
+  }, 500)
 }
 const handleUpdatePage = (page: string) => {
   isLoadingChild.value = true

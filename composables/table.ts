@@ -6,7 +6,7 @@ export const useTable = () => {
   const currentQuery = ref<Record<string, unknown>>({
     ...route.query,
     page: route.query.page ? route.query.page : '1',
-    page_size: route.query.size ? route.query.page_size : '10',
+    page_size: route.query.page_size ? route.query.page_size : '10',
     search: (route.query?.search ?? '') as string,
   })
 
@@ -29,10 +29,14 @@ export const useTable = () => {
     })
   }
   const handleUpdateSize = (page_size: string) => {
-    router.push({
-      path: route.path,
-      query: { ...route.query, page: 1, page_size },
+    const url = new URL(window.location.href)
+    const currentQ = { ...route.query, page_size }
+
+    Object.keys(currentQ).forEach((key) => {
+      // Tambahkan atau perbarui setiap parameter query
+      url.searchParams.set(key, currentQ[key])
     })
+    window.location.href = url.href
   }
 
   watch(

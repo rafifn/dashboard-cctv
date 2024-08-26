@@ -10,7 +10,7 @@
       <!-- BEGIN menu -->
       <div class="menu">
         <NuxtLink
-          v-for="(menu, menuIdx) in MENUS"
+          v-for="(menu, menuIdx) in menusFiltered"
           :key="menuIdx"
           :class="['menu-item', { active: $route.name === menu.name }]"
           :to="menu.path"
@@ -44,8 +44,9 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useBreakpoints, breakpointsTailwind } from '@vueuse/core'
+import type { Profile } from '~/utils/types'
 
 const MENUS = [
   {
@@ -64,6 +65,18 @@ const MENUS = [
     label: 'Gate Monitoring',
     name: 'gate',
     path: '/gate',
+    icon: 'bi-floppy',
+  },
+  {
+    label: 'Check LPR',
+    name: 'check-lpr',
+    path: '/check/lpr',
+    icon: 'bi-floppy',
+  },
+  {
+    label: 'Check NIK',
+    name: 'check-nik',
+    path: '/check/nik',
     icon: 'bi-floppy',
   },
   {
@@ -95,12 +108,23 @@ const MENUS = [
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isMobile = breakpoints.smallerOrEqual('sm')
 
+const cfg = useRuntimeConfig()
+
+const myProfileState = useState<Profile>('myProfileState')
 const isExpandSidebar = useState('isExpandSidebar', () => true)
 const authToken = useCookie('_auth_token')
 const refreshToken = useCookie('_refresh_token')
 const router = useRouter()
 
 const isOpenConfirmationLogout = ref(false)
+
+const menusFiltered = computed(() => {
+  const envPermissions = JSON.parse(JSON.stringify(cfg.public.permissions))
+  const currentPermissions = myProfileState.value
+    ? envPermissions.find(pm => pm.role === myProfileState.value.role.name)
+    : undefined
+  return currentPermissions && currentPermissions.permissions.length && currentPermissions.permissions[0] === 'all' ? MENUS : currentPermissions ? MENUS.filter(mn => currentPermissions.permissions.includes(mn.name)) : []
+})
 
 const handleClickLogout = () => {
   if (isMobile.value) {
@@ -111,6 +135,7 @@ const handleClickLogout = () => {
 const handleLogout = () => {
   authToken.value = undefined
   refreshToken.value = undefined
+  myProfileState.value = undefined
   router.replace('/login')
 }
 </script>
