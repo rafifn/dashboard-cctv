@@ -53,7 +53,7 @@ export default defineNuxtConfig({
     apiPartyEndpointsDukcapilToken: '',
     public: {
       apiBaseUrl: '',
-      permissions: [],
+      permissions: '',
       recordingBaseUrl: '',
       streamBaseUrl: '',
     },

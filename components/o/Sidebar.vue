@@ -119,7 +119,8 @@ const router = useRouter()
 const isOpenConfirmationLogout = ref(false)
 
 const menusFiltered = computed(() => {
-  const envPermissions = JSON.parse(JSON.stringify(cfg.public.permissions))
+  const decoded = atob(cfg.public.permissions)
+  const envPermissions = JSON.parse(decoded)
   const currentPermissions = myProfileState.value
     ? envPermissions.find(pm => pm.role === myProfileState.value.role.name)
     : undefined
