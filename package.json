@@ -2,7 +2,7 @@
   "name": "eocortex-mabes",
   "private": true,
   "scripts": {
-    "build": "nuxt build ",
+    "build": "nuxt build",
     "lint": "eslint .",
     "dev": "nuxt dev",
     "electron:build": "vue-cli-service electron:build",
