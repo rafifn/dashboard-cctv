@@ -4,6 +4,7 @@ import eslint from 'vite-plugin-eslint2'
 export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: false,
+  devServer: { host: '0.0.0.0' },
   app: {
     head: {
       htmlAttrs: {
@@ -45,6 +46,24 @@ export default defineNuxtConfig({
   css: ['~/assets/scss/styles.scss', '~/assets/app.min.css', '~/assets/vendor.min.css'],
   vite: {
     plugins: [eslint({ fix: true })],
+    // Better support for Tauri CLI output
+    clearScreen: false,
+    // Enable environment variables
+    // Additional environment variables can be found at
+    // https://v2.tauri.app/reference/environment-variables/
+    envPrefix: ['VITE_', 'TAURI_'],
+    server: {
+      // Tauri requires a consistent port
+      strictPort: true,
+      hmr: {
+        // Use websocket for mobile hot reloading
+        protocol: 'ws',
+        // Make sure it's available on the network
+        host: '0.0.0.0',
+        // Use a specific port for hmr
+        port: 5183,
+      },
+    },
   },
   runtimeConfig: {
     apiPartyEndpointsKorlantasUrl: '',
