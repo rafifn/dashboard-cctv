@@ -25,6 +25,7 @@
     "datatables.net-responsive-dt": "^3.0.2",
     "datatables.net-vue3": "^3.0.1",
     "install": "^0.13.0",
+    "jb-videojs-hls-quality-selector": "^2.0.2",
     "jszip": "^3.10.1",
     "lottie-web": "^5.12.2",
     "moment": "^2.29.4",

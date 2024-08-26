@@ -16,6 +16,8 @@
 <script setup lang="ts">
 import videojs from 'video.js'
 import 'video.js/dist/video-js.css'
+import 'videojs-contrib-quality-levels' // Import quality levels plugin
+import 'jb-videojs-hls-quality-selector' // Import HLS quality selector plugin
 
 interface Props {
   id: string
@@ -24,6 +26,7 @@ interface Props {
   height?: number
   controls?: boolean
   fluid?: boolean
+  displayCurrentQuality?: boolean // Prop to control display of current quality
   isHls?: boolean
 }
 
@@ -31,6 +34,8 @@ const props = withDefaults(defineProps<Props>(), {
   width: 400,
   height: 200,
   controls: true,
+  fluid: true,
+  displayCurrentQuality: true, // Default to displaying current quality in the button
   isHls: true,
 })
 
@@ -40,8 +45,12 @@ const video = ref()
 
 onMounted(() => {
   const element = document.getElementById(props.id)
-  const url = props.isHls ? `${cfg.public.streamBaseUrl}/${props.src}/index.m3u8` : props.src
-  videojs(element, {
+  const url = props.isHls
+    ? `${cfg.public.streamBaseUrl}/${props.src}/index.m3u8`
+    : props.src
+
+  // Initialize the video.js player with HLS quality selector plugin
+  const player = videojs(element, {
     fluid: props.fluid,
     controls: props.controls,
     autoplay: true,
@@ -54,11 +63,17 @@ onMounted(() => {
     sources: [
       {
         src: url,
-        type: 'application/x-mpegURL',
+        type: props.isHls ? 'application/x-mpegURL' : 'video/mp4',
       },
     ],
   })
+
+  // Apply the HLS quality selector plugin
+  player.hlsQualitySelector({
+    displayCurrentQuality: props.displayCurrentQuality, // Use the prop value for displayCurrentQuality
+  })
 })
+
 onBeforeUnmount(() => {
   const element = document.getElementById(props.id)
   videojs(element).dispose()
@@ -66,5 +81,5 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
-
+/* Add any scoped styles here */
 </style>
