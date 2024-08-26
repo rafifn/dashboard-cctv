@@ -6,9 +6,9 @@ import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Scheme must be registered before the app is ready
-protocol.registerSchemesAsPrivileged([
-  { scheme: 'app', privileges: { secure: true, standard: true } }
-])
+protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { secure: true, standard: true } }])
+
+if (require('electron-squirrel-startup') === true) app.quit()
 
 async function createWindow() {
   const win = new BrowserWindow({
@@ -18,12 +18,11 @@ async function createWindow() {
       nodeIntegration: true, // Ensure this is correctly set based on your config
       contextIsolation: false,
     },
-  });
+  })
 
-  createProtocol('app');
-  win.loadURL('app://,/index.html'); // Vue CLI should be bundling this automatically
+  createProtocol('app')
+  win.loadURL('app://,/index.html') // Vue CLI should be bundling this automatically
 }
-
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

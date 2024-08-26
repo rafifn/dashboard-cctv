@@ -1,5 +1,6 @@
 {
   "name": "eocortex-mabes",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "build": "nuxt build",
@@ -11,8 +12,13 @@
     "lint:fix": "eslint . --fix",
     "postinstall": "nuxt prepare && electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "preview": "nuxt preview"
+    "preview": "nuxt preview",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish"
   },
+  "productName": "Dashboard CCTV",
   "main": "src/background.js",
   "dependencies": {
     "@nuxt/eslint": "^0.3.13",
@@ -27,7 +33,7 @@
     "datatables.net-buttons-dt": "^3.0.2",
     "datatables.net-responsive-dt": "^3.0.2",
     "datatables.net-vue3": "^3.0.1",
-    "electron-builder": "^24.13.3",
+    "electron-squirrel-startup": "^1.0.1",
     "install": "^0.13.0",
     "jszip": "^3.10.1",
     "lottie-web": "^5.12.2",
@@ -42,6 +48,15 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^7.4.0",
+    "@electron-forge/maker-deb": "^7.4.0",
+    "@electron-forge/maker-rpm": "^7.4.0",
+    "@electron-forge/maker-squirrel": "^7.4.0",
+    "@electron-forge/maker-zip": "^7.4.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
+    "@electron-forge/plugin-fuses": "^7.4.0",
+    "@electron-forge/publisher-github": "^7.4.0",
+    "@electron/fuses": "^1.8.0",
     "@typescript-eslint/eslint-plugin": "^7.12.0",
     "@typescript-eslint/parser": "^7.12.0",
     "@vue/cli-service": "^5.0.8",
