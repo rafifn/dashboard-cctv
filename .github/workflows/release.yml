@@ -1,9 +1,9 @@
 name: Release app
 on:
-  workflow_dispatch:
-    push:
-    branches:
-      - 'app-main-ci'
+  workflow_dispatch: {}
+  push:
+  branches:
+    - 'app-main-ci'
 jobs:
   build:
     strategy:
