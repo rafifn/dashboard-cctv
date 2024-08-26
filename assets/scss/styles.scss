@@ -67,3 +67,9 @@ html {
     }
   }
 }
+
+.fr-js {
+  width: 100%;
+  height: auto; // Adjust this to set the height dynamically
+  max-height: 100%; // Ensure the video does not exceed the container's height
+}

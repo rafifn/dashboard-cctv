@@ -49,40 +49,16 @@ import { useBreakpoints, breakpointsTailwind } from '@vueuse/core'
 
 const MENUS = [
   {
-    label: 'Dashboard',
-    name: 'index',
-    path: '/',
-    icon: 'bi-grid',
-  },
-  {
-    label: 'Streaming CCTV',
-    name: 'streaming',
-    path: '/streaming',
-    icon: 'bi-camera-video',
-  },
-  {
-    label: 'Gate Monitoring',
-    name: 'gate',
-    path: '/gate',
-    icon: 'bi-floppy',
-  },
-  {
-    label: 'Vehicle Management',
-    name: 'vehicles',
-    path: '/vehicles',
-    icon: 'bi-floppy',
+    label: 'Face Recognition',
+    name: 'facerecognition',
+    path: '/facerecognition',
+    icon: 'bi-person-square',
   },
   {
     label: 'Visitor Management',
     name: 'visitors',
     path: '/visitors',
     icon: 'bi-flag',
-  },
-  {
-    label: 'Recording Video',
-    name: 'recording',
-    path: '/recording',
-    icon: 'bi-database',
   },
   {
     label: 'User & Access',

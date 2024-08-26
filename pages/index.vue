@@ -1,462 +1,293 @@
 <template>
   <div>
-    <div class="row">
-      <!-- BEGIN col-3 -->
-      <div class="col-xl-4 col-lg-6">
-        <!-- BEGIN card -->
-        <div class="card mb-3">
-          <!-- BEGIN card-body -->
-          <div class="card-body">
-            <!-- BEGIN stat-lg -->
-            <div class="flex items-center justify-between space-x-2 mb-2">
-              <!-- BEGIN title -->
-              <div class="d-flex fw-bold small">
-                <span class="flex-grow-1">KENDARAAN</span>
-              </div>
-              <!-- END title -->
-              <div>
-                <h3 class="mb-0">
-                  {{ topCount?.vehicle?.count }}
-                </h3>
-              </div>
-            </div>
-            <!-- END stat-lg -->
-            <!-- BEGIN stat-sm -->
-            <div class="small text-inverse text-opacity-50 text-truncate">
-              <i class="fa fa-chevron-up fa-fw me-1" /> {{ topCount?.vehicle?.growth }} than last month<br>
-              <i class="fa fa-shopping-bag fa-fw me-1" /> {{ topCount?.vehicle?.growth_percent }}% new vehicles<br>
-            </div>
-            <!-- END stat-sm -->
-          </div>
-          <!-- END card-body -->
-
-          <!-- BEGIN card-arrow -->
-          <div class="card-arrow">
-            <div class="card-arrow-top-left" />
-            <div class="card-arrow-top-right" />
-            <div class="card-arrow-bottom-left" />
-            <div class="card-arrow-bottom-right" />
-          </div>
-          <!-- END card-arrow -->
-        </div>
-        <!-- END card -->
-      </div>
-      <!-- END col-3 -->
-
-      <!-- BEGIN col-3 -->
-      <div class="col-xl-4 col-lg-6">
-        <!-- BEGIN card -->
-        <div class="card mb-3">
-          <!-- BEGIN card-body -->
-          <div class="card-body">
-            <!-- BEGIN stat-lg -->
-            <div class="flex items-center justify-between space-x-2 mb-2">
-              <!-- BEGIN title -->
-              <div class="d-flex fw-bold small">
-                <span class="flex-grow-1">PENGUNJUNG</span>
-              </div>
-              <!-- END title -->
-              <div>
-                <h3 class="mb-0">
-                  {{ topCount?.visitor?.count }}
-                </h3>
-              </div>
-            </div>
-            <!-- END stat-lg -->
-            <!-- BEGIN stat-sm -->
-            <div class="small text-inverse text-opacity-50 text-truncate">
-              <i class="fa fa-chevron-up fa-fw me-1" /> {{ topCount?.visitor?.growth }} than last month<br>
-              <i class="far fa-user fa-fw me-1" /> {{ topCount?.visitor?.growth_percent }}% new visitors<br>
-            </div>
-            <!-- END stat-sm -->
-          </div>
-          <!-- END card-body -->
-
-          <!-- BEGIN card-arrow -->
-          <div class="card-arrow">
-            <div class="card-arrow-top-left" />
-            <div class="card-arrow-top-right" />
-            <div class="card-arrow-bottom-left" />
-            <div class="card-arrow-bottom-right" />
-          </div>
-          <!-- END card-arrow -->
-        </div>
-        <!-- END card -->
-      </div>
-      <!-- END col-3 -->
-
-      <!-- BEGIN col-3 -->
-      <div class="col-xl-4 col-lg-6">
-        <!-- BEGIN card -->
-        <div class="card mb-3 p-3">
-          <!-- BEGIN card-body -->
-          <div class="card-body">
-            <!-- BEGIN stat-lg -->
-            <div class="flex items-center justify-between space-x-2 mb-2">
-              <!-- BEGIN title -->
-              <div class="d-flex fw-bold small">
-                <span class="flex-grow-1">KAMERA CCTV</span>
-              </div>
-              <!-- END title -->
-              <div>
-                <h3 class="mb-0">
-                  {{ topCount?.camera?.count }}
-                </h3>
-              </div>
-            </div>
-            <!-- END stat-lg -->
-          </div>
-          <!-- END card-body -->
-
-          <!-- BEGIN card-arrow -->
-          <div class="card-arrow">
-            <div class="card-arrow-top-left" />
-            <div class="card-arrow-top-right" />
-            <div class="card-arrow-bottom-left" />
-            <div class="card-arrow-bottom-right" />
-          </div>
-          <!-- END card-arrow -->
-        </div>
-        <!-- END card -->
-      </div>
-      <!-- END col-3 -->
-
-      <div class="col-xl-6">
-        <div class="row flex-column">
-          <!-- BEGIN col-6 -->
-          <div class="col-xl-12">
-            <!-- BEGIN card -->
-            <div class="card mb-3">
-              <!-- BEGIN card-body -->
-              <div class="card-body">
-                <!-- BEGIN title -->
-                <div class="d-flex fw-bold small mb-3">
-                  <span class="flex-grow-1">JUMLAH KENDARAAN & PENGUNJUNG</span>
-                </div>
-                <!-- END title -->
-                <!-- BEGIN chart -->
-                <div class="mb-3 max-w-[100%]">
-                  <ClientOnly>
-                    <VueApexCharts
-                      type="bar"
-                      height="100%"
-                      :options="bigBar.chartOptions"
-                      :series="bigBar.series"
-                    />
-                  </ClientOnly>
-                </div>
-                <!-- END chart -->
-                <!-- BEGIN row -->
-                <div class="row">
-                  <!-- BEGIN col-6 -->
-                  <div class="col-lg-6 mb-3 mb-lg-0">
-                    <div class="d-flex align-items-center">
-                      <!-- BEGIN info -->
-                      <div class="ps-3 flex-1">
-                        <div class="fs-10px fw-bold text-inverse text-opacity-50 mb-1">
-                          JUMLAH KENDARAAN
-                        </div>
-                        <div class="mb-2 fs-5 text-truncate">
-                          {{ vehicleVisitorCount.vehicle?.count }}
-                        </div>
-                        <div class="progress h-3px bg-secondary-transparent-2 mb-1">
-                          <div
-                            class="progress-bar bg-theme"
-                            style="width: 20%"
-                          />
-                        </div>
-                        <div class="d-flex align-items-center small">
-                          <i class="bi bi-circle-fill fs-6px me-2 text-theme" />
-                          <div class="flex-1">
-                            RESIDENCE
-                          </div>
-                          <div>{{ vehicleVisitorCount.vehicle?.resident }}</div>
-                        </div>
-                        <div class="d-flex align-items-center small">
-                          <i class="bi bi-circle-fill fs-6px me-2 text-theme text-opacity-50" />
-                          <div class="flex-1">
-                            VISITOR
-                          </div>
-                          <div>{{ vehicleVisitorCount.vehicle?.visitor }}</div>
-                        </div>
-                        <div class="d-flex align-items-center small">
-                          <i class="bi bi-circle-fill fs-6px me-2 text-theme text-opacity-50" />
-                          <div class="flex-1">
-                            Unknown
-                          </div>
-                          <div>{{ vehicleVisitorCount.vehicle?.unknown }}</div>
-                        </div>
-                      </div>
-                      <!-- END info -->
-                    </div>
-                  </div>
-                  <!-- END col-6 -->
-                  <!-- BEGIN col-6 -->
-                  <div class="col-lg-6">
-                    <div class="d-flex">
-                      <!-- BEGIN info -->
-                      <div class="ps-3 flex-1">
-                        <div class="fs-10px fw-bold text-inverse text-opacity-50 mb-1">
-                          Visitor
-                        </div>
-                        <div class="mb-2 fs-5 text-truncate">
-                          {{ vehicleVisitorCount.visitor?.count }}
-                        </div>
-                        <div class="progress h-3px bg-secondary-transparent-2 mb-1">
-                          <div
-                            class="progress-bar bg-theme"
-                            style="width: 10%"
-                          />
-                        </div>
-                        <div class="d-flex align-items-center small">
-                          <i class="bi bi-circle-fill fs-6px me-2 text-theme" />
-                          <div class="flex-1">
-                            Rapat
-                          </div>
-                          <div>{{ vehicleVisitorCount.visitor?.rapat }}</div>
-                        </div>
-                        <div class="d-flex align-items-center small">
-                          <i class="bi bi-circle-fill fs-6px me-2 text-theme" />
-                          <div class="flex-1">
-                            Melakukan Pekerjaan
-                          </div>
-                          <div>{{ vehicleVisitorCount.visitor['melakukan-pekerjaan'] }}</div>
-                        </div>
-                        <div class="d-flex align-items-center small">
-                          <i class="bi bi-circle-fill fs-6px me-2 text-theme" />
-                          <div class="flex-1">
-                            Berkunjung
-                          </div>
-                          <div>{{ vehicleVisitorCount.visitor['berkunjung'] }}</div>
-                        </div>
-                        <div class="d-flex align-items-center small">
-                          <i class="bi bi-circle-fill fs-6px me-2 text-theme" />
-                          <div class="flex-1">
-                            Patroli
-                          </div>
-                          <div>{{ vehicleVisitorCount.visitor['patroli'] }}</div>
-                        </div>
-                      </div>
-                      <!-- END info -->
-                    </div>
-                  </div>
-                  <!-- END col-6 -->
-                </div>
-                <!-- END row -->
-              </div>
-              <!-- END card-body -->
-
-              <!-- BEGIN card-arrow -->
-              <div class="card-arrow">
-                <div class="card-arrow-top-left" />
-                <div class="card-arrow-top-right" />
-                <div class="card-arrow-bottom-left" />
-                <div class="card-arrow-bottom-right" />
-              </div>
-              <!-- END card-arrow -->
-            </div>
-            <!-- END card -->
-          </div>
-          <!-- END col-6 -->
-
-          <!-- BEGIN col-6 -->
-          <div class="col-xl-12">
-            <!-- BEGIN card -->
-            <div class="card mb-3">
-              <!-- BEGIN card-body -->
-              <div class="card-body">
-                <!-- BEGIN title -->
-                <div class="d-flex fw-bold small mb-3">
-                  <span class="flex-grow-1">LOG AKTIFITAS</span>
-                </div>
-                <!-- END title -->
-                <!-- BEGIN table -->
-                <div class="table-responsive">
-                  <table class="table table-striped table-borderless mb-2px small text-nowrap">
-                    <tbody>
-                      <tr
-                        v-for="(act, actIdx) in lpr?.results"
-                        :key="actIdx"
-                      >
-                        <td>
-                          <span class="d-flex align-items-center">
-                            <i class="bi bi-circle-fill fs-6px text-theme me-2" />
-                            {{ act.number_plate }}
-                          </span>
-                        </td>
-                        <td><small>{{ formatDateFromUTC(act.time_utc_timestamp) }}</small></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <!-- END table -->
-              </div>
-              <!-- END card-body -->
-
-              <!-- BEGIN card-arrow -->
-              <div class="card-arrow">
-                <div class="card-arrow-top-left" />
-                <div class="card-arrow-top-right" />
-                <div class="card-arrow-bottom-left" />
-                <div class="card-arrow-bottom-right" />
-              </div>
-              <!-- END card-arrow -->
-            </div>
-            <!-- END card -->
-          </div>
-          <!-- END col-6 -->
-        </div>
-      </div>
-
-      <!-- BEGIN col-6 -->
-      <div class="col-xl-6">
-        <!-- BEGIN card -->
-        <div class="card mb-3">
-          <!-- BEGIN card-body -->
-          <div class="card-body">
-            <!-- BEGIN title -->
-            <div class="d-flex fw-bold small mb-3">
-              <span class="flex-grow-1">PETA KPAD</span>
-            </div>
-            <!-- END title -->
-            <!-- BEGIN map -->
-            <div
-              class="ratio ratio-1x1 mb-3 cursor-pointer"
-              @click="isOpenFullMaps = true"
-            >
-              <img
-                src="/public/map3.jpg"
-                alt="map"
-              >
-            </div>
-            <!-- END map -->
-          </div>
-          <!-- END card-body -->
-
-          <!-- BEGIN card-arrow -->
-          <div class="card-arrow">
-            <div class="card-arrow-top-left" />
-            <div class="card-arrow-top-right" />
-            <div class="card-arrow-bottom-left" />
-            <div class="card-arrow-bottom-right" />
-          </div>
-          <!-- END card-arrow -->
-        </div>
-        <!-- END card -->
-      </div>
-      <!-- END col-6 -->
-    </div>
-    <AModal
-      :is-open="isOpenFullMaps"
-      :is-prevent-close="false"
-      is-full-screen
+    <OPageHeader
+        page-title="Visitor Management"
+        add-title="Daftar Pengunjung"
+        @add="handleOpenFormCreate"
+    />
+    <ADatatable
+        :params="currentQuery"
+        :columns="COLUMNS"
+        :rows="visitor?.results ?? []"
+        :total-data="visitor?.count?.toString() ?? '0'"
+        has-actions
+        is-editable
+        @update:search="handleSearch"
+        @update:page="handleUpdatePage"
+        @update:size="handleUpdateSize"
+        @edit="handleOpenEditForm"
     >
-      <div class="flex-1 flex flex-col justify-center items-center px-4">
-        <UButton
-          variant="link"
-          color="red"
-          icon="i-heroicons-x-mark-20-solid"
-          class="ml-auto"
-          @click="isOpenFullMaps = false"
+      <template #id_card="prop">
+        <img
+            v-if="prop.rowData?.person?.photo?.url"
+            :src="prop.rowData?.person?.photo?.url"
+            alt="ktp"
+            class="object-contain w-10 h-10 cursor-pointer"
+            @click="openImage(prop.rowData?.person?.photo?.url)"
+        >
+        <span v-else>-</span>
+      </template>
+      <template #actions="prop">
+        <button
+            v-if="!prop.rowData.check_out_timestamp"
+            class="btn btn-outline-info mr-1"
+            @click="handleCheckout(prop)"
+        >
+          <i class="fa-solid fa-arrow-right-from-bracket" />
+        </button>
+        <button
+            v-if="prop.rowData?.person?.no_id"
+            class="btn btn-outline-info mr-1"
+            @click="handleVerify(prop)"
+        >
+          <i class="fa-regular fa-eye" />
+        </button>
+      </template>
+    </ADatatable>
+    <AModal
+        v-model:is-open="isOpenForm"
+    >
+      <UCard :ui="{ header: { padding: 'p-4' }, body: { padding: 'p-4' } }">
+        <template #header>
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-semibold leading-6 mb-0 text-white">
+              {{ selectedRow ? 'Ubah Pengunjung' : 'Daftar Pengunjung' }}
+            </h3>
+            <UButton
+                variant="ghost"
+                icon="i-heroicons-x-mark-20-solid"
+                class="-my-1"
+                @click="isOpenForm = false"
+            />
+          </div>
+        </template>
+        <OFormVisitor
+            :detail="selectedRow"
+            :is-loading="isLoading"
+            @submit="handleSubmitForm"
         />
-        <div class="w-[800px]">
-          <img
-            class="object-fit"
-            src="/public/map3.jpg"
-            alt="map"
-          >
+      </UCard>
+    </AModal>
+    <AModal
+        :is-open="isOpenVerify"
+    >
+      <UCard :ui="{ header: { padding: 'p-4' }, body: { padding: 'p-4' } }">
+        <template #header>
+          <div class="flex items-center justify-center">
+            <p>Data DUKCAPIL</p>
+            <UButton
+                variant="ghost"
+                icon="i-heroicons-x-mark-20-solid"
+                class="-my-1 ml-auto"
+                @click="isOpenVerify = false"
+            />
+          </div>
+        </template>
+        <div class="flex space-x-4 divide-x">
+          <div class="space-y-4 w-[50%]">
+            <img
+                v-if="selectedRow.rowData?.person?.photo?.url"
+                :src="selectedRow.rowData?.person?.photo?.url"
+                :alt="selectedRow.rowData.person.full_name"
+                class="w-20 mb-2"
+            >
+            <span class="block">Nama : {{ selectedRow.rowData.person?.full_name }}</span>
+            <hr>
+            <span class="block">NIK : {{ selectedRow.rowData.person.no_id }}</span>
+            <hr>
+            <span class="block">Alamat : {{ selectedRow.rowData.person.address }}</span>
+          </div>
+          <div class="px-2 w-[50%]">
+            <img
+                v-if="visitorVerificationData.image"
+                :src="visitorVerificationData.image"
+                :alt="visitor.nama_lgkp"
+                class="w-20 mb-2"
+            >
+            <span class="block">Nama : {{ visitorVerificationData.nama_lgkp }}</span>
+            <hr>
+            <span class="block">NIK : {{ visitorVerificationData.nik }}</span>
+            <hr>
+            <span class="block">Jenis Kelamin : {{ visitorVerificationData.jenis_klmin }}</span>
+            <hr>
+            <span class="block">TTL :
+              {{ visitorVerificationData.tmpt_lhr }},
+              {{ visitorVerificationData.tgl_lhr }}
+            </span>
+            <hr>
+            <span class="block">
+              Status : {{ visitorVerificationData.stat_kwn }}
+            </span>
+            <hr>
+            <span class="block">
+              Pekerjaan : {{ visitorVerificationData.jenis_pkrjn }}
+            </span>
+            <hr>
+            <span class="block">
+              Alamat :
+              {{ visitorVerificationData.alamat }},
+              {{ visitorVerificationData.nama_kel }},
+              {{ visitorVerificationData.nama_kec }},
+              {{ visitorVerificationData.nama_kab }},
+              {{ visitorVerificationData.nama_prop }}
+            </span>
+          </div>
         </div>
-      </div>
+      </UCard>
     </AModal>
   </div>
 </template>
 
-<script lang="ts" setup>
-import VueApexCharts from 'vue3-apexcharts'
+<script setup lang="ts">
+import { AConfirmation } from '#components'
+import type { Visitor } from '~/utils/types'
 import { formatDateFromUTC } from '~/utils/helpers'
 
-const { $api } = useNuxtApp()
+const FIELDS_REQUEST = {
+  no_id: 'ID',
+  full_name: 'Nama',
+  address: 'Alamat',
+  gender: 'Jenis Kelamin',
+  photo: 'Foto',
+  doc_type: 'Tipe Pengunjung',
+}
+const COLUMNS = [
+  { data: 'visitor_id', title: 'ID', responsivePriority: 0, sortable: false },
+  { data: 'person', title: 'NIK', sortable: false, type: 'string', responsivePriority: 1, render: (data) => {
+      return data?.no_id ?? ''
+    } },
+  { data: 'person', title: 'Nama', sortable: false, responsivePriority: 2, render: (data) => {
+      return data?.full_name ?? ''
+    } },
+  { data: 'purpose_of_visit', title: 'Tujuan', sortable: false, type: 'string', responsivePriority: 3, render: (data) => {
+      return data?.text ?? ''
+    } },
+  { data: 'check_in_timestamp', title: 'Waktu Checkin', sortable: false, responsivePriority: 4, render: (data) => {
+      return data ? formatDateFromUTC(data) : ''
+    } },
+  { data: 'check_out_timestamp', title: 'Waktu Checkout', sortable: false, responsivePriority: 5, render: (data) => {
+      return data ? formatDateFromUTC(data) : ''
+    } },
+  { data: 'person', title: 'Alamat', sortable: false, responsivePriority: 9, target: 0, render: (data) => {
+      return data?.address ?? ''
+    } },
+  { data: null, title: 'KTP', responsivePriority: 8, target: 0, render: '#id_card' },
+]
+const { $api, $loader } = useNuxtApp()
+const toast = useToast()
+const route = useRoute()
+const { currentQuery, handleUpdatePage, handleSearch, handleUpdateSize } = useTable()
 
-const { data: topCount } = await useAsyncData('top-count', () => $api('/statistic/count/'))
-const { data: vehicleVisitorChart } = await useAsyncData('vehicle-visitor-chart', () => $api('/statistic/visitor-and-vehicle-bar/'))
-const { data: vehicleVisitorCount } = await useAsyncData('vehicle-visitor-count', () => $api('/statistic/visitor-and-vehicle-count/'))
-
-const bigBar = ref({
-  series: [
-    {
-      name: 'Kendaraan',
-      data: vehicleVisitorChart.value?.vehicle?.map(vc => vc.count) ?? [],
-    },
-    {
-      name: 'Visitor',
-      data: vehicleVisitorChart.value?.visitor?.map(vs => vs.count) ?? [],
-    },
-  ],
-  chartOptions: {
-    chart: {
-      height: 30,
-      type: 'bar',
-      width: '100%',
-      toolbar: {
-        show: false,
-      },
-      sparkline: {
-        enabled: true,
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      show: true,
-      width: 2,
-      colors: ['transparent'],
-    },
-    xaxis: {
-      categories: vehicleVisitorChart.value.vehicle?.map(vcDt => formatDateFromUTC(vcDt.date, 'DD-MM-YYYY')),
-    },
-    fill: {
-      opacity: 1,
-    },
-  },
-})
-const lpr = ref()
-const lprParams = ref({
-  page: '1',
-  search: '',
-  size: '10',
-})
-const isOpenFullMaps = ref(false)
-
-defineShortcuts({
-  escape: {
-    usingInput: true,
-    whenever: [isOpenFullMaps],
-    handler: () => { isOpenFullMaps.value = false },
-  },
-})
-
-const handleGetLpr = async () => {
-  try {
-    const res = await $api(`/activity/lpr`, {
+const { data: visitor, refresh } = await useAsyncData('visitor', () => $api('/activity/check-in', {
       query: {
-        channel_id: '',
-        is_active: true,
-        is_gate: true,
-        page: lprParams.value.page,
-        page_size: lprParams.value.size,
-        search: lprParams.value.search,
+        ...route.query,
+      },
+    }),
+    {
+      watch: [currentQuery],
+      immediate: true,
+    })
+
+const isOpenForm = ref(false)
+const isOpenVerify = ref(false)
+const isLoading = ref(false)
+const selectedRow = ref()
+const visitorVerificationData = ref()
+const modalDelete = useModal()
+
+const handleSubmitForm = async (modelForm: unknown) => {
+  const isEdit = selectedRow.value
+  const method = isEdit ? 'PUT' : 'POST'
+  const endpoint = isEdit ? `/person/person/${modelForm.person.id32}/` : '/person/person/'
+  try {
+    isLoading.value = true
+    await $api(endpoint, {
+      method: method,
+      body: {
+        person_type: 'visitor',
+        no_id: modelForm.no_id,
+        full_name: modelForm.full_name,
+        address: modelForm.address,
+        gender: modelForm.gender.value,
+        purpose_of_visit: modelForm.purpose_of_visit.value,
+        vehicle: {
+          license_plate_number: modelForm.vehicle.license_plate_number,
+          vehicle_type: modelForm.vehicle.vehicle_type.id32,
+        },
       },
     })
-    lpr.value = res
+    isOpenForm.value = false
+    selectedRow.value = undefined
+    refresh()
+    toast.add({ title: 'Berhasil', description: 'Data Berhasil Ditambahkan', icon: 'i-heroicons-check-circle' })
   } catch (err) {
-    alert(JSON.stringify(err))
+    isLoading.value = false
+    useToastError(FIELDS_REQUEST, err?.response?._data ?? 'Terjadi Kesalahan')
   }
 }
-
-onMounted(() => handleGetLpr())
+const handleOpenFormCreate = () => {
+  selectedRow.value = undefined
+  isOpenForm.value = true
+}
+const handleCheckout = async (row: Visitor) => {
+  try {
+    modalDelete.open(AConfirmation, {
+      title: `Apakah Anda yakin ingin merubah status ${row.rowData.person.no_id} ?`,
+      onOk() {
+        $api('/activity/check-out/', {
+          method: 'POST',
+          body: {
+            check_in: row.rowData.id32,
+          },
+        }).then(() => {
+          refresh()
+          toast.add({ title: 'Berhasil', description: 'Data Berhasil Diperbarui', icon: 'i-heroicons-check-circle' })
+          modalDelete.close()
+        }).catch((err) => {
+          useToastError(FIELDS_REQUEST, err?.response?._data)
+        })
+      },
+      onCancel() {
+        modalDelete.close()
+      },
+    })
+  } catch (err) {
+    isLoading.value = false
+    useToastError(FIELDS_REQUEST, err?.response?._data)
+  }
+}
+const openImage = (src: string) => {
+  if (!src) return
+  window.open(src, '_blank')
+}
+const handleOpenEditForm = (row: Vehicle) => {
+  isOpenForm.value = true
+  selectedRow.value = row
+}
+const handleVerify = async (row: Vehicle) => {
+  try {
+    $loader.start()
+    const resp = await $fetch('/api/dukcapil', {
+      method: 'POST',
+      body: {
+        nik: row?.rowData?.person?.no_id,
+      },
+    })
+    if (resp?.data) {
+      visitorVerificationData.value = resp.data
+      selectedRow.value = row
+      isOpenVerify.value = true
+    } else {
+      toast.add({ description: JSON.stringify(resp?.message) ?? 'Terjadi Kesalahan, coba lagi beberapa saat', color: 'red' })
+    }
+  } catch (err) {
+    toast.add({ description: err?.response?._data?.data ?? err?.response?.statusMessage ?? 'Data Tidak Ditemukan', color: 'red' })
+  } finally {
+    $loader.finish()
+  }
+}
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>
