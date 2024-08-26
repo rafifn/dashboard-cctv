@@ -20,10 +20,10 @@
       <template #id_card="prop">
         <img
           v-if="prop.rowData?.person?.photo?.url"
-          :src="prop.rowData.person.photo.url"
+          :src="prop.rowData?.person?.photo?.url"
           alt="ktp"
           class="object-contain w-10 h-10 cursor-pointer"
-          @click="openImage(prop.rowData.person.photo.url)"
+          @click="openImage(prop.rowData?.person?.photo?.url)"
         >
         <span v-else>-</span>
       </template>
@@ -86,8 +86,8 @@
         <div class="flex space-x-4 divide-x">
           <div class="space-y-4 w-[50%]">
             <img
-              v-if="selectedRow.rowData.person.photo.url"
-              :src="selectedRow.rowData.person.photo.url"
+              v-if="selectedRow.rowData?.person?.photo?.url"
+              :src="selectedRow.rowData?.person?.photo?.url"
               :alt="selectedRow.rowData.person.full_name"
               class="w-20 mb-2"
             >
@@ -257,6 +257,7 @@ const handleCheckout = async (row: Visitor) => {
   }
 }
 const openImage = (src: string) => {
+  if (!src) return
   window.open(src, '_blank')
 }
 const handleOpenEditForm = (row: Vehicle) => {
@@ -266,13 +267,10 @@ const handleOpenEditForm = (row: Vehicle) => {
 const handleVerify = async (row: Vehicle) => {
   try {
     $loader.start()
-    const resp = await $dukcapil('/kependudukan/public/api/get-info-nik', {
+    const resp = await $fetch('/api/dukcapil', {
       method: 'POST',
       body: {
         nik: row?.rowData?.person?.no_id,
-      },
-      headers: {
-        key: Math.random(),
       },
     })
     if (resp?.data) {
@@ -283,7 +281,7 @@ const handleVerify = async (row: Vehicle) => {
       toast.add({ description: JSON.stringify(resp?.message) ?? 'Terjadi Kesalahan, coba lagi beberapa saat', color: 'red' })
     }
   } catch (err) {
-    toast.add({ description: err?.response?._data ?? err?.response?.statusMessage ?? 'Terjadi Kesalahan', color: 'red' })
+    toast.add({ description: err?.response?._data?.data ?? err?.response?.statusMessage ?? 'Data Tidak Ditemukan', color: 'red' })
   } finally {
     $loader.finish()
   }

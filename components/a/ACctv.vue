@@ -26,7 +26,8 @@ interface Props {
   height?: number
   controls?: boolean
   fluid?: boolean
-  displayCurrentQuality?: boolean // New prop to control display of current quality
+  displayCurrentQuality?: boolean // Prop to control display of current quality
+  isHls?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -34,7 +35,8 @@ const props = withDefaults(defineProps<Props>(), {
   height: 200,
   controls: true,
   fluid: true,
-  displayCurrentQuality: true, // Default to not displaying current quality in the button
+  displayCurrentQuality: true, // Default to displaying current quality in the button
+  isHls: true,
 })
 
 const cfg = useRuntimeConfig()
@@ -43,7 +45,9 @@ const video = ref()
 
 onMounted(() => {
   const element = document.getElementById(props.id)
-  const url = `${cfg.public.streamBaseUrl}/${props.src}/index.m3u8`
+  const url = props.isHls
+    ? `${cfg.public.streamBaseUrl}/${props.src}/index.m3u8`
+    : props.src
 
   // Initialize the video.js player with HLS quality selector plugin
   const player = videojs(element, {
@@ -59,7 +63,7 @@ onMounted(() => {
     sources: [
       {
         src: url,
-        type: 'application/x-mpegURL',
+        type: props.isHls ? 'application/x-mpegURL' : 'video/mp4',
       },
     ],
   })

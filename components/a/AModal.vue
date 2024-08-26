@@ -4,6 +4,7 @@
     :ui="{ background: 'bg-modal' }"
     :prevent-close="isPreventClose"
     :fullscreen="isFullScreen"
+    v-bind="$attrs"
     @update:modal-value="$emit('update:modelValue', $event)"
   >
     <slot />
