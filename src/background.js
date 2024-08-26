@@ -8,8 +8,6 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { secure: true, standard: true } }])
 
-if (require('electron-squirrel-startup') === true) app.quit()
-
 async function createWindow() {
   const win = new BrowserWindow({
     width: 800,
@@ -23,6 +21,8 @@ async function createWindow() {
   createProtocol('app')
   win.loadURL('app://,/index.html') // Vue CLI should be bundling this automatically
 }
+
+if (require('electron-squirrel-startup') === true) app.quit()
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

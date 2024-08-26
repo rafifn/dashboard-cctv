@@ -59,8 +59,8 @@ module.exports = {
       name: '@electron-forge/publisher-github',
       config: {
         repository: {
-          owner: 'altru',
-          name: 'eocortex-mabes',
+          owner: 'rafifn',
+          name: 'dashboard-cctv',
         },
         prerelease: true,
       },
