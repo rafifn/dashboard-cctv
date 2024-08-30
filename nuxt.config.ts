@@ -47,6 +47,8 @@ export default defineNuxtConfig({
     plugins: [eslint({ fix: true })],
   },
   runtimeConfig: {
+    apiEocortexAlarmBaseUrl: '',
+    apiEocortexToken: '',
     apiPartyEndpointsKorlantasUrl: '',
     apiPartyEndpointsKorlantasToken: '',
     apiPartyEndpointsDukcapilUrl: '',

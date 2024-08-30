@@ -98,6 +98,12 @@ const MENUS = [
     icon: 'bi-database',
   },
   {
+    label: 'Alarm',
+    name: 'alarm',
+    path: '/alarm',
+    icon: 'bi-bell',
+  },
+  {
     label: 'User & Access',
     name: 'users',
     path: '/users',

@@ -5,7 +5,6 @@
       ref="video"
       class="video-js vjs-default-skin"
       controls
-      autoplay
       preload="auto"
       :width="width"
       :height="height"
@@ -14,10 +13,13 @@
 </template>
 
 <script setup lang="ts">
+import { useElementVisibility } from '@vueuse/core'
 import videojs from 'video.js'
 import 'video.js/dist/video-js.css'
 import 'videojs-contrib-quality-levels' // Import quality levels plugin
 import 'jb-videojs-hls-quality-selector' // Import HLS quality selector plugin
+import '@theonlyducks/videojs-zoom/styles'
+import '@theonlyducks/videojs-zoom'
 
 interface Props {
   id: string
@@ -42,6 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
 const cfg = useRuntimeConfig()
 
 const video = ref()
+const isVisible = useElementVisibility(video)
 
 onMounted(() => {
   const element = document.getElementById(props.id)
@@ -53,8 +56,7 @@ onMounted(() => {
   const player = videojs(element, {
     fluid: props.fluid,
     controls: props.controls,
-    autoplay: true,
-    responsive: true,
+    autoplay: false,
     liveui: true,
     preload: 'auto',
     userActions: {
@@ -72,12 +74,29 @@ onMounted(() => {
   player.hlsQualitySelector({
     displayCurrentQuality: props.displayCurrentQuality, // Use the prop value for displayCurrentQuality
   })
+
+  const zoom = player.zoomPlugin({
+    showZoom: true,
+    showMove: true,
+    showRotate: false,
+  })
+  zoom.zoom(1)
+  zoom.move(0, 0)
 })
 
 onBeforeUnmount(() => {
   const element = document.getElementById(props.id)
-  if (!element) return
+  if (!element) window.location.reload()
   videojs(element).dispose()
+})
+
+watch(isVisible, (visible) => {
+  const element = document.getElementById(props.id)
+  if (!visible && element) {
+    videojs(element).pause()
+  } else {
+    videojs(element).play()
+  }
 })
 </script>
 
