@@ -22,6 +22,17 @@ export interface Camera {
   is_active: string
   order: number
   hls_url: string
+  is_gate: boolean
+  location: {
+    id32: string
+    name: string
+    description: string | null
+  }
+  icon_rotation: number
+  coordinate: {
+    lat: number
+    lng: number
+  }
 }
 export interface Profile {
   id: number

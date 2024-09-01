@@ -1,15 +1,36 @@
 <template>
   <div>
-    <div class="flex gap-4">
-      <MDaterangepicker
-        v-model="date"
-        mode="datetime"
-      />
-      <UButton
-        @click="fetchAlarms"
-      >
-        Terapkan
-      </UButton>
+    <div class="flex justify-between items-center">
+      <div class="flex gap-4">
+        <MDaterangepicker
+          v-model="date"
+          mode="datetime"
+        />
+        <UButton
+          @click="handleApplyFilters"
+        >
+          Terapkan
+        </UButton>
+      </div>
+      <div>
+        <UInput
+          v-model="keyword"
+          icon="i-heroicons-magnifying-glass-20-solid"
+          size="sm"
+          placeholder="Search..."
+          autocomplete="off"
+          :trailing="false"
+          :ui="{
+            color: {
+              white: {
+                // eslint-disable-next-line max-len
+                outline: 'shadow-sm bg-transparent text-white ring-1 ring-inset ring-primary-400 focus:ring-2 focus:ring-primary-400',
+              },
+            },
+          }"
+          @update:model-value="handleSearch"
+        />
+      </div>
     </div>
     <div>
       <div class="flex flex-wrap mt-4">
@@ -38,12 +59,15 @@
 </template>
 
 <script setup lang="ts">
+import lodash from 'lodash'
 import { sub } from 'date-fns'
 
 const { $loader } = useNuxtApp()
 
 const toast = useToast()
 const date = ref({ start: sub(new Date(), { days: 14 }), end: new Date() })
+const keyword = ref()
+const alarmsFiltered = ref([])
 const alarms = ref([])
 const listAlarm = ref([])
 
@@ -155,6 +179,7 @@ const fetchAlarms = async () => {
       body,
     })
     alarms.value = resp.map((item, itemIdx) => ({ idx: itemIdx, ...item }))
+    alarmsFiltered.value = alarms.value
   } catch (err) {
     toast.add({ description: JSON.stringify(err) })
   } finally {
@@ -163,9 +188,29 @@ const fetchAlarms = async () => {
 }
 const handleLoadMore = () => {
   const idx = listAlarm.value.length
-  const items = alarms.value?.slice(idx, 10 + idx)
+  const items = alarmsFiltered.value?.slice(idx, 10 + idx)
   listAlarm.value.push(...items)
 }
+const searchByChannelName = () => {
+  listAlarm.value = []
+  if (!keyword.value) {
+    alarmsFiltered.value = alarms.value// Return all objects if no search term is provided
+  } else {
+    const lowerSearchTerm = keyword.value.toLowerCase()
+    alarmsFiltered.value = alarms.value.filter(obj =>
+      obj.ChannelName.toLowerCase().includes(lowerSearchTerm),
+    )
+  }
+}
+const handleApplyFilters = async () => {
+  await fetchAlarms()
+  searchByChannelName()
+  handleLoadMore()
+}
+const handleSearch = lodash.debounce(() => {
+  searchByChannelName()
+  handleLoadMore()
+}, 500)
 
 onMounted(async () => {
   await fetchAlarms()
