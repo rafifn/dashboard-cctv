@@ -22,7 +22,7 @@ withDefaults(defineProps<Props>(), {
   title: '',
   isPreventClose: true,
   isFullScreen: false,
-  width: '',
+  width: 'w-full',
 })
 defineEmits(['update:modelValue'])
 </script>
