@@ -1,107 +1,116 @@
 <template>
   <div>
-    <UForm
-      class="space-y-4"
-      :schema="schema"
-      :state="modelForm"
-      @submit="handleSubmit"
-    >
-      <UFormGroup
-        label="ID"
-        name="no_id"
-        required
-      >
-        <UInput v-model="modelForm.no_id" />
-      </UFormGroup>
-      <UFormGroup
-        label="Nama"
-        name="full_name"
-        required
-      >
-        <UInput v-model="modelForm.full_name" />
-      </UFormGroup>
-      <UFormGroup
-        label="Jenis Kelamin"
-        name="gender.value"
-        required
-      >
-        <USelectMenu
-          v-model="modelForm.gender"
-          :options="GENDER_OPTIONS"
-          option-attribute="text"
-        />
-      </UFormGroup>
-      <UFormGroup
-        label="Alamat"
-        name="address"
-        required
-      >
-        <UTextarea v-model="modelForm.address" />
-      </UFormGroup>
-      <UFormGroup
-        label="Tujuan Visit"
-        name="purpose_of_visit.value"
-        required
-      >
-        <USelectMenu
-          v-model="modelForm.purpose_of_visit"
-          :options="purposeVisits"
-          option-attribute="text"
-        />
-      </UFormGroup>
-      <UFormGroup
-        v-if="vehicles.length"
-        label="Kendaraan"
-        name="vehicle.license_plate_number"
-        required
-      >
-        <USelectMenu
-          v-model="modelForm.vehicle"
-          :options="vehicles"
-          option-attribute="license_plate_number"
-        />
-      </UFormGroup>
-      <div
-        v-else
-        class="space-y-4"
+    <div class="flex gap-4">
+      <UForm
+        class="space-y-4 flex-1"
+        :schema="schema"
+        :state="modelForm"
+        @submit="handleSubmit"
       >
         <UFormGroup
-          label="Nopol"
-          name="vehicle.license_plate_number"
+          label="ID"
+          name="no_id"
           required
         >
-          <UInput v-model="modelForm.vehicle.license_plate_number" />
+          <UInput v-model="modelForm.no_id" />
         </UFormGroup>
         <UFormGroup
-          label="Jenis Kendaraan"
-          name="vehicle.vehicle_type.name"
+          label="Nama"
+          name="full_name"
+          required
+        >
+          <UInput v-model="modelForm.full_name" />
+        </UFormGroup>
+        <UFormGroup
+          label="Jenis Kelamin"
+          name="gender.value"
           required
         >
           <USelectMenu
-            v-model="modelForm.vehicle.vehicle_type"
-            :options="vehicleType"
-            option-attribute="name"
+            v-model="modelForm.gender"
+            :options="GENDER_OPTIONS"
+            option-attribute="text"
           />
         </UFormGroup>
-      </div>
-      <div class="flex space-x-2">
-        <UButton
-          color="orange"
-          type="button"
-          role="button"
-          :loading="isLoadingScan"
-          @click="getScan"
+        <UFormGroup
+          label="Alamat"
+          name="address"
+          required
         >
-          Scan
-        </UButton>
-        <UButton
-          type="submit"
-          :loading-="isLoading"
+          <UTextarea v-model="modelForm.address" />
+        </UFormGroup>
+        <UFormGroup
+          label="Tujuan Visit"
+          name="purpose_of_visit.value"
+          required
         >
-          Submit
-        </UButton>
+          <USelectMenu
+            v-model="modelForm.purpose_of_visit"
+            :options="purposeVisits"
+            option-attribute="text"
+          />
+        </UFormGroup>
+        <UFormGroup
+          v-if="vehicles.length"
+          label="Kendaraan"
+          name="vehicle.license_plate_number"
+          required
+        >
+          <USelectMenu
+            v-model="modelForm.vehicle"
+            :options="vehicles"
+            option-attribute="license_plate_number"
+          />
+        </UFormGroup>
+        <div
+          v-else
+          class="space-y-4"
+        >
+          <UFormGroup
+            label="Nopol"
+            name="vehicle.license_plate_number"
+            required
+          >
+            <UInput v-model="modelForm.vehicle.license_plate_number" />
+          </UFormGroup>
+          <UFormGroup
+            label="Jenis Kendaraan"
+            name="vehicle.vehicle_type.name"
+            required
+          >
+            <USelectMenu
+              v-model="modelForm.vehicle.vehicle_type"
+              :options="vehicleType"
+              option-attribute="name"
+            />
+          </UFormGroup>
+        </div>
+        <div class="flex space-x-2">
+          <UButton
+            color="orange"
+            type="button"
+            role="button"
+            :loading="isLoadingScan"
+            @click="getScan"
+          >
+            Scan
+          </UButton>
+          <UButton
+            type="submit"
+            :loading-="isLoading"
+          >
+            Submit
+          </UButton>
+        </div>
+      </UForm>
+      <div v-if="isScan">
+        <img
+          class="w-40"
+          src="https://cctv.arnatech.id/static/upload/file/photo_of_DIMAS_RAMADON.jpeg"
+          alt="ktp"
+        >
       </div>
-    </UForm>
+    </div>
   </div>
 </template>
 
@@ -137,6 +146,7 @@ const emit = defineEmits(['submit'])
 const { $api } = useNuxtApp()
 const toast = useToast()
 
+const isScan = ref(false)
 const isLoadingScan = ref(false)
 const vehicles = ref([])
 const vehicleType = ref<VehicleType[]>([])
@@ -160,6 +170,7 @@ const modelForm = ref({
 const getScan = async () => {
   try {
     isLoadingScan.value = true
+    isScan.value = true
     const data = await $api<Visitor>('/person/person/recent', {
       query: {
         person_type: 'visitor',

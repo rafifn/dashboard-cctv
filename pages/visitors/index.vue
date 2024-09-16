@@ -46,6 +46,7 @@
     </ADatatable>
     <AModal
       v-model:is-open="isOpenForm"
+      width="sm:max-w-[500px]"
     >
       <UCard :ui="{ header: { padding: 'p-4' }, body: { padding: 'p-4' } }">
         <template #header>
