@@ -17,6 +17,16 @@
       @update:size="handleUpdateSize"
       @edit="handleOpenEditForm"
     >
+      <template #photo="prop">
+        <img
+          v-if="prop.rowData?.camera_photo?.url"
+          :src="prop.rowData?.camera_photo?.url"
+          alt="photo"
+          class="object-contain w-10 h-10 cursor-pointer"
+          @click="openImage(prop.rowData?.camera_photo?.url)"
+        >
+        <span v-else>-</span>
+      </template>
       <template #id_card="prop">
         <img
           v-if="prop.rowData?.person?.photo?.url"
@@ -46,7 +56,8 @@
     </ADatatable>
     <AModal
       v-model:is-open="isOpenForm"
-      width="sm:max-w-[500px]"
+      width="sm:max-w-[1000px] w-[800px]"
+      @update:model-value="handleCloseForm"
     >
       <UCard :ui="{ header: { padding: 'p-4' }, body: { padding: 'p-4' } }">
         <template #header>
@@ -58,11 +69,12 @@
               variant="ghost"
               icon="i-heroicons-x-mark-20-solid"
               class="-my-1"
-              @click="isOpenForm = false"
+              @click="handleCloseForm"
             />
           </div>
         </template>
         <OFormVisitor
+          ref="formVisitor"
           :detail="selectedRow"
           :is-loading="isLoading"
           @submit="handleSubmitForm"
@@ -151,28 +163,30 @@ const FIELDS_REQUEST = {
   gender: 'Jenis Kelamin',
   photo: 'Foto',
   doc_type: 'Tipe Pengunjung',
+  camera_photo_base64: 'Foto',
 }
 const COLUMNS = [
-  { data: 'visitor_id', title: 'ID', responsivePriority: 0, sortable: false },
-  { data: 'person', title: 'NIK', sortable: false, type: 'string', responsivePriority: 1, render: (data) => {
+  { data: 'person', title: 'NIK', sortable: false, type: 'string', responsivePriority: 0, render: (data) => {
     return data?.no_id ?? ''
   } },
-  { data: 'person', title: 'Nama', sortable: false, responsivePriority: 2, render: (data) => {
+  { data: 'person', title: 'Nama', sortable: false, responsivePriority: 1, render: (data) => {
     return data?.full_name ?? ''
   } },
-  { data: 'purpose_of_visit', title: 'Tujuan', sortable: false, type: 'string', responsivePriority: 3, render: (data) => {
+  { data: 'purpose_of_visit', title: 'Tujuan', sortable: false, type: 'string', responsivePriority: 2, render: (data) => {
     return data?.text ?? ''
   } },
-  { data: 'check_in_timestamp', title: 'Waktu Checkin', sortable: false, responsivePriority: 4, render: (data) => {
+  { data: 'check_in_timestamp', title: 'Waktu Checkin', sortable: false, responsivePriority: 3, render: (data) => {
     return data ? formatDateFromUTC(data) : ''
   } },
-  { data: 'check_out_timestamp', title: 'Waktu Checkout', sortable: false, responsivePriority: 5, render: (data) => {
+  { data: 'check_out_timestamp', title: 'Waktu Checkout', sortable: false, responsivePriority: 4, render: (data) => {
     return data ? formatDateFromUTC(data) : ''
   } },
-  { data: 'person', title: 'Alamat', sortable: false, responsivePriority: 9, target: 0, render: (data) => {
+  { data: null, title: 'KTP', responsivePriority: 5, target: 0, render: '#id_card' },
+  { data: null, title: 'Foto', responsivePriority: 6, target: 0, render: '#photo' },
+  { data: 'visitor_id', title: 'ID', responsivePriority: 7, sortable: false },
+  { data: 'person', title: 'Alamat', sortable: false, responsivePriority: 8, target: 0, render: (data) => {
     return data?.address ?? ''
   } },
-  { data: null, title: 'KTP', responsivePriority: 8, target: 0, render: '#id_card' },
 ]
 const { $api, $loader } = useNuxtApp()
 const toast = useToast()
@@ -189,33 +203,38 @@ const { data: visitor, refresh } = await useAsyncData('visitor', () => $api('/ac
   immediate: true,
 })
 
+const formVisitor = ref()
 const isOpenForm = ref(false)
 const isOpenVerify = ref(false)
 const isLoading = ref(false)
 const selectedRow = ref()
 const visitorVerificationData = ref()
 const modalDelete = useModal()
+const modalResubmit = useModal()
+const tempBody = ref()
 
 const handleSubmitForm = async (modelForm: unknown) => {
   const isEdit = selectedRow.value
   const method = isEdit ? 'PUT' : 'POST'
   const endpoint = isEdit ? `/person/person/${modelForm.person.id32}/` : '/person/person/'
+  tempBody.value = {
+    ...modelForm,
+    person_type: 'visitor',
+    no_id: modelForm.no_id,
+    full_name: modelForm.full_name,
+    address: modelForm.address,
+    gender: modelForm.gender.value,
+    purpose_of_visit: modelForm.purpose_of_visit.value === 'others' ? modelForm.purpose_of_visit_others : modelForm.purpose_of_visit.value,
+    vehicle: {
+      license_plate_number: modelForm.vehicle.license_plate_number,
+      vehicle_type: modelForm.vehicle.vehicle_type.id32,
+    },
+  }
   try {
     isLoading.value = true
     await $api(endpoint, {
       method: method,
-      body: {
-        person_type: 'visitor',
-        no_id: modelForm.no_id,
-        full_name: modelForm.full_name,
-        address: modelForm.address,
-        gender: modelForm.gender.value,
-        purpose_of_visit: modelForm.purpose_of_visit.value,
-        vehicle: {
-          license_plate_number: modelForm.vehicle.license_plate_number,
-          vehicle_type: modelForm.vehicle.vehicle_type.id32,
-        },
-      },
+      body: tempBody.value,
     })
     isOpenForm.value = false
     selectedRow.value = undefined
@@ -223,6 +242,30 @@ const handleSubmitForm = async (modelForm: unknown) => {
     toast.add({ title: 'Berhasil', description: 'Data Berhasil Ditambahkan', icon: 'i-heroicons-check-circle' })
   } catch (err) {
     isLoading.value = false
+    if (err?.response?._data?.errors?.camera_photo_base64) {
+      modalResubmit.open(AConfirmation, {
+        title: err?.response?._data?.errors?.camera_photo_base64[0] ?? 'Terjadi Kesalahan',
+        btnOkText: 'Lanjutkan',
+        btnCancelText: 'Batalkan',
+        onOk() {
+          $api(endpoint, {
+            method: method,
+            body: { ...tempBody.value, allow_fail_eocortex: true },
+          }).then(() => {
+            refresh()
+            toast.add({ title: 'Berhasil', description: 'Data Berhasil Disimpan', icon: 'i-heroicons-check-circle' })
+            modalResubmit.close()
+            isOpenForm.value = false
+          }).catch((err) => {
+            useToastError(FIELDS_REQUEST, err?.response?._data)
+          })
+        },
+        onCancel() {
+          modalResubmit.close()
+        },
+      })
+      return
+    }
     useToastError(FIELDS_REQUEST, err?.response?._data ?? 'Terjadi Kesalahan')
   }
 }
@@ -286,6 +329,10 @@ const handleVerify = async (row: Vehicle) => {
   } finally {
     $loader.finish()
   }
+}
+const handleCloseForm = () => {
+  isOpenForm.value = false
+  formVisitor.value.cameraStop()
 }
 </script>
 

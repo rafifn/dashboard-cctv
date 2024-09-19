@@ -2,8 +2,13 @@
 interface Props {
   title: string
   modelValue: boolean
+  btnOkText?: string
+  btnCancelText?: string
 }
-defineProps<Props>()
+withDefaults(defineProps<Props>(), {
+  btnOkText: 'Ya',
+  btnCancelText: 'Tidak',
+})
 
 defineEmits(['ok', 'cancel', 'update:modelValue'])
 </script>
@@ -27,7 +32,7 @@ defineEmits(['ok', 'cancel', 'update:modelValue'])
           class="-my-1"
           @click="$emit('ok')"
         >
-          Ya
+          {{ btnOkText }}
         </UButton>
         <UButton
           color="rose"
@@ -35,7 +40,7 @@ defineEmits(['ok', 'cancel', 'update:modelValue'])
           class="-my-1"
           @click="$emit('cancel')"
         >
-          Tidak
+          {{ btnCancelText }}
         </UButton>
       </div>
     </UCard>
