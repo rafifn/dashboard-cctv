@@ -48,6 +48,7 @@
           :data="rows"
           :options="{
             dom: `<'d-flex justify-content-end'fB>`,
+            ordering: false,
             responsive: {
               orthogonal: 'responsive',
               details: {
