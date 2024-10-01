@@ -83,67 +83,107 @@
     </AModal>
     <AModal
       :is-open="isOpenVerify"
+      width="w-full sm:max-w-[45%]"
     >
       <UCard :ui="{ header: { padding: 'p-4' }, body: { padding: 'p-4' } }">
         <template #header>
-          <div class="flex items-center justify-center">
-            <p>Data DUKCAPIL</p>
+          <div class="flex items-center justify-between">
+            <p class="font-bold mb-0">
+              DATA DUKCAPIL
+            </p>
+            <h4 :class="`${[isDukcapilValid ? 'text-green-600' : 'text-red-600']} mb-0`">
+              {{ isDukcapilValid ? 'SESUAI' : 'TIDAK SESUAI' }}
+            </h4>
             <UButton
               variant="ghost"
               icon="i-heroicons-x-mark-20-solid"
-              class="-my-1 ml-auto"
+              class="-my-1"
               @click="isOpenVerify = false"
             />
           </div>
         </template>
         <div class="flex space-x-4 divide-x">
-          <div class="space-y-4 w-[50%]">
+          <div class="w-[50%]">
             <img
               v-if="selectedRow.rowData?.person?.photo?.url"
               :src="selectedRow.rowData?.person?.photo?.url"
               :alt="selectedRow.rowData.person.full_name"
               class="w-20 mb-2"
             >
-            <span class="block">Nama : {{ selectedRow.rowData.person?.full_name }}</span>
-            <hr>
-            <span class="block">NIK : {{ selectedRow.rowData.person.no_id }}</span>
-            <hr>
-            <span class="block">Alamat : {{ selectedRow.rowData.person.address }}</span>
           </div>
-          <div class="px-2 w-[50%]">
+          <div class="w-[50%] px-2">
             <img
-              v-if="visitorVerificationData.image"
-              :src="visitorVerificationData.image"
-              :alt="visitor.nama_lgkp"
+              v-if="visitorVerificationData?.image"
+              :src="visitorVerificationData?.image"
+              :alt="visitor?.nama_lgkp"
               class="w-20 mb-2"
             >
-            <span class="block">Nama : {{ visitorVerificationData.nama_lgkp }}</span>
+          </div>
+        </div>
+        <div class="flex space-x-4 divide-x">
+          <div class="space-y-4 w-[50%]">
+            <div class="flex flex-wrap gap-x-2">
+              <span>Nama : </span>
+              <span>{{ selectedRow.rowData.person?.full_name }}</span>
+            </div>
             <hr>
-            <span class="block">NIK : {{ visitorVerificationData.nik }}</span>
+            <div class="flex flex-wrap gap-x-2">
+              <span>NIK : </span>
+              <span>{{ selectedRow.rowData.person?.no_id }}</span>
+            </div>
             <hr>
-            <span class="block">Jenis Kelamin : {{ visitorVerificationData.jenis_klmin }}</span>
+            <div class="flex flex-wrap gap-x-2">
+              <span>Alamat : </span>
+              <span>{{ selectedRow.rowData.person?.address }}</span>
+            </div>
+          </div>
+          <div class="px-2 w-[50%]">
+            <div class="flex flex-wrap gap-x-2">
+              <span>Nama :</span>
+              <span>{{ visitorVerificationData?.nama_lgkp }}</span>
+            </div>
             <hr>
-            <span class="block">TTL :
-              {{ visitorVerificationData.tmpt_lhr }},
-              {{ visitorVerificationData.tgl_lhr }}
-            </span>
+            <div class="flex flex-wrap gap-x-2">
+              <span>NIK :</span>
+              <span>{{ visitorVerificationData?.nik }}</span>
+            </div>
             <hr>
-            <span class="block">
-              Status : {{ visitorVerificationData.stat_kwn }}
-            </span>
+            <div class="flex flex-wrap gap-x-2">
+              <span>Jenis Kelamin :</span>
+              <span>{{ visitorVerificationData?.jenis_klmin }}</span>
+            </div>
             <hr>
-            <span class="block">
-              Pekerjaan : {{ visitorVerificationData.jenis_pkrjn }}
-            </span>
+            <div class="flex flex-wrap gap-x-2">
+              <span>TTL :</span>
+              <span v-if="isDukcapilValid">
+                {{ visitorVerificationData?.tmpt_lhr }}, {{ visitorVerificationData?.tgl_lhr }}
+              </span>
+            </div>
             <hr>
-            <span class="block">
-              Alamat :
-              {{ visitorVerificationData.alamat }},
-              {{ visitorVerificationData.nama_kel }},
-              {{ visitorVerificationData.nama_kec }},
-              {{ visitorVerificationData.nama_kab }},
-              {{ visitorVerificationData.nama_prop }}
-            </span>
+            <div class="flex flex-wrap gap-x-2">
+              <span>Status :</span>
+              <span v-if="isDukcapilValid">
+                {{ visitorVerificationData?.stat_kwn }}
+              </span>
+            </div>
+            <hr>
+            <div class="flex flex-wrap gap-x-2">
+              <span>Pekerjaan :</span>
+              <span v-if="isDukcapilValid">
+                {{ visitorVerificationData?.jenis_pkrjn }}
+              </span>
+            </div>
+            <hr>
+            <div class="flex flex-wrap gap-x-2">
+              <span>Alamat :</span>
+              <span v-if="isDukcapilValid">
+                {{ visitorVerificationData?.alamat }},
+                {{ visitorVerificationData?.nama_kel }},
+                {{ visitorVerificationData?.nama_kec }},
+                {{ visitorVerificationData?.nama_kab }},
+                {{ visitorVerificationData?.nama_prop }}
+              </span>
+            </div>
           </div>
         </div>
       </UCard>
@@ -178,13 +218,13 @@ const COLUMNS = [
   { data: 'check_in_timestamp', title: 'Waktu Checkin', sortable: false, responsivePriority: 3, render: (data) => {
     return data ? formatDateFromUTC(data) : ''
   } },
-  { data: 'check_out_timestamp', title: 'Waktu Checkout', sortable: false, responsivePriority: 4, render: (data) => {
+  { data: 'check_out_timestamp', title: 'Waktu Checkout', sortable: false, type: 'string', responsivePriority: 4, render: (data) => {
     return data ? formatDateFromUTC(data) : ''
   } },
-  { data: null, title: 'KTP', responsivePriority: 5, target: 0, render: '#id_card' },
-  { data: null, title: 'Foto', responsivePriority: 6, target: 0, render: '#photo' },
+  { data: null, title: 'KTP', responsivePriority: 5, sortable: false, render: '#id_card' },
+  { data: null, title: 'Foto', responsivePriority: 6, sortable: false, render: '#photo' },
   { data: 'visitor_id', title: 'ID', responsivePriority: 7, sortable: false },
-  { data: 'person', title: 'Alamat', sortable: false, responsivePriority: 8, target: 0, render: (data) => {
+  { data: 'person', title: 'Alamat', sortable: false, responsivePriority: 8, render: (data) => {
     return data?.address ?? ''
   } },
 ]
@@ -207,6 +247,7 @@ const formVisitor = ref()
 const isOpenForm = ref(false)
 const isOpenVerify = ref(false)
 const isLoading = ref(false)
+const isDukcapilValid = ref(false)
 const selectedRow = ref()
 const visitorVerificationData = ref()
 const modalDelete = useModal()
@@ -319,11 +360,17 @@ const handleVerify = async (row: Vehicle) => {
     })
     if (resp?.data) {
       visitorVerificationData.value = resp.data
-      selectedRow.value = row
-      isOpenVerify.value = true
+      // eslint-disable-next-line max-len
+      isDukcapilValid.value = resp.data.nama_lgkp.toLowerCase() === row.rowData.person?.full_name.toLowerCase() && resp.data.nik === row.rowData.person.no_id
     } else {
-      toast.add({ description: JSON.stringify(resp?.message) ?? 'Terjadi Kesalahan, coba lagi beberapa saat', color: 'red' })
+      if (resp?.message) {
+        toast.add({ description: resp.message, color: 'red' })
+      }
+      visitorVerificationData.value = undefined
+      isDukcapilValid.value = false
     }
+    selectedRow.value = row
+    isOpenVerify.value = true
   } catch (err) {
     toast.add({ description: err?.response?._data?.data ?? err?.response?.statusMessage ?? 'Data Tidak Ditemukan', color: 'red' })
   } finally {
