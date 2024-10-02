@@ -58,6 +58,7 @@ export default defineNuxtConfig({
       permissions: '',
       recordingBaseUrl: '',
       streamBaseUrl: '',
+      timeoutDukcapil: 15000,
     },
   },
 })

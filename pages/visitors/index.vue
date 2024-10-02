@@ -85,15 +85,12 @@
       :is-open="isOpenVerify"
       width="w-full sm:max-w-[45%]"
     >
-      <UCard :ui="{ header: { padding: 'p-4' }, body: { padding: 'p-4' } }">
+      <UCard :ui="{ header: { padding: 'p-4' }, body: { padding: 'py-4 px-0' } }">
         <template #header>
           <div class="flex items-center justify-between">
             <p class="font-bold mb-0">
               DATA DUKCAPIL
             </p>
-            <h4 :class="`${[isDukcapilValid ? 'text-green-600' : 'text-red-600']} mb-0`">
-              {{ isDukcapilValid ? 'SESUAI' : 'TIDAK SESUAI' }}
-            </h4>
             <UButton
               variant="ghost"
               icon="i-heroicons-x-mark-20-solid"
@@ -102,16 +99,21 @@
             />
           </div>
         </template>
-        <div class="flex space-x-4 divide-x">
-          <div class="w-[50%]">
+        <div class="text-center pb-4 border-b">
+          <h2 :class="`${[isDukcapilValid ? 'text-green-600' : 'text-red-600']} mb-0`">
+            {{ isDukcapilValid ? 'SESUAI' : 'TIDAK SESUAI' }}
+          </h2>
+        </div>
+        <div class="flex space-x-4 divide-x px-4">
+          <div class="w-[50%] pt-4">
             <img
-              v-if="selectedRow.rowData?.person?.photo?.url"
-              :src="selectedRow.rowData?.person?.photo?.url"
-              :alt="selectedRow.rowData.person.full_name"
+              v-if="selectedRow?.rowData?.person?.photo?.url"
+              :src="selectedRow?.rowData?.person?.photo?.url"
+              :alt="selectedRow?.rowData.person.full_name"
               class="w-20 mb-2"
             >
           </div>
-          <div class="w-[50%] px-2">
+          <div class="w-[50%] px-2 pt-4">
             <img
               v-if="visitorVerificationData?.image"
               :src="visitorVerificationData?.image"
@@ -120,7 +122,7 @@
             >
           </div>
         </div>
-        <div class="flex space-x-4 divide-x">
+        <div class="flex space-x-4 divide-x px-4">
           <div class="space-y-4 w-[50%]">
             <div class="flex flex-wrap gap-x-2">
               <span>Nama : </span>
@@ -228,6 +230,7 @@ const COLUMNS = [
     return data?.address ?? ''
   } },
 ]
+const cfg = useRuntimeConfig()
 const { $api, $loader } = useNuxtApp()
 const toast = useToast()
 const route = useRoute()
@@ -357,6 +360,7 @@ const handleVerify = async (row: Vehicle) => {
       body: {
         nik: row?.rowData?.person?.no_id,
       },
+      timeout: cfg.public.timeoutDukcapil,
     })
     if (resp?.data) {
       visitorVerificationData.value = resp.data
@@ -372,6 +376,10 @@ const handleVerify = async (row: Vehicle) => {
     selectedRow.value = row
     isOpenVerify.value = true
   } catch (err) {
+    selectedRow.value = row
+    visitorVerificationData.value = undefined
+    isDukcapilValid.value = false
+    isOpenVerify.value = true
     toast.add({ description: err?.response?._data?.data ?? err?.response?.statusMessage ?? 'Data Tidak Ditemukan', color: 'red' })
   } finally {
     $loader.finish()

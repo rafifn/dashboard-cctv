@@ -12,7 +12,10 @@
           name="no_id"
           required
         >
-          <UInput v-model="modelForm.no_id" />
+          <UInput
+            v-model="modelForm.no_id"
+            @keydown="handleKeyDownId"
+          />
         </UFormGroup>
         <UFormGroup
           label="Nama"
@@ -195,7 +198,7 @@ const modelForm = ref({
 })
 
 const schema = computed(() => object({
-  no_id: string().required('ID Wajib Diisi'),
+  no_id: string().required('ID Wajib Diisi').test('len', 'ID Wajib 16 Karakter', val => val.length === 16),
   full_name: string().required('Nama Wajib Diisi'),
   address: string().required('Alamat Wajib Diisi'),
   gender: object().shape({ value: string().required('Jenis Kelamin Wajib Diisi') }),
@@ -293,6 +296,22 @@ const cameraCapture = () => {
   isCaptured.value = true
   const img = document.getElementById('imageCaptured').toDataURL()
   cameraCapturedSrc.value = img.replace('data:image/png;base64,', '')
+}
+const handleKeyDownId = (e) => {
+  if (
+    [46, 8, 9, 27, 13, 37, 38, 39, 40].indexOf(e.keyCode) !== -1
+    || (e.keyCode === 65 && e.ctrlKey === true) // Allow: Ctrl+A
+    || (e.keyCode === 67 && e.ctrlKey === true) // Allow: Ctrl+C
+    || (e.keyCode === 86 && e.ctrlKey === true) // Allow: Ctrl+V
+    || (e.keyCode === 88 && e.ctrlKey === true) // Allow: Ctrl+X
+    || (e.keyCode >= 35 && e.keyCode <= 39) // Allow: home, end, left, right
+  ) {
+    return
+  }
+  // Ensure it is a number and stop the keypress
+  if ((e.keyCode < 48 || e.keyCode > 57) && (e.keyCode < 96 || e.keyCode > 105)) {
+    e.preventDefault()
+  }
 }
 
 onMounted(() => {
